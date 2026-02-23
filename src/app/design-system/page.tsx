@@ -1,20 +1,21 @@
 "use client"
 
 import { useState, useCallback } from 'react'
+import type { CSSProperties } from 'react'
 import Link from 'next/link'
 
-/* ═══════════════════════════════════════════════════════════
+/* ████████████████████████████████████████████████████████████████
    VIVAIR DESIGN SYSTEM DASHBOARD v2.1
    Rota: /design-system
-   ═══════════════════════════════════════════════════════════ */
+   ████████████████████████████████████████████████████████████████ */
 
 type FontKey = 'dm-sans' | 'outfit' | 'inter' | 'plus-jakarta'
 type PaletteKey = 'navy' | 'forest' | 'rose' | 'slate'
 
 const FONTS: { key: FontKey; label: string; stack: string; url: string }[] = [
-  { key: 'dm-sans',      label: 'DM Sans',           stack: "'DM Sans', sans-serif",           url: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap' },
-  { key: 'outfit',       label: 'Outfit',             stack: "'Outfit', sans-serif",            url: 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap' },
-  { key: 'inter',        label: 'Inter',              stack: "'Inter', sans-serif",             url: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap' },
+  { key: 'dm-sans',      label: 'DM Sans',            stack: "'DM Sans', sans-serif",              url: 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap' },
+  { key: 'outfit',       label: 'Outfit',             stack: "'Outfit', sans-serif",             url: 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap' },
+  { key: 'inter',        label: 'Inter',              stack: "'Inter', sans-serif",              url: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap' },
   { key: 'plus-jakarta', label: 'Plus Jakarta Sans',  stack: "'Plus Jakarta Sans', sans-serif", url: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap' },
 ]
 
@@ -24,7 +25,7 @@ const PALETTES: {
 }[] = [
   { key: 'navy',   label: 'VivAir Navy',  emoji: '🌊', navy: '#0a1f44', navyMid: '#234d90', accent: '#C4A35A', accentLt: '#D4A574', amber: '#C9856B', offWhite: '#FAF9F6' },
   { key: 'forest', label: 'Forest Green', emoji: '🌿', navy: '#0d2b1a', navyMid: '#1a4f2d', accent: '#8DB87A', accentLt: '#A6C99A', amber: '#C4955A', offWhite: '#F6FAF6' },
-  { key: 'rose',   label: 'Rose Gold',    emoji: '🌸', navy: '#2b1018', navyMid: '#5c1f33', accent: '#C4876A', accentLt: '#D4A090', amber: '#B87A8D', offWhite: '#FAF6F7' },
+  { key: 'rose',   label: 'Rose Gold',   emoji: '🌸', navy: '#2b1018', navyMid: '#5c1f33', accent: '#C4876A', accentLt: '#D4A090', amber: '#B87A8D', offWhite: '#FAF6F7' },
   { key: 'slate',  label: 'Slate',        emoji: '🪨', navy: '#1a1f2b', navyMid: '#2e3a55', accent: '#8AA8C4', accentLt: '#9FB8D4', amber: '#7A95B8', offWhite: '#F6F8FA' },
 ]
 
@@ -86,14 +87,14 @@ export default function DesignSystemPage() {
   --p-radius-sm: ${Math.max(4, radius - 4)}px;
 }`
 
-  const chip = (active: boolean): React.CSSProperties => ({
+  const chip = (active: boolean): CSSProperties => ({
     padding: '6px 16px', borderRadius: 100, fontSize: 13, fontWeight: 500, cursor: 'pointer', border: 'none',
     outline: active ? '2px solid var(--p-champagne)' : '1px solid rgba(255,255,255,0.18)',
     background: active ? 'rgba(196,163,90,0.15)' : 'rgba(255,255,255,0.06)',
     color: active ? 'var(--p-champagne)' : 'var(--on-dark-2)', transition: 'all 0.2s',
   })
 
-  const card: React.CSSProperties = {
+  const card: CSSProperties = {
     background: 'var(--card-bg)', borderRadius: 'var(--card-radius)', padding: 'var(--card-pad)',
     boxShadow: 'var(--card-shadow)', border: 'var(--border-light)'
   }
@@ -188,8 +189,8 @@ export default function DesignSystemPage() {
             { label: 'H2 Section',       size: 40,  weight: 800, text: 'Como funciona' },
             { label: 'H3 Card Title',    size: 28,  weight: 700, text: 'Roteiro personalizado' },
             { label: 'H4 Subtitle',      size: 20,  weight: 600, text: 'De volta ao Brasil em breve' },
-            { label: 'Body (16px/500)',   size: 16,  weight: 500, text: 'Desenhamos experiências de viagem com a sua cara. Da inspiração ao embarque.' },
-            { label: 'Body Small (14px)', size: 14,  weight: 400, text: 'Política de privacidade · Termos de uso · Todos os direitos reservados.' },
+            { label: 'Body (16px/500)',  size: 16,  weight: 500, text: 'Desenhamos experiências de viagem com a sua cara. Da inspiração ao embarque.' },
+            { label: 'Body Small (14px)', size: 14, weight: 400, text: 'Política de privacidade · Termos de uso · Todos os direitos reservados.' },
             { label: 'Overline',         size: 11,  weight: 700, text: 'TRAVEL DESIGN', ls: '0.15em', upper: true },
           ] as {label:string;size:number;weight:number;text:string;ls?:string;upper?:boolean}[]).map(t => (
             <div key={t.label} style={{ borderBottom: 'var(--border-light)', paddingBottom: 20, marginBottom: 20 }}>
