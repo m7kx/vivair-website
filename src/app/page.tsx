@@ -9,6 +9,7 @@ import DestinationsSection from "@/components/DestinationsSection"
 import MarqueeStrip from "@/components/MarqueeStrip"
 import AnimatedText from "@/components/AnimatedText"
 import NoiseBg from "@/components/NoiseBg"
+import HeroBackground from "@/components/HeroBackground"
 
 /* ── Step cards data ──────────────────────────────────────────────── */
 const steps = [
@@ -34,38 +35,28 @@ function StatItem({ value, label }: { value: string; label: string }) {
       }}>
         {value}
       </div>
-      <div style={{ fontSize: 12, color: "var(--on-dark-3)", marginTop: 5, letterSpacing: "0.06em", textTransform: "uppercase" as const }}>
+      <div style={{ fontSize: 12, color: "rgba(250,249,246,0.55)", marginTop: 5, letterSpacing: "0.06em", textTransform: "uppercase" as const }}>
         {label}
       </div>
     </motion.div>
   )
 }
 
-/* ── Glowing orb ─────────────────────────────────────────────────── */
-function GlowOrb({ top, left, size = 600, color = "rgba(196,163,90,0.07)", delay = 0 }: {
+/* ── Glow orb (subtle, on top of image) ──────────────────────────── */
+function GlowOrb({ top, left, size = 500, color = "rgba(196,163,90,0.06)", delay = 0 }: {
   top: string; left: string; size?: number; color?: string; delay?: number
 }) {
   return (
     <motion.div
       style={{
         position: "absolute", top, left,
-        width: size, height: size,
-        borderRadius: "50%",
+        width: size, height: size, borderRadius: "50%",
         background: `radial-gradient(ellipse, ${color} 0%, transparent 70%)`,
         pointerEvents: "none",
-        filter: "blur(0px)",
         translateX: "-50%", translateY: "-50%",
       }}
-      animate={{
-        scale: [1, 1.15, 1],
-        opacity: [0.7, 1, 0.7],
-      }}
-      transition={{
-        duration: 8 + delay,
-        repeat: Infinity,
-        ease: "easeInOut",
-        delay,
-      }}
+      animate={{ scale: [1, 1.18, 1], opacity: [0.6, 1, 0.6] }}
+      transition={{ duration: 9 + delay, repeat: Infinity, ease: "easeInOut", delay }}
     />
   )
 }
@@ -78,10 +69,10 @@ export default function Home() {
     target: heroRef,
     offset: ["start start", "end start"],
   })
-  const heroBgY = useTransform(heroScroll, [0, 1], ["0%", "28%"])
-  const heroContentY = useTransform(heroScroll, [0, 1], ["0%", "18%"])
-  const heroOpacity = useTransform(heroScroll, [0, 0.75], [1, 0])
-  const heroBgScale = useTransform(heroScroll, [0, 1], [1, 1.1])
+  const heroBgY        = useTransform(heroScroll, [0, 1], ["0%",  "28%"])
+  const heroContentY   = useTransform(heroScroll, [0, 1], ["0%",  "18%"])
+  const heroOpacity    = useTransform(heroScroll, [0, 0.75], [1, 0])
+  const heroBgScale    = useTransform(heroScroll, [0, 1], [1, 1.08])
 
   return (
     <main style={{ background: "var(--surface-page)", minHeight: "100vh", overflowX: "hidden" }}>
@@ -96,33 +87,22 @@ export default function Home() {
           display: "flex", alignItems: "center", justifyContent: "center",
         }}
       >
-        {/* Parallax background */}
-        <motion.div
-          style={{
-            position: "absolute", inset: "-20%",
-            background: "var(--grad-hero)",
-            y: heroBgY, scale: heroBgScale,
-            zIndex: 0, willChange: "transform",
-          }}
-        />
+        {/* ── Cinematic image background (replaces gradient) ── */}
+        <HeroBackground y={heroBgY} scale={heroBgScale} />
 
-        {/* Animated glow orbs */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, overflow: "hidden", pointerEvents: "none" }}>
-          <GlowOrb top="30%" left="25%" size={700} color="rgba(196,163,90,0.06)" delay={0} />
-          <GlowOrb top="65%" left="75%" size={500} color="rgba(35,77,144,0.15)" delay={3} />
-          <GlowOrb top="15%" left="70%" size={400} color="rgba(196,163,90,0.04)" delay={5} />
+        {/* Subtle glow orbs — sit ON TOP of the image, z>0 */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 2, overflow: "hidden", pointerEvents: "none" }}>
+          <GlowOrb top="30%" left="22%" size={600} color="rgba(196,163,90,0.05)" delay={0} />
+          <GlowOrb top="68%" left="76%" size={450} color="rgba(35,77,144,0.12)"  delay={3} />
         </div>
 
-        {/* Champagne glow overlay */}
-        <div style={{ position: "absolute", inset: 0, background: "var(--grad-glow)", zIndex: 2, pointerEvents: "none" }} />
-
         {/* Grain texture */}
-        <NoiseBg opacity={0.03} style={{ zIndex: 3 }} />
+        <NoiseBg opacity={0.028} style={{ zIndex: 3 }} />
 
-        {/* Grid lines */}
+        {/* Grid overlay — very subtle, visible over image */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none",
-          backgroundImage: "linear-gradient(rgba(250,249,246,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(250,249,246,0.025) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(rgba(250,249,246,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(250,249,246,0.018) 1px, transparent 1px)",
           backgroundSize: "100px 100px",
           maskImage: "radial-gradient(ellipse 90% 70% at 50% 50%, black, transparent)",
         }} />
@@ -142,7 +122,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ marginBottom: 32 }}
           >
             <span style={{
@@ -152,7 +132,7 @@ export default function Home() {
               textTransform: "uppercase" as const,
               color: "var(--on-dark-accent)",
               border: "1px solid rgba(196,163,90,0.35)",
-              background: "rgba(196,163,90,0.07)",
+              background: "rgba(196,163,90,0.08)",
               backdropFilter: "blur(12px)",
             }}>
               <span style={{ fontSize: 16 }}>✦</span>
@@ -160,12 +140,12 @@ export default function Home() {
             </span>
           </motion.div>
 
-          {/* Main headline — AnimatedText word reveal */}
+          {/* Main headline — word-by-word reveal */}
           <div style={{ marginBottom: 28, justifyContent: "center" }}>
             <AnimatedText
               text="Sua próxima viagem começa com uma conversa"
-              delay={0.15}
-              stagger={0.06}
+              delay={0.3}
+              stagger={0.065}
               style={{
                 fontFamily: "var(--hero-font)",
                 fontSize: "clamp(42px, 7.5vw, 76px)",
@@ -174,6 +154,7 @@ export default function Home() {
                 letterSpacing: "var(--hero-ls)",
                 lineHeight: 1.1,
                 justifyContent: "center",
+                textShadow: "0 2px 24px rgba(10,31,68,0.4)",
               }}
             />
           </div>
@@ -182,13 +163,14 @@ export default function Home() {
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 1.0, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "var(--body-font)",
               fontSize: "clamp(16px, 2vw, 19px)",
-              fontWeight: 400, color: "var(--on-dark-2)",
+              fontWeight: 400, color: "rgba(250,249,246,0.85)",
               lineHeight: 1.65, marginBottom: 48,
               maxWidth: 520, marginLeft: "auto", marginRight: "auto",
+              textShadow: "0 1px 12px rgba(10,31,68,0.5)",
             }}
           >
             Desenhamos experiências de viagem com a sua cara.
@@ -199,7 +181,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0, duration: 0.7, type: "spring", stiffness: 80 }}
+            transition={{ delay: 1.2, duration: 0.7, type: "spring", stiffness: 80 }}
             style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}
           >
             <motion.a
@@ -210,8 +192,7 @@ export default function Home() {
                 background: "var(--grad-cta)", color: "white",
                 padding: "18px 40px", borderRadius: "var(--btn-radius)",
                 fontFamily: "var(--btn-font)", fontSize: 17,
-                fontWeight: 600,
-                textDecoration: "none",
+                fontWeight: 600, textDecoration: "none",
               }}
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.97 }}
@@ -227,13 +208,13 @@ export default function Home() {
               target="_blank" rel="noopener noreferrer"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
-                background: "rgba(255,255,255,0.08)", color: "var(--on-dark-1)",
+                background: "rgba(255,255,255,0.10)", color: "var(--on-dark-1)",
                 padding: "18px 40px", borderRadius: "var(--btn-radius)",
                 fontFamily: "var(--btn-font)", fontSize: 17, fontWeight: 500,
-                border: "1px solid rgba(255,255,255,0.18)", textDecoration: "none",
+                border: "1px solid rgba(255,255,255,0.20)", textDecoration: "none",
                 backdropFilter: "blur(12px)",
               }}
-              whileHover={{ scale: 1.03, background: "rgba(255,255,255,0.13)" }}
+              whileHover={{ scale: 1.03, background: "rgba(255,255,255,0.16)" }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}
             >
@@ -245,14 +226,14 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.8, duration: 1 }}
+            transition={{ delay: 2.0, duration: 1 }}
             style={{
               position: "absolute", bottom: 32, left: "50%",
               transform: "translateX(-50%)",
               display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
             }}
           >
-            <span style={{ fontSize: 9, letterSpacing: "0.2em", color: "var(--on-dark-3)", textTransform: "uppercase" as const }}>
+            <span style={{ fontSize: 9, letterSpacing: "0.2em", color: "rgba(250,249,246,0.45)", textTransform: "uppercase" as const }}>
               Scroll
             </span>
             <motion.div
@@ -267,12 +248,12 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8, type: "spring" }}
+          transition={{ delay: 1.5, duration: 0.8, type: "spring" }}
           style={{
             position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 6,
-            background: "rgba(10,31,68,0.65)",
+            background: "rgba(10,31,68,0.70)",
             backdropFilter: "blur(24px)",
-            borderTop: "1px solid rgba(255,255,255,0.07)",
+            borderTop: "1px solid rgba(255,255,255,0.08)",
             padding: "20px 40px",
           }}
         >
@@ -280,10 +261,10 @@ export default function Home() {
             maxWidth: 860, margin: "0 auto",
             display: "flex", justifyContent: "space-around", flexWrap: "wrap", gap: 16,
           }}>
-            <StatItem value="40+" label="Parceiros globais" />
+            <StatItem value="40+"  label="Parceiros globais" />
             <StatItem value="500+" label="Roteiros criados" />
             <StatItem value="100%" label="Personalizado" />
-            <StatItem value="5★" label="Experiência" />
+            <StatItem value="5★"   label="Experiência" />
           </div>
         </motion.div>
       </section>
@@ -302,7 +283,6 @@ export default function Home() {
         background: "var(--surface-page)", padding: "104px 24px 112px",
         position: "relative", overflow: "hidden",
       }}>
-        {/* Decorative bg glow */}
         <div style={{
           position: "absolute", top: 0, right: -120,
           width: 600, height: 600,
@@ -317,7 +297,6 @@ export default function Home() {
         }} />
 
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          {/* Header */}
           <div style={{ textAlign: "center", marginBottom: 80 }}>
             <motion.span
               initial={{ opacity: 0, y: 16 }}
@@ -338,21 +317,17 @@ export default function Home() {
             </motion.span>
             <AnimatedText
               text="Como funciona"
-              delay={0.1}
-              stagger={0.08}
+              delay={0.1} stagger={0.08}
               style={{
                 fontFamily: "var(--heading-font)",
                 fontSize: "clamp(30px, 4.5vw, 48px)",
-                fontWeight: 800,
-                color: "var(--text-brand)",
+                fontWeight: 800, color: "var(--text-brand)",
                 letterSpacing: "-0.03em",
-                justifyContent: "center",
-                lineHeight: 1.1,
+                justifyContent: "center", lineHeight: 1.1,
               }}
             />
           </div>
 
-          {/* Steps grid */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "40px 28px" }}>
             {steps.map((s, i) => (
               <motion.div key={s.num}
@@ -370,12 +345,10 @@ export default function Home() {
                   cursor: "default", position: "relative", overflow: "hidden",
                 }}
               >
-                {/* Top accent line */}
                 <motion.div
                   style={{
                     position: "absolute", top: 0, left: 0, right: 0, height: 3,
-                    background: "var(--grad-cta)",
-                    scaleX: 0, originX: 0,
+                    background: "var(--grad-cta)", scaleX: 0, originX: 0,
                   }}
                   whileHover={{ scaleX: 1 }}
                   transition={{ duration: 0.4 }}
@@ -403,8 +376,6 @@ export default function Home() {
         <div style={{ position: "absolute", inset: 0, background: "var(--grad-hero)", zIndex: 0 }} />
         <div style={{ position: "absolute", inset: 0, background: "var(--grad-glow)", zIndex: 0 }} />
         <NoiseBg opacity={0.025} />
-
-        {/* Animated shimmer diagonal */}
         <motion.div
           style={{
             position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
@@ -423,11 +394,9 @@ export default function Home() {
           >
             Pronto pra próxima aventura?
           </motion.p>
-
           <AnimatedText
             text="Fale com a gente e desenhe sua viagem"
-            delay={0.1}
-            stagger={0.07}
+            delay={0.1} stagger={0.07}
             style={{
               fontFamily: "var(--hero-font)",
               fontSize: "clamp(30px, 4.5vw, 50px)",
@@ -436,7 +405,6 @@ export default function Home() {
               justifyContent: "center", marginBottom: 24,
             }}
           />
-
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -446,7 +414,6 @@ export default function Home() {
           >
             Da primeira conversa até o check-in. Sem pegadinha, sem letra miúda.
           </motion.p>
-
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -454,38 +421,16 @@ export default function Home() {
             transition={{ delay: 0.5 }}
             style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}
           >
-            <motion.a
-              href="https://wa.me/5521996832196"
-              target="_blank" rel="noopener noreferrer"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                background: "var(--grad-cta)", color: "white",
-                padding: "18px 40px", borderRadius: "var(--btn-radius)",
-                fontFamily: "var(--btn-font)", fontSize: 17,
-                fontWeight: 600,
-                textDecoration: "none",
-              }}
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 350, damping: 20 }}
-            >
+            <motion.a href="https://wa.me/5521996832196" target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--grad-cta)", color: "white", padding: "18px 40px", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: 17, fontWeight: 600, textDecoration: "none" }}
+              whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 350, damping: 20 }}>
               Desenhe sua viagem
             </motion.a>
-            <motion.a
-              href="https://wa.me/5521996832196"
-              target="_blank" rel="noopener noreferrer"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "rgba(255,255,255,0.08)", color: "var(--on-dark-1)",
-                padding: "18px 40px", borderRadius: "var(--btn-radius)",
-                fontFamily: "var(--btn-font)", fontSize: 17, fontWeight: 500,
-                border: "1px solid rgba(255,255,255,0.18)", textDecoration: "none",
-                backdropFilter: "blur(12px)",
-              }}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 350, damping: 20 }}
-            >
+            <motion.a href="https://wa.me/5521996832196" target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.08)", color: "var(--on-dark-1)", padding: "18px 40px", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: 17, fontWeight: 500, border: "1px solid rgba(255,255,255,0.18)", textDecoration: "none", backdropFilter: "blur(12px)" }}
+              whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 350, damping: 20 }}>
               WhatsApp
             </motion.a>
           </motion.div>
