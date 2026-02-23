@@ -170,8 +170,9 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA button */}
+          {/* CTA button — desktop only */}
           <motion.a
+            className="desktop-nav"
             href="https://app.onertravel.com/vivairtraveldesign/home"
             target="_blank" rel="noopener noreferrer"
             style={{
@@ -191,7 +192,7 @@ export default function Navbar() {
           </motion.a>
 
           {/* Hamburger — mobile only */}
-          <div className="hamburger-btn">
+          <div className="hamburger-btn" style={{ marginLeft: "auto" }}>
             <HamburgerButton open={open} onClick={() => setOpen(!open)} />
           </div>
         </div>

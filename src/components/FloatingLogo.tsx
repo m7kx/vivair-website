@@ -12,7 +12,7 @@ import { motion, useSpring, useMotionValue, AnimatePresence } from "framer-motio
    - Touch devices: magnetic off (preserves perf), float stays
 ──────────────────────────────────────────────────────────────────────────────── */
 
-const LOGO_SIZE = 240       // diameter (px)  — 240px for clear logo visibility
+const LOGO_SIZE = 240       // diameter (px)  — 240px for clear logo visibility [v3]
 const MAGNETIC_RADIUS = 160 // px — distance at which logo starts being pulled
 const MAGNETIC_STRENGTH = 0.38
 
