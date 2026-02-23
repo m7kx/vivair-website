@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import { DM_Sans, DM_Serif_Display } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 /* ── Fonts ────────────────────────────────────────────────── */
@@ -63,7 +64,10 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${dmSans.variable} ${dmSerif.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   )
 }
