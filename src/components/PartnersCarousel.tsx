@@ -1,29 +1,45 @@
 "use client"
-import React from 'react'
+
+/**
+ * PartnersCarousel
+ * ─────────────────────────────────────────────────────────────
+ * Seção modular de logos de parceiros com rolagem infinita.
+ *
+ * Para REMOVER do site: basta comentar <PartnersCarousel /> em page.tsx.
+ * Para OCULTAR temporariamente: adicione hidden={true} como prop.
+ * ─────────────────────────────────────────────────────────────
+ */
+
+interface Props {
+  hidden?: boolean
+}
 
 const partners = [
-  { name: 'Expedia',           file: 'expedia.svg'        },
-  { name: 'Club Med',          file: 'clubmed.svg'        },
-  { name: 'Norwegian',         file: 'ncl.svg'            },
-  { name: 'Royal Caribbean',   file: 'royalcaribbean.svg' },
-  { name: 'Costa Cruzeiros',   file: 'costa.svg'          },
-  { name: 'MSC Cruises',       file: 'msc.svg'            },
-  { name: 'Civitatis',         file: 'civitatis.svg'      },
-  { name: 'Beto Carrero',      file: 'beto.svg'           },
+  { name: 'Expedia',          file: 'expedia.svg'        },
+  { name: 'Club Med',         file: 'clubmed.svg'        },
+  { name: 'Norwegian',        file: 'ncl.svg'            },
+  { name: 'Royal Caribbean',  file: 'royalcaribbean.svg' },
+  { name: 'Costa Cruzeiros',  file: 'costa.svg'          },
+  { name: 'MSC Cruises',      file: 'msc.svg'            },
+  { name: 'Civitatis',        file: 'civitatis.svg'      },
+  { name: 'Beto Carrero',     file: 'beto.svg'           },
 ]
 
-// Duplicate 3× so loop is always filled regardless of screen width
+// 3 cópias → animação -33.333% = exatamente 1 set completo
 const track = [...partners, ...partners, ...partners]
 
-export default function PartnersCarousel() {
+export default function PartnersCarousel({ hidden = false }: Props) {
+  if (hidden) return null
+
   return (
     <section style={{
       background: '#ffffff',
-      padding: '60px 0 52px',
+      padding: '52px 0 44px',
       borderTop: '1px solid #EEEBE5',
       borderBottom: '1px solid #EEEBE5',
       overflow: 'hidden',
     }}>
+
       {/* Label */}
       <p style={{
         textAlign: 'center',
@@ -32,60 +48,62 @@ export default function PartnersCarousel() {
         fontWeight: 700,
         letterSpacing: '0.20em',
         textTransform: 'uppercase',
-        color: '#AAAAAA',
+        color: '#BBBBBB',
         marginBottom: 32,
       }}>
         Parceiros Oficiais
       </p>
 
-      {/* Track wrapper */}
+      {/* Track wrapper com fade lateral */}
       <div style={{ position: 'relative', overflow: 'hidden' }}>
-        {/* Fade masks */}
         <div style={{
-          position: 'absolute', left: 0, top: 0, bottom: 0, width: 140,
+          position: 'absolute', left: 0, top: 0, bottom: 0, width: 100,
           background: 'linear-gradient(to right, #fff 0%, transparent 100%)',
           zIndex: 2, pointerEvents: 'none',
         }} />
         <div style={{
-          position: 'absolute', right: 0, top: 0, bottom: 0, width: 140,
+          position: 'absolute', right: 0, top: 0, bottom: 0, width: 100,
           background: 'linear-gradient(to left, #fff 0%, transparent 100%)',
           zIndex: 2, pointerEvents: 'none',
         }} />
 
-        {/* Scrolling strip — 3 copies, animate -33.333% */}
+        {/* Track — 3 cópias, translação -33.33% = 1 set */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 0,
-          /* Each logo slot: 200px + 64px gap = 264px. 8 logos = 2112px. -33.33% = -1 set */
-          animation: 'partnersScroll 32s linear infinite',
+          animation: 'partnersScroll 28s linear infinite',
           willChange: 'transform',
           width: 'max-content',
         }}>
           {track.map((p, i) => (
             <div key={i} style={{
+              flex: '0 0 auto',
               width: 200,
-              marginRight: 64,
               height: 60,
+              marginRight: 72,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              flexShrink: 0,
+              overflow: 'hidden',
             }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`/logos/${p.file}`}
                 alt={p.name}
+                width={200}
+                height={60}
                 style={{
-                  width: '100%',
-                  height: '100%',
+                  width: 200,
+                  height: 60,
                   objectFit: 'contain',
-                  opacity: 0.45,
-                  transition: 'opacity 0.35s ease',
+                  display: 'block',
+                  opacity: 0.5,
+                  transition: 'opacity 0.3s ease',
                   userSelect: 'none',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.opacity = '1' }}
-                onMouseLeave={e => { e.currentTarget.style.opacity = '0.45' }}
+                  WebkitUserDrag: 'none',
+                } as React.CSSProperties}
+                onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.opacity = '1' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.5' }}
                 draggable={false}
               />
             </div>
@@ -95,8 +113,8 @@ export default function PartnersCarousel() {
 
       <style>{`
         @keyframes partnersScroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-33.3333%); }
+          from { transform: translateX(0); }
+          to   { transform: translateX(-33.3333%); }
         }
       `}</style>
     </section>
