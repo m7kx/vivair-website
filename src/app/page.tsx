@@ -14,26 +14,24 @@ const fadeUp = {
   }),
 }
 
-/* ── Steps data ────────────────────────────────────────── */
 const steps = [
-  { num: '01', title: 'Conta pra gente', desc: 'Seu destino dos sonhos, datas e quem vai junto' },
-  { num: '02', title: 'A gente desenha', desc: 'Roteiro personalizado com voos, hotel e experiências' },
-  { num: '03', title: 'Você aprova', desc: 'Revisa, ajusta e a gente cuida de toda a reserva' },
-  { num: '04', title: 'Só aproveitar', desc: 'E postar nos Stories 😉' },
+  { num: '01', title: 'Conta pra gente',  desc: 'Seu destino dos sonhos, datas e quem vai junto' },
+  { num: '02', title: 'A gente desenha',  desc: 'Roteiro personalizado com voos, hotel e experiências' },
+  { num: '03', title: 'Você aprova',      desc: 'Revisa, ajusta e a gente cuida de toda a reserva' },
+  { num: '04', title: 'Só aproveitar',    desc: 'E postar nos Stories 😉' },
 ]
 
-/* ── Home page ────────────────────────────────────────── */
 export default function Home() {
   return (
-    <main style={{ background: 'var(--surface-page)', minHeight: '100vh' }}>
+    <main style={{ background: 'var(--surface-page)', minHeight: '100vh', overflowX: 'hidden' }}>
 
-      {/* ── Navbar (mobile-first, com hambúrguer) ── */}
+      {/* ── Navbar ── */}
       <Navbar />
 
       {/* ── Hero ── */}
       <section style={{ position: 'relative', overflow: 'hidden', background: 'var(--surface-dark)', padding: '100px 24px 80px', textAlign: 'center' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-hero)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-glow)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-hero)', zIndex: 0 }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-glow)', zIndex: 0 }} />
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 800, margin: '0 auto' }}>
           <motion.p
             variants={fadeUp} initial="hidden" animate="visible" custom={0}
@@ -65,33 +63,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Partners Carousel ── */}
+      {/* ── Partners Carousel (modular — remover: <PartnersCarousel hidden />) ── */}
       <PartnersCarousel />
 
-      {/* ── How it works ── */}
-      <section style={{ padding: '80px 24px', maxWidth: 1200, margin: '0 auto' }}>
-        <motion.p
-          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
-          style={{ fontFamily: 'var(--heading-font)', fontSize: 'var(--p-text-4xl)', fontWeight: 'var(--heading-weight)', textAlign: 'center', color: 'var(--text-brand)', letterSpacing: '-0.03em', marginBottom: 56 }}>
-          Como funciona
-        </motion.p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 32 }}>
-          {steps.map((s, i) => (
-            <motion.div key={s.num}
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-              style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 'var(--step-num-size)', fontWeight: 'var(--step-num-weight)', color: 'var(--step-num-color)', marginBottom: 8 }}>{s.num}</div>
-              <div style={{ fontSize: 'var(--body-size)', fontWeight: 'var(--step-title-w)', marginBottom: 6, color: 'var(--text-brand)' }}>{s.title}</div>
-              <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>{s.desc}</div>
-            </motion.div>
-          ))}
+      {/* ── Como funciona ── */}
+      <section style={{ background: 'var(--surface-page)', padding: '88px 24px 96px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.5 }}
+            style={{ fontFamily: 'var(--heading-font)', fontSize: 'var(--p-text-4xl)', fontWeight: 'var(--heading-weight)', textAlign: 'center', color: 'var(--text-brand)', letterSpacing: '-0.03em', marginBottom: 64 }}>
+            Como funciona
+          </motion.p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px 32px' }}>
+            {steps.map((s, i) => (
+              <motion.div key={s.num}
+                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                style={{ textAlign: 'center', padding: '32px 20px', background: 'var(--surface-card)', borderRadius: 'var(--card-radius)', boxShadow: 'var(--p-shadow-sm)', border: 'var(--border-light)' }}>
+                {/* Número em navy para contraste máximo no fundo claro */}
+                <div style={{ fontSize: 'var(--p-text-5xl)', fontWeight: 'var(--step-num-weight)', color: 'var(--p-champagne)', marginBottom: 12, lineHeight: 1 }}>{s.num}</div>
+                <div style={{ fontSize: 'var(--p-text-lg)', fontWeight: 'var(--step-title-w)', marginBottom: 8, color: 'var(--text-brand)' }}>{s.title}</div>
+                <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6 }}>{s.desc}</div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── CTA Section ── */}
-      <section style={{ position: 'relative', overflow: 'hidden', background: 'var(--surface-dark)', padding: '80px 24px', textAlign: 'center' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-hero)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-glow)' }} />
+      <section style={{ position: 'relative', overflow: 'hidden', background: 'var(--surface-dark)', padding: '88px 24px', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-hero)', zIndex: 0 }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-glow)', zIndex: 0 }} />
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 600, margin: '0 auto' }}>
           <p style={{ fontSize: 13, fontWeight: 'var(--overline-weight)', textTransform: 'uppercase', letterSpacing: 'var(--overline-ls)', color: 'var(--on-dark-accent)', marginBottom: 20 }}>
             Pronto pra próxima aventura?
@@ -116,25 +117,31 @@ export default function Home() {
       </section>
 
       {/* ── Footer ── */}
-      <footer style={{ position: 'relative', overflow: 'hidden', background: 'var(--surface-dark)', padding: '48px 24px 32px' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-hero)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-glow)' }} />
+      <footer style={{ position: 'relative', overflow: 'hidden', background: 'var(--surface-dark)', padding: '56px 24px 40px', borderTop: '1px solid rgba(250,249,246,0.08)' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-hero)', zIndex: 0 }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-glow)', zIndex: 0 }} />
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 32, marginBottom: 32 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '32px 40px', marginBottom: 40 }}>
             <div>
-              <div style={{ marginBottom: 12 }}>
+              <div style={{ marginBottom: 14 }}>
                 <img src="/vivair-logo.svg" alt="VivAir Travel Design" style={{ height: 52, width: 'auto' }} />
               </div>
-              <p style={{ fontSize: 14, color: 'var(--on-dark-2)', lineHeight: 1.6 }}>Travel Design — Desenhamos viagens com a sua cara.</p>
+              <p style={{ fontSize: 14, color: 'var(--on-dark-2)', lineHeight: 1.65 }}>Travel Design — Desenhamos viagens com a sua cara.</p>
             </div>
-            {([['Navegação',['Início','Experiências','Sobre','Contato']],['Contato',['WhatsApp','reservas@vivairtravel.com.br','@vivair.travel']],['Legal',['Política de Privacidade','Termos de Uso']]] as [string, string[]][]).map(([title, links]) => (
+            {([
+              ['Navegação', ['Início', 'Experiências', 'Sobre', 'Contato']],
+              ['Contato',   ['WhatsApp', 'reservas@vivairtravel.com.br', '@vivair.travel']],
+              ['Legal',     ['Política de Privacidade', 'Termos de Uso']],
+            ] as [string, string[]][]).map(([title, links]) => (
               <div key={title as string}>
-                <p style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--on-dark-accent)', marginBottom: 12 }}>{title}</p>
-                {(links as string[]).map((l) => <p key={l} style={{ fontSize: 14, fontWeight: 500, color: 'var(--on-dark-2)', lineHeight: 2 }}>{l}</p>)}
+                <p style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'var(--on-dark-accent)', marginBottom: 14 }}>{title}</p>
+                {(links as string[]).map((l) => (
+                  <p key={l} style={{ fontSize: 14, fontWeight: 500, color: 'var(--on-dark-2)', lineHeight: 2.1 }}>{l}</p>
+                ))}
               </div>
             ))}
           </div>
-          <div style={{ borderTop: 'var(--border-dark)', paddingTop: 20, textAlign: 'center' }}>
+          <div style={{ borderTop: '1px solid rgba(250,249,246,0.10)', paddingTop: 24, textAlign: 'center' }}>
             <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--on-dark-3)' }}>© 2026 VivAir Travel Design. Todos os direitos reservados.</p>
           </div>
         </div>
