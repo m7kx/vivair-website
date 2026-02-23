@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
-    domains: [],
+    remotePatterns: [],
   },
 }
 
