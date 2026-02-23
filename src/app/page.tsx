@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Navbar from '@/components/Navbar'
 import PartnersCarousel from '@/components/PartnersCarousel'
+import WhatsAppButton from '@/components/WhatsAppButton'
 
 /* ── Animation variants ─────────────────────────────────── */
 const fadeUp = {
@@ -146,6 +147,9 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      {/* ── WhatsApp Floating Button (modular — remover: <WhatsAppButton hidden />) ── */}
+      <WhatsAppButton />
 
     </main>
   )
