@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next'
+import type { ReactNode } from 'react'
 import { DM_Sans, DM_Serif_Display } from 'next/font/google'
 import './globals.css'
 
-/* ── Fonts ──────────────────────────────────────────────── */
+/* ── Fonts ────────────────────────────────────────────────── */
 const dmSans = DM_Sans({
   subsets: ['latin'],
   display: 'swap',
@@ -19,7 +20,7 @@ const dmSerif = DM_Serif_Display({
   style: ['normal', 'italic'],
 })
 
-/* ── Metadata ───────────────────────────────────────────── */
+/* ── Metadata ─────────────────────────────────────────────── */
 export const metadata: Metadata = {
   title: {
     default: 'VivAir Travel Design — Sua viagem, do seu jeito',
@@ -51,11 +52,11 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-/* ── Root Layout ────────────────────────────────────────── */
+/* ── Root Layout ──────────────────────────────────────────── */
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: ReactNode
 }) {
   return (
     <html
