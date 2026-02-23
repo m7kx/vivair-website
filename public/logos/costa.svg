@@ -1,10 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 72">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 64" width="220" height="64">
   <defs>
     <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a1f44"/>
-      <stop offset="100%" stop-color="#234d90"/>
+      <stop offset="0%" stop-color="#4A6FA5"/>
+      <stop offset="100%" stop-color="#90B4D4"/>
     </linearGradient>
   </defs>
-  <text x="120" y="46" font-family="Georgia,Times New Roman,serif" font-size="40" font-weight="bold" font-style="italic" fill="url(#g)" text-anchor="middle" letter-spacing="2">Costa</text>
-  <text x="120" y="62" font-family="Arial,Helvetica,sans-serif" font-size="9" font-weight="600" fill="url(#g)" text-anchor="middle" letter-spacing="3">CRUZEIROS</text>
+  <text x="110" y="42" font-family="Georgia,Times New Roman,serif" font-size="34"
+    font-style="italic" font-weight="bold" fill="url(#g)" text-anchor="middle"
+    textLength="180" lengthAdjust="spacingAndGlyphs">Costa</text>
+  <text x="110" y="58" font-family="Arial,Helvetica,sans-serif" font-size="9"
+    font-weight="600" fill="url(#g)" text-anchor="middle"
+    textLength="80" lengthAdjust="spacingAndGlyphs">CRUZEIROS</text>
 </svg>
