@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion'
 import Logo from '@/components/Logo'
-import PartnersCarousel from '@/components/PartnersCarousel'
 
 /* ── Animation variants ─────────────────────────────────── */
 const fadeUp = {
@@ -36,7 +35,7 @@ export default function Home() {
       }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
           {/* Logo */}
-          <Logo size={120} />
+          <Logo size={36} />
           {/* Links */}
           <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
             {['Início', 'Experiências', 'Sobre', 'Contato'].map((l) => (
@@ -105,10 +104,6 @@ export default function Home() {
         </div>
       </section>
 
-      
-      {/* ── Partners ── */}
-      <PartnersCarousel />
-
       {/* ── CTA ── */}
       <section style={{ position: 'relative', overflow: 'hidden', background: 'var(--surface-dark)', padding: '80px 32px', textAlign: 'center' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'var(--grad-hero)' }} />
@@ -143,7 +138,7 @@ export default function Home() {
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: 32, marginBottom: 32 }}>
             <div>
-              <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--on-dark-1)', marginBottom: 12 }}>VivAir</div>
+              <div style={{ marginBottom: 12 }}><Logo size={96} /></div>
               <p style={{ fontSize: 14, color: 'var(--on-dark-2)', lineHeight: 1.6 }}>Travel Design — Desenhamos viagens com a sua cara.</p>
             </div>
             {[['Navegação',['Início','Experiências','Sobre','Contato']],['Contato',['WhatsApp','reservas@vivairtravel.com.br','@vivair.travel']],['Legal',['Política de Privacidade','Termos de Uso']]].map(([title, links]) => (
