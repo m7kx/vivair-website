@@ -1,9 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 72">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 64" width="220" height="64">
   <defs>
     <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a1f44"/>
-      <stop offset="100%" stop-color="#234d90"/>
+      <stop offset="0%" stop-color="#4A6FA5"/>
+      <stop offset="100%" stop-color="#90B4D4"/>
     </linearGradient>
   </defs>
-  <text x="120" y="50" font-family="Arial Black,Helvetica,sans-serif" font-size="38" font-weight="900" fill="url(#g)" text-anchor="middle" letter-spacing="-1">expedia</text>
+  <text x="110" y="46" font-family="Arial Black,Helvetica,sans-serif" font-size="36"
+    font-weight="900" fill="url(#g)" text-anchor="middle"
+    textLength="180" lengthAdjust="spacingAndGlyphs">expedia</text>
 </svg>
