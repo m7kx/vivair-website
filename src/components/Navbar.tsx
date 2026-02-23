@@ -180,7 +180,6 @@ export default function Navbar() {
               fontFamily: "var(--btn-font)", fontSize: 14,
               fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap",
             }}
-            className="desktop-nav"
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
