@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import Logo from "@/components/Logo"
 
 const LINKS = [
   { label: "Início",       href: "#" },
@@ -12,7 +11,7 @@ const LINKS = [
   { label: "Contato",      href: "#" },
 ]
 
-/* ── Magnetic link with underline ────────────────────────────────── */
+/* ── Magnetic link with underline ───────────────────────────────────────── */
 function NavLink({ label, href, index }: { label: string; href: string; index: number }) {
   const [hovered, setHovered] = useState(false)
   const shouldReduceMotion = useReducedMotion()
@@ -67,7 +66,7 @@ function NavLink({ label, href, index }: { label: string; href: string; index: n
   )
 }
 
-/* ── Hamburger button ─────────────────────────────────────────────── */
+/* ── Hamburger button ────────────────────────────────────────────────────── */
 function HamburgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
   return (
     <button
@@ -100,9 +99,9 @@ function HamburgerButton({ open, onClick }: { open: boolean; onClick: () => void
   )
 }
 
-/* ── Main Navbar ──────────────────────────────────────────────────── */
+/* ── Main Navbar ─────────────────────────────────────────────────────────── */
 export default function Navbar() {
-  const [open, setOpen] = useState(false)
+  const [open,     setOpen]     = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -117,7 +116,6 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", onResize)
   }, [])
 
-  // Prevent body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
@@ -128,7 +126,7 @@ export default function Navbar() {
       {/* ── Bar ── */}
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        animate={{ y: 0,  opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         style={{
           position: "sticky", top: 0, zIndex: 1000,
@@ -152,22 +150,17 @@ export default function Navbar() {
 
         <div style={{
           maxWidth: 1200, margin: "0 auto", padding: "0 20px",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
+          display: "flex", alignItems: "center",
+          // Logo removed → space on left kept for FloatingLogo breathing room
+          // Desktop: nav centered + CTA right
+          justifyContent: "space-between",
           height: 64,
         }}>
-          {/* Logo */}
-          <motion.a
-            href="/"
-            style={{ textDecoration: "none", display: "flex", alignItems: "center" }}
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ scale: 1.03 }}
-          >
-            <Logo size={48} />
-          </motion.a>
 
-          {/* Desktop nav */}
+          {/* Left spacer — matches FloatingLogo width so nav feels balanced */}
+          <div className="desktop-nav" style={{ width: 68, flexShrink: 0 }} />
+
+          {/* Desktop nav — centered */}
           <div
             className="desktop-nav"
             style={{ display: "flex", gap: 32, alignItems: "center" }}
@@ -175,26 +168,27 @@ export default function Navbar() {
             {LINKS.map((l, i) => (
               <NavLink key={l.label} label={l.label} href={l.href} index={i} />
             ))}
-
-            {/* CTA button */}
-            <motion.a
-              href="https://app.onertravel.com/vivairtraveldesign/home"
-              target="_blank" rel="noopener noreferrer"
-              style={{
-                background: "var(--grad-cta)", color: "white",
-                padding: "10px 22px", borderRadius: "var(--btn-radius)",
-                fontFamily: "var(--btn-font)", fontSize: 14,
-                fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap",
-              }}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ scale: 1.05, y: -1 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              Reserve Online
-            </motion.a>
           </div>
+
+          {/* CTA button */}
+          <motion.a
+            href="https://app.onertravel.com/vivairtraveldesign/home"
+            target="_blank" rel="noopener noreferrer"
+            style={{
+              background: "var(--grad-cta)", color: "white",
+              padding: "10px 22px", borderRadius: "var(--btn-radius)",
+              fontFamily: "var(--btn-font)", fontSize: 14,
+              fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap",
+            }}
+            className="desktop-nav"
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ scale: 1.05, y: -1 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            Reserve Online
+          </motion.a>
 
           {/* Hamburger — mobile only */}
           <div className="hamburger-btn">

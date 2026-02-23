@@ -10,6 +10,7 @@ import MarqueeStrip from "@/components/MarqueeStrip"
 import AnimatedText from "@/components/AnimatedText"
 import NoiseBg from "@/components/NoiseBg"
 import HeroBackground from "@/components/HeroBackground"
+import FloatingLogo from "@/components/FloatingLogo"
 
 /* ── Step cards data ──────────────────────────────────────────────── */
 const steps = [
@@ -77,6 +78,7 @@ export default function Home() {
   return (
     <main style={{ background: "var(--surface-page)", minHeight: "100vh", overflowX: "hidden" }}>
       <Navbar />
+      <FloatingLogo />
 
       {/* ════ HERO ════════════════════════════════════════════════════ */}
       <section
