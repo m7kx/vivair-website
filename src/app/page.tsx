@@ -142,8 +142,25 @@ export default function Home() {
             </span>
           </motion.div>
 
+          {/* Text scrim — subtle dark glow behind headline+subtitle for contrast */}
+          <div style={{
+            position: "relative",
+            "&::before": {},
+          }}>
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: "-32px -60px",
+                background: "radial-gradient(ellipse 90% 80% at 50% 50%, rgba(5,16,40,0.52) 0%, transparent 72%)",
+                borderRadius: 32,
+                pointerEvents: "none",
+                zIndex: 0,
+              }}
+            />
+
           {/* Main headline — word-by-word reveal */}
-          <div style={{ marginBottom: 28, justifyContent: "center" }}>
+          <div style={{ marginBottom: 28, justifyContent: "center", position: "relative", zIndex: 1 }}>
             <AnimatedText
               text="Sua próxima viagem começa com uma conversa"
               delay={0.3}
@@ -156,7 +173,11 @@ export default function Home() {
                 letterSpacing: "var(--hero-ls)",
                 lineHeight: 1.1,
                 justifyContent: "center",
-                textShadow: "0 2px 24px rgba(10,31,68,0.4)",
+                textShadow: [
+                "0 2px 32px rgba(0,0,0,0.9)",
+                "0 1px 8px rgba(0,0,0,0.95)",
+                "0 0 60px rgba(10,31,68,0.6)",
+              ].join(", "),
               }}
             />
           </div>
@@ -169,15 +190,21 @@ export default function Home() {
             style={{
               fontFamily: "var(--body-font)",
               fontSize: "clamp(16px, 2vw, 19px)",
-              fontWeight: 400, color: "rgba(250,249,246,0.85)",
+              fontWeight: 400, color: "rgba(255,253,248,1.0)",
               lineHeight: 1.65, marginBottom: 48,
               maxWidth: 520, marginLeft: "auto", marginRight: "auto",
-              textShadow: "0 1px 12px rgba(10,31,68,0.5)",
+              position: "relative", zIndex: 1,
+              textShadow: [
+                "0 2px 24px rgba(0,0,0,0.85)",
+                "0 1px 6px rgba(0,0,0,0.95)",
+                "0 0 40px rgba(10,31,68,0.7)",
+              ].join(", "),
             }}
           >
             Desenhamos experiências de viagem com a sua cara.
             Da inspiração ao embarque, a gente cuida de tudo.
           </motion.p>
+          </div>{/* /text-scrim wrapper */}
 
           {/* CTAs */}
           <motion.div

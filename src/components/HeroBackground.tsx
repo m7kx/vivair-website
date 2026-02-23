@@ -34,7 +34,7 @@ const SLIDES: Slide[] = [
 ]
 
 const SLIDE_DURATION = 7000  // ms each slide stays
-const CROSSFADE_S   = 1.6   // crossfade between slides (seconds)
+const CROSSFADE_S   = 2.5   // crossfade — defocus-dissolve, premium timing
 const ENTRANCE_S    = 2.0   // cinematic entrance duration (seconds)
 const KEN_DURATION  = SLIDE_DURATION / 1000 // Ken Burns duration matches slide
 
@@ -50,17 +50,28 @@ function SlideItem({
     <motion.div
       initial={{
         opacity: 0,
-        ...(isCinematic && { scale: 1.14, filter: "blur(18px)" }),
+        scale: isCinematic ? 1.14 : 0.97,
+        filter: isCinematic ? "blur(18px)" : "blur(10px)",
       }}
       animate={{ opacity: 1, scale: 1.0, filter: "blur(0px)" }}
-      exit={{ opacity: 0 }}
+      exit={{
+        opacity: 0,
+        scale: 1.03,
+        filter: "blur(8px)",
+      }}
       transition={{
         opacity: {
           duration: isCinematic ? ENTRANCE_S : CROSSFADE_S,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        },
+        scale: {
+          duration: isCinematic ? ENTRANCE_S : CROSSFADE_S * 0.9,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        },
+        filter: {
+          duration: isCinematic ? ENTRANCE_S * 0.75 : CROSSFADE_S * 0.7,
           ease: "easeOut",
         },
-        scale:  { duration: isCinematic ? ENTRANCE_S : 0, ease: [0.16, 1, 0.3, 1] },
-        filter: { duration: isCinematic ? ENTRANCE_S * 0.75 : 0, ease: "easeOut" },
       }}
       style={{ position: "absolute", inset: 0 }}
     >
