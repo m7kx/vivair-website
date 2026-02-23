@@ -100,8 +100,7 @@ export default function PartnersCarousel({ hidden = false }: Props) {
                   opacity: 0.5,
                   transition: 'opacity 0.3s ease',
                   userSelect: 'none',
-                  WebkitUserDrag: 'none',
-                } as React.CSSProperties}
+                }}
                 onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.opacity = '1' }}
                 onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.5' }}
                 draggable={false}
