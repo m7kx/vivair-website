@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   VIVAIR DESIGN SYSTEM — globals.css
+
+   LAYER 0 → LAYER 1 → LAYER 2
+   Swap font = 1 variable. Swap palette = 6 variables.
+   ═══════════════════════════════════════════════════════════ */
+
+@layer base {
+  :root {
+    /* ── LAYER 0: PRIMITIVAS ────────────────────────────────
+       Raw values. Change here to update everything.
+       ────────────────────────────────────────────────────── */
+
+    /* Colors */
+    --p-navy:           #0a1f44;
+    --p-navy-mid:       #1e4985;
+    --p-navy-lift:      #234d90;
+    --p-champagne:      #C4A35A;
+    --p-champagne-lt:   #D4A574;
+    --p-amber:          #C9856B;
+    --p-off-white:      #FAF9F6;
+    --p-white:          #FFFFFF;
+    --p-text-dark:      #1A1A2E;
+    --p-gray-600:       #6B7280;
+    --p-gray-400:       #9CA3AF;
+    --p-gray-200:       #E8E8E3;
+    --p-gray-100:       #F3F3F0;
+
+    /* Typography — swap = change these 2 lines */
+    --p-font-primary:   'DM Sans', sans-serif;
+    --p-font-accent:    'DM Serif Display', serif;
+
+    /* Type scale (modular ~1.25) */
+    --p-text-xs:   11px;
+    --p-text-sm:   13px;
+    --p-text-base: 15px;
+    --p-text-md:   16px;
+    --p-text-lg:   18px;
+    --p-text-xl:   20px;
+    --p-text-2xl:  24px;
+    --p-text-3xl:  28px;
+    --p-text-4xl:  32px;
+    --p-text-5xl:  40px;
+    --p-text-6xl:  48px;
+    --p-text-7xl:  52px;
+
+    /* Weights */
+    --p-w-regular: 400;
+    --p-w-medium:  500;
+    --p-w-semi:    600;
+    --p-w-bold:    700;
+    --p-w-extra:   800;
+    --p-w-black:   900;
+
+    /* Spacing */
+    --p-sp-xs:  4px;
+    --p-sp-sm:  8px;
+    --p-sp-md:  16px;
+    --p-sp-lg:  24px;
+    --p-sp-xl:  32px;
+    --p-sp-2xl: 48px;
+    --p-sp-3xl: 64px;
+
+    /* Radii */
+    --p-radius-sm:   8px;
+    --p-radius:      12px;
+    --p-radius-lg:   16px;
+    --p-radius-full: 100px;
+
+    /* Shadows */
+    --p-shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+    --p-shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+
+    /* ── LAYER 1: SEMANTIC TOKENS ───────────────────────────
+       Connect primitives to usage context.
+       ────────────────────────────────────────────────────── */
+
+    /* Surfaces */
+    --surface-page:     var(--p-off-white);
+    --surface-card:     var(--p-white);
+    --surface-dark:     var(--p-navy);
+
+    /* Text (light bg) */
+    --text-primary:     var(--p-text-dark);
+    --text-secondary:   var(--p-gray-600);
+    --text-muted:       var(--p-gray-400);
+    --text-accent:      var(--p-champagne);
+    --text-brand:       var(--p-navy);
+
+    /* Text (dark bg) — min weight 500 on dark surfaces */
+    --on-dark-1:        rgba(250,249,246, 0.95); /* headlines */
+    --on-dark-2:        rgba(250,249,246, 0.75); /* body      */
+    --on-dark-3:        rgba(250,249,246, 0.50); /* muted     */
+    --on-dark-accent:   var(--p-champagne);
+
+    /* Gradients */
+    --grad-hero: linear-gradient(155deg, var(--p-navy) 0%, var(--p-navy-lift) 50%, var(--p-navy) 95%);
+    --grad-glow: radial-gradient(ellipse at 50% -10%, rgba(196,163,90,0.09) 0%, transparent 55%);
+    --grad-cta:  linear-gradient(135deg, var(--p-champagne) 0%, var(--p-champagne-lt) 50%, var(--p-amber) 100%);
+
+    /* Borders */
+    --border-light: 1px solid var(--p-gray-200);
+    --border-dark:  1px solid rgba(250,249,246,0.1);
+
+    /* ── LAYER 2: COMPONENT TOKENS ──────────────────────────
+       Each component owns its tokens. Override in isolation.
+       ────────────────────────────────────────────────────── */
+
+    /* Button — Primary */
+    --btn-bg:      var(--grad-cta);
+    --btn-text:    var(--p-white);
+    --btn-radius:  var(--p-radius);
+    --btn-pad:     14px 32px;
+    --btn-font:    var(--p-font-primary);
+    --btn-weight:  var(--p-w-semi);
+    --btn-size:    var(--p-text-md);
+
+    /* Card */
+    --card-bg:     var(--surface-card);
+    --card-radius: var(--p-radius-lg);
+    --card-pad:    var(--p-sp-xl);
+    --card-shadow: var(--p-shadow-sm);
+
+    /* Navbar */
+    --nav-font:    var(--p-font-primary);
+    --nav-size:    var(--p-text-base);
+    --nav-weight:  var(--p-w-medium);  /* min 500 on dark bg */
+
+    /* Hero */
+    --hero-font:   var(--p-font-primary);
+    --hero-size:   var(--p-text-7xl);
+    --hero-weight: var(--p-w-bold);
+    --hero-ls:     -0.03em;
+    --hero-lh:     1.1;
+
+    /* Section heading */
+    --heading-font:   var(--p-font-primary);
+    --heading-weight: var(--p-w-bold);
+
+    /* Body copy */
+    --body-font:   var(--p-font-primary);
+    --body-size:   var(--p-text-md);
+    --body-weight: var(--p-w-regular);
+    --body-lh:     1.65;
+
+    /* Overline / Tag */
+    --overline-weight: var(--p-w-semi);
+    --overline-ls:     0.15em;
+
+    /* Step numbers */
+    --step-num-size:   var(--p-text-5xl);
+    --step-num-weight: var(--p-w-extra);
+    --step-num-color:  var(--p-champagne);
+    --step-title-w:    var(--p-w-semi);
+    --step-desc-w:     var(--p-w-medium);
+  }
+
+  /* ── BASE RESETS ─────────────────────────────────────────── */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: var(--surface-page);
+    color: var(--text-primary);
+    font-family: var(--body-font);
+    font-size: var(--body-size);
+    font-weight: var(--body-weight);
+    line-height: var(--body-lh);
+    min-height: 100vh;
+  }
+
+  /* Accessibility */
+  :focus-visible {
+    outline: 2px solid var(--p-champagne);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
