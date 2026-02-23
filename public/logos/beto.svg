@@ -1,4 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60">
-  <text x="120" y="38" font-family="Arial Black,sans-serif" font-size="20" font-weight="900" fill="#CC0000" text-anchor="middle" letter-spacing="0.5">BETO CARRERO</text>
-  <text x="120" y="55" font-family="Arial,sans-serif" font-size="11" fill="#CC0000" text-anchor="middle" letter-spacing="4">WORLD</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 72">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1f44"/>
+      <stop offset="100%" stop-color="#234d90"/>
+    </linearGradient>
+  </defs>
+  <text x="120" y="38" font-family="Arial Black,Helvetica,sans-serif" font-size="22" font-weight="900" fill="url(#g)" text-anchor="middle" letter-spacing="0.5">BETO CARRERO</text>
+  <text x="120" y="57" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700" fill="url(#g)" text-anchor="middle" letter-spacing="5">WORLD</text>
 </svg>
