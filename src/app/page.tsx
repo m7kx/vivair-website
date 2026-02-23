@@ -79,14 +79,14 @@ export default function Home() {
             {steps.map((s, i) => (
               <motion.div key={s.num}
                 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                style={{ textAlign: 'center', padding: '32px 20px', background: 'var(--surface-card)', borderRadius: 'var(--card-radius)', boxShadow: 'var(--p-shadow-sm)', border: 'var(--border-light)' }}>
+                style={{ textAlign: 'center', padding: '32px 20px', background: 'var(--surface-card)', borderRadius: 'var(--card-radius)', boxShadow: 'var(--p-shadow-sm)', border: 'var(--border-light*G" }}>
                 <div style={{ fontSize: 'var(--p-text-5xl)', fontWeight: 'var(--step-num-weight)', color: 'var(--p-champagne)', marginBottom: 12, lineHeight: 1 }}>{s.num}</div>
                 <div style={{ fontSize: 'var(--p-text-lg)', fontWeight: 'var(--step-title-w)', marginBottom: 8, color: 'var(--text-brand)' }}>{s.title}</div>
                 <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6 }}>{s.desc}</div>
               </motion.div>
             ))}
           </div>
-        </div>
+          </div>
       </section>
 
       {/* ── CTA Section ── */}
@@ -125,7 +125,7 @@ export default function Home() {
             <div>
               <div style={{ marginBottom: 14 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/vivair-logo.svg" alt="VivAir Travel Design" style={{ height: 52, width: 'auto' }} />
+                <img src="/vivair-logo.svg" alt="VivAir Travel Design" style={{ height: 68, width: 'auto' }} />
               </div>
               <p style={{ fontSize: 14, color: 'var(--on-dark-2)', lineHeight: 1.65 }}>Travel Design — Desenhamos viagens com a sua cara.</p>
             </div>
