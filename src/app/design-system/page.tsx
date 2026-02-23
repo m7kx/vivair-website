@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useCallback } from 'react'
+import Link from 'next/link'
 
 /* ═══════════════════════════════════════════════════════════
    VIVAIR DESIGN SYSTEM DASHBOARD v2.1
@@ -120,7 +121,7 @@ export default function DesignSystemPage() {
             <input type="range" min={0} max={28} value={radius} onChange={e => applyRadius(Number(e.target.value))} style={{ accentColor: 'var(--p-champagne)', width: 120 }} />
           </div>
 
-          <a href="/" style={{ marginLeft: 'auto', fontSize: 13, fontWeight: 500, color: 'var(--on-dark-2)', textDecoration: 'none', flexShrink: 0 }}>← Voltar ao site</a>
+          <Link href="/" style={{ marginLeft: 'auto', fontSize: 13, fontWeight: 500, color: 'var(--on-dark-2)', textDecoration: 'none', flexShrink: 0 }}>← Voltar ao site</Link>
         </div>
       </div>
 
