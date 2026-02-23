@@ -151,9 +151,8 @@ export default function Navbar() {
         <div style={{
           maxWidth: 1200, margin: "0 auto", padding: "0 20px",
           display: "flex", alignItems: "center",
-          // Logo removed → space on left kept for FloatingLogo breathing room
-          // Desktop: nav centered + CTA right
-          justifyContent: "space-between",
+          // justify-content controlled by .nav-inner-row CSS (see <style> below)
+          // mobile: flex-end (hamburger right) | desktop: space-between
           height: 64,
         }} className="nav-inner-row">
 
@@ -278,11 +277,11 @@ export default function Navbar() {
       <style>{`
         .desktop-nav { display: none !important; }
         .hamburger-btn { display: flex !important; }
-        .nav-inner-row { justify-content: flex-end !important; }
+        .nav-inner-row { justify-content: flex-end; }
         @media (min-width: 768px) {
           .desktop-nav { display: flex !important; }
           .hamburger-btn { display: none !important; }
-          .nav-inner-row { justify-content: space-between !important; }
+          .nav-inner-row { justify-content: space-between; }
         }
       `}</style>
     </>
