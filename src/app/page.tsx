@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Logo from '@/components/Logo'
+import PartnersCarousel from '@/components/PartnersCarousel'
 
 /* ── Animation variants ─────────────────────────────────── */
 const fadeUp = {
@@ -35,7 +36,7 @@ export default function Home() {
       }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
           {/* Logo */}
-          <Logo size={36} />
+          <Logo size={120} />
           {/* Links */}
           <div style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
             {['Início', 'Experiências', 'Sobre', 'Contato'].map((l) => (
@@ -103,6 +104,10 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      
+      {/* ── Partners ── */}
+      <PartnersCarousel />
 
       {/* ── CTA ── */}
       <section style={{ position: 'relative', overflow: 'hidden', background: 'var(--surface-dark)', padding: '80px 32px', textAlign: 'center' }}>
