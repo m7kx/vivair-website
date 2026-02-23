@@ -145,7 +145,6 @@ export default function Home() {
           {/* Text scrim — subtle dark glow behind headline+subtitle for contrast */}
           <div style={{
             position: "relative",
-            "&::before": {},
           }}>
             <div
               aria-hidden="true"
