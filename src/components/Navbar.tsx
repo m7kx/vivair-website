@@ -155,7 +155,7 @@ export default function Navbar() {
           // Desktop: nav centered + CTA right
           justifyContent: "space-between",
           height: 64,
-        }}>
+        }} className="nav-inner-row">
 
           {/* Left spacer — matches FloatingLogo width so nav feels balanced */}
           <div className="desktop-nav" style={{ width: 68, flexShrink: 0 }} />
@@ -192,7 +192,7 @@ export default function Navbar() {
           </motion.a>
 
           {/* Hamburger — mobile only */}
-          <div className="hamburger-btn" style={{ marginLeft: "auto" }}>
+          <div className="hamburger-btn">
             <HamburgerButton open={open} onClick={() => setOpen(!open)} />
           </div>
         </div>
@@ -278,9 +278,11 @@ export default function Navbar() {
       <style>{`
         .desktop-nav { display: none !important; }
         .hamburger-btn { display: flex !important; }
+        .nav-inner-row { justify-content: flex-end !important; }
         @media (min-width: 768px) {
           .desktop-nav { display: flex !important; }
           .hamburger-btn { display: none !important; }
+          .nav-inner-row { justify-content: space-between !important; }
         }
       `}</style>
     </>
