@@ -1,5 +1,3 @@
-"use client"
-
 import type { Metadata } from "next"
 import { DM_Sans, Outfit, DM_Serif_Display } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"

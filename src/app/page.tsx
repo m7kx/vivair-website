@@ -210,7 +210,7 @@ export default function Home() {
                 background: "var(--grad-cta)", color: "white",
                 padding: "18px 40px", borderRadius: "var(--btn-radius)",
                 fontFamily: "var(--btn-font)", fontSize: 17,
-                fontWeight: "var(--btn-weight)" as React.CSSProperties["fontWeight"],
+                fontWeight: 600,
                 textDecoration: "none",
               }}
               whileHover={{ scale: 1.05, y: -3 }}
@@ -462,7 +462,7 @@ export default function Home() {
                 background: "var(--grad-cta)", color: "white",
                 padding: "18px 40px", borderRadius: "var(--btn-radius)",
                 fontFamily: "var(--btn-font)", fontSize: 17,
-                fontWeight: "var(--btn-weight)" as React.CSSProperties["fontWeight"],
+                fontWeight: 600,
                 textDecoration: "none",
               }}
               whileHover={{ scale: 1.05, y: -3 }}
