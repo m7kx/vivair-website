@@ -12,7 +12,7 @@ import { motion, useSpring, useMotionValue, AnimatePresence } from "framer-motio
    - Touch devices: magnetic off (preserves perf), float stays
 ──────────────────────────────────────────────────────────────────────────────── */
 
-const LOGO_SIZE = 60        // diameter (px)  — proportional to ~55px CTA button height
+const LOGO_SIZE = 120       // diameter (px)  — doubled for visibility
 const MAGNETIC_RADIUS = 160 // px — distance at which logo starts being pulled
 const MAGNETIC_STRENGTH = 0.38
 
@@ -67,8 +67,8 @@ export default function FloatingLogo() {
       ref={wrapRef}
       style={{
         position: "fixed",
-        top: 18,
-        left: 24,
+        top: 20,
+        left: 36,
         zIndex: 1100,          // above Navbar (z:1000)
         x: magX,
         y: magY,
