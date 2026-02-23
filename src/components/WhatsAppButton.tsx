@@ -13,6 +13,7 @@
  */
 
 import { useState } from 'react'
+import type { CSSProperties } from 'react'
 
 const WA_URL = 'https://wa.me/5521996832196?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20desenhar%20minha%20viagem%20%F0%9F%9A%80'
 
@@ -25,6 +26,30 @@ export default function WhatsAppButton({ hidden = false }: Props) {
 
   if (hidden) return null
 
+  const btnStyle: CSSProperties = {
+    position: 'fixed',
+    bottom: 28,
+    right: 24,
+    zIndex: 1000,
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    background: 'linear-gradient(135deg, #C4A35A 0%, #D4A574 50%, #C9856B 100%)',
+    borderRadius: 100,
+    padding: '0 20px 0 16px',
+    height: 56,
+    minWidth: 56,
+    boxShadow: hovered
+      ? '0 8px 32px rgba(196,163,90,0.45), 0 2px 8px rgba(0,0,0,0.15)'
+      : '0 4px 20px rgba(196,163,90,0.30), 0 2px 8px rgba(0,0,0,0.10)',
+    textDecoration: 'none',
+    transform: hovered ? 'scale(1.05) translateY(-2px)' : 'scale(1) translateY(0)',
+    transition: 'transform 0.22s ease, box-shadow 0.22s ease',
+    cursor: 'pointer',
+    userSelect: 'none',
+    WebkitTapHighlightColor: 'transparent',
+  }
+
   return (
     <>
       <a
@@ -34,29 +59,7 @@ export default function WhatsAppButton({ hidden = false }: Props) {
         aria-label="Fale conosco pelo WhatsApp"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        style={{
-          position: 'fixed',
-          bottom: 28,
-          right: 24,
-          zIndex: 1000,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 10,
-          background: 'linear-gradient(135deg, #C4A35A 0%, #D4A574 50%, #C9856B 100%)',
-          borderRadius: 100,
-          padding: '0 20px 0 16px',
-          height: 56,
-          minWidth: 56,
-          boxShadow: hovered
-            ? '0 8px 32px rgba(196,163,90,0.45), 0 2px 8px rgba(0,0,0,0.15)'
-            : '0 4px 20px rgba(196,163,90,0.30), 0 2px 8px rgba(0,0,0,0.10)',
-          textDecoration: 'none',
-          transform: hovered ? 'scale(1.05) translateY(-2px)' : 'scale(1) translateY(0)',
-          transition: 'transform 0.22s ease, box-shadow 0.22s ease',
-          cursor: 'pointer',
-          userSelect: 'none',
-          WebkitTapHighlightColor: 'transparent',
-        } as React.CSSProperties}
+        style={btnStyle}
       >
         {/* WhatsApp icon SVG */}
         <svg
@@ -89,7 +92,6 @@ export default function WhatsAppButton({ hidden = false }: Props) {
           fontFamily: 'var(--p-font-primary, sans-serif)',
           letterSpacing: '-0.01em',
           whiteSpace: 'nowrap',
-          // Mobile: esconder texto, manter só ícone
           display: 'none',
         }}
           className="wa-label"

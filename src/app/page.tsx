@@ -80,7 +80,6 @@ export default function Home() {
               <motion.div key={s.num}
                 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-40px' }} transition={{ duration: 0.5, delay: i * 0.1 }}
                 style={{ textAlign: 'center', padding: '32px 20px', background: 'var(--surface-card)', borderRadius: 'var(--card-radius)', boxShadow: 'var(--p-shadow-sm)', border: 'var(--border-light)' }}>
-                {/* Número em navy para contraste máximo no fundo claro */}
                 <div style={{ fontSize: 'var(--p-text-5xl)', fontWeight: 'var(--step-num-weight)', color: 'var(--p-champagne)', marginBottom: 12, lineHeight: 1 }}>{s.num}</div>
                 <div style={{ fontSize: 'var(--p-text-lg)', fontWeight: 'var(--step-title-w)', marginBottom: 8, color: 'var(--text-brand)' }}>{s.title}</div>
                 <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6 }}>{s.desc}</div>
@@ -125,6 +124,7 @@ export default function Home() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '32px 40px', marginBottom: 40 }}>
             <div>
               <div style={{ marginBottom: 14 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/vivair-logo.svg" alt="VivAir Travel Design" style={{ height: 52, width: 'auto' }} />
               </div>
               <p style={{ fontSize: 14, color: 'var(--on-dark-2)', lineHeight: 1.65 }}>Travel Design — Desenhamos viagens com a sua cara.</p>
