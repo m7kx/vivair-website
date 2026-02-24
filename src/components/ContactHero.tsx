@@ -36,13 +36,13 @@ export default function ContactHero() {
       <motion.div
         style={{
           position: "absolute",
-          inset: "-10% 0",
+          inset: "-5% 0",
           y: heroY,
         }}
       >
-        {/* Ken Burns subtle zoom */}
+        {/* Ken Burns 10% zoom */}
         <motion.div
-          animate={{ scale: [1, 1.04, 1] }}
+          animate={{ scale: [1, 1.10, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           style={{ width: "100%", height: "100%" }}
         >
@@ -51,7 +51,7 @@ export default function ContactHero() {
             alt="Travel map with passports and destinations"
             fill
             priority
-            style={{ objectFit: "cover", objectPosition: "center bottom" }}
+            style={{ objectFit: "cover", objectPosition: "center" }}
             sizes="100vw"
           />
         </motion.div>
