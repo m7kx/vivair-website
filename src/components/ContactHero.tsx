@@ -18,7 +18,7 @@ export default function ContactHero() {
   const { scrollY } = useScroll()
   const heroY = useTransform(scrollY, [0, 600], [0, -80])
 
-  // Detecta mobile para objectFit responsivo (SSR-safe)
+  // Detecta mobile para objectFit/objectPosition responsivos (SSR-safe)
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)")
@@ -51,9 +51,15 @@ export default function ContactHero() {
           y: heroY,
         }}
       >
-        {/* Ken Burns suave */}
+        {/*
+          Ken Burns:
+          • Mobile:  base 1.0  → escala natural, objectPosition mostra o mapa
+          • Desktop: base 1.15 → zoom +15% para nitidez, depois Ken Burns sobe até 1.21
+        */}
         <motion.div
-          animate={{ scale: [1.0, 1.06, 1.0] }}
+          animate={{
+            scale: isMobile ? [1.0, 1.06, 1.0] : [1.15, 1.21, 1.15],
+          }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
           style={{ width: "100%", height: "100%", background: "#0a1f44" }}
         >
@@ -63,10 +69,10 @@ export default function ContactHero() {
             fill
             priority
             style={{
-              // Desktop: contain mostra o mapa-múndi completo
-              // Mobile: cover preenche a tela, posicionado no mapa
+              // Mobile:  cover posicionado alto para priorizar o mapa
+              // Desktop: contain com base scale 1.15 via wrapper
               objectFit: isMobile ? "cover" : "contain",
-              objectPosition: isMobile ? "50% 40%" : "center center",
+              objectPosition: isMobile ? "50% 15%" : "center center",
             }}
             sizes="100vw"
           />
