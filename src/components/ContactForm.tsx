@@ -20,8 +20,8 @@ function formatPhone(raw: string): string {
   if (digits.startsWith("55") && digits.length <= 13) {
     const d = digits.slice(2) // strip country code
     let r = "+55"
-    if (d.length > 0) r += "(" + d.slice(0, 2)
-    if (d.length > 2) r += ")" + d.slice(2, 7)
+    if (d.length > 0) r += " (" + d.slice(0, 2)
+    if (d.length > 2) r += ") " + d.slice(2, 7)
     if (d.length > 7) r += "-" + d.slice(7, 11)
     return r
   }
@@ -395,7 +395,7 @@ export default function ContactForm() {
                 fontFamily: "'Outfit', sans-serif", fontSize: 15,
                 color: "rgba(245,240,232,0.6)", lineHeight: 1.65,
               }}>
-                Nossa equipe vai traçar sua rota e entrar em contato em breve.
+                Nosso time vai traçar sua rota e entrar em contato em breve.
               </p>
             </motion.div>
           ) : (
