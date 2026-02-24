@@ -236,14 +236,14 @@ export default function Navbar() {
                     key={l.label}
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    initial={{ opacity: 0, x: -16 }}
+                    initial={{ opacity: 0, x: 16 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.06, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     style={{
                       fontFamily: "var(--nav-font)", fontSize: 17, fontWeight: 500,
                       color: "rgba(250,249,246,0.8)", textDecoration: "none",
                       padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.07)",
-                      display: "block",
+                      display: "block", textAlign: "right" as const,
                     }}
                   >
                     {l.label}
