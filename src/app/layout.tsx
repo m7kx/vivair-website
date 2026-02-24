@@ -3,6 +3,7 @@ import { DM_Sans, Outfit, DM_Serif_Display } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import SmoothScrollProvider from "@/components/SmoothScrollProvider"
 import CustomCursor from "@/components/CustomCursor"
+import FloatingLogo from "@/components/FloatingLogo"
 import "./globals.css"
 
 const dmSans = DM_Sans({
@@ -45,6 +46,13 @@ export default function RootLayout({
         style={{ cursor: "none" }}
       >
         <CustomCursor />
+        {/*
+          FloatingLogo DEVE estar aqui, diretamente em <body>, ANTES do
+          SmoothScrollProvider e de qualquer element com transform do Framer
+          Motion. Isso garante que position:fixed funcione corretamente em
+          todas as páginas, sem ser afetado por stacking contexts de parallax.
+        */}
+        <FloatingLogo />
         <SmoothScrollProvider>
           {children}
         </SmoothScrollProvider>
