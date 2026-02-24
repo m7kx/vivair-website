@@ -11,12 +11,11 @@ export default function CustomCursor() {
   const cursorX = useMotionValue(-100)
   const cursorY = useMotionValue(-100)
 
-  // Spring physics — outer ring lags behind for premium feel
-  const springConfig = { damping: 28, stiffness: 220, mass: 0.5 }
-  const dotX = useSpring(cursorX, { damping: 50, stiffness: 500, mass: 0.2 })
-  const dotY = useSpring(cursorY, { damping: 50, stiffness: 500, mass: 0.2 })
-  const ringX = useSpring(cursorX, springConfig)
-  const ringY = useSpring(cursorY, springConfig)
+  // Spring physics — dot: instantâneo; ring: leve lag para profundidade (não arrasto)
+  const dotX = useSpring(cursorX, { damping: 50, stiffness: 600, mass: 0.15 })
+  const dotY = useSpring(cursorY, { damping: 50, stiffness: 600, mass: 0.15 })
+  const ringX = useSpring(cursorX, { damping: 26, stiffness: 380, mass: 0.25 })
+  const ringY = useSpring(cursorY, { damping: 26, stiffness: 380, mass: 0.25 })
 
   useEffect(() => {
     // Only show on non-touch devices
@@ -32,7 +31,6 @@ export default function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false)
 
     const onEnterLink = () => setCursorState("link")
-    const onEnterHover = () => setCursorState("hover")
     const onLeaveInteractive = () => setCursorState("default")
 
     window.addEventListener("mousemove", moveCursor)
@@ -88,16 +86,13 @@ export default function CustomCursor() {
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
           style={{
             borderRadius: "50%",
-            // Dourado sólido — nítido em qualquer fundo
-            background: isHovered
-              ? "#d4a853"
-              : "#c4a35a",
+            background: isHovered ? "#d4a853" : "#c4a35a",
             boxShadow: "0 0 4px rgba(196,163,90,0.7)",
           }}
         />
       </motion.div>
 
-      {/* Ring — lags behind for depth */}
+      {/* Ring — leve lag para profundidade */}
       <motion.div
         style={{
           position: "fixed",
@@ -117,14 +112,12 @@ export default function CustomCursor() {
             borderColor: isHovered
               ? "rgba(212,168,83,0.95)"
               : "rgba(196,163,90,0.75)",
-            borderWidth: isHovered ? "1.5px" : "1.5px",
           }}
           transition={{ type: "spring", stiffness: 220, damping: 28 }}
           style={{
             borderRadius: "50%",
             border: "1.5px solid",
             borderColor: "rgba(196,163,90,0.75)",
-            // Halo dourado sutil para reforçar visibilidade
             boxShadow: "0 0 6px rgba(196,163,90,0.25)",
           }}
         />
