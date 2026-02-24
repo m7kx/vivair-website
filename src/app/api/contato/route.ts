@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from "next/server"
 
 /* ──────────────────────────────────────────────────────────
    POST /api/contato
-   - Validates required fields
-   - Sends WhatsApp notification via webhook (env: WA_WEBHOOK_URL)
-   - Optional: Resend email (env: RESEND_API_KEY, RESEND_TO)
+   Security layers:
+     1. Honeypot field (_hp) — bots fill it, humans don't
+     2. Timing check (_t)   — submissions < 1.5s from page load = bot
+     3. In-memory rate limit — max 3 req / IP / hour
+     4. Server-side field validation (mirrors client rules)
    ────────────────────────────────────────────────────────── */
 
 interface ContactPayload {
@@ -12,9 +14,35 @@ interface ContactPayload {
   email: string
   telefone: string
   porcque: string
+  _hp?: string      // honeypot
+  _t?: number       // page mount timestamp
 }
 
-function buildWhatsAppText({ nome, email, telefone, porcque }: ContactPayload): string {
+/* ── Rate limiting (in-memory, resets on cold start) ── */
+const rateMap = new Map<string, { count: number; resetAt: number }>()
+const RATE_LIMIT = 3
+const RATE_WINDOW_MS = 60 * 60 * 1000 // 1 hour
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const entry = rateMap.get(ip)
+  if (!entry || now > entry.resetAt) {
+    rateMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS })
+    return true
+  }
+  if (entry.count >= RATE_LIMIT) return false
+  entry.count++
+  return true
+}
+
+/* ── Validators ── */
+const MAX = { nome: 80, email: 120, telefone: 25, porcque: 600 }
+
+function isValidEmail(v: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)
+}
+
+function buildWhatsAppText({ nome, email, telefone, porcque }: Omit<ContactPayload, "_hp" | "_t">): string {
   return (
     `*✦ Nova Whycation — VivAir*\n\n` +
     `*Nome:* ${nome}\n` +
@@ -26,18 +54,52 @@ function buildWhatsAppText({ nome, email, telefone, porcque }: ContactPayload): 
 }
 
 export async function POST(req: NextRequest) {
-  const body = (await req.json()) as Partial<ContactPayload>
-  const { nome, email, telefone, porcque } = body
+  /* ── 1. Rate limit ── */
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown"
 
-  // Validation
-  if (!nome?.trim() || !email?.trim() || !telefone?.trim() || !porcque?.trim()) {
+  if (!checkRateLimit(ip)) {
     return NextResponse.json(
-      { error: "Todos os campos são obrigatórios." },
-      { status: 400 }
+      { error: "Muitas tentativas. Tente novamente mais tarde." },
+      { status: 429 }
     )
   }
 
-  const payload: ContactPayload = {
+  const body = (await req.json()) as Partial<ContactPayload>
+  const { nome, email, telefone, porcque, _hp, _t } = body
+
+  /* ── 2. Honeypot ── */
+  if (_hp && _hp.trim().length > 0) {
+    // Silently accept (don't signal to bot that it was caught)
+    return NextResponse.json({ success: true })
+  }
+
+  /* ── 3. Timing check (< 1500ms = bot) ── */
+  if (_t && Date.now() - _t < 1500) {
+    return NextResponse.json({ success: true }) // silent reject
+  }
+
+  /* ── 4. Field validation ── */
+  if (!nome?.trim() || !email?.trim() || !telefone?.trim() || !porcque?.trim()) {
+    return NextResponse.json({ error: "Todos os campos são obrigatórios." }, { status: 400 })
+  }
+
+  if (!isValidEmail(email.trim())) {
+    return NextResponse.json({ error: "E-mail inválido." }, { status: 400 })
+  }
+
+  if (nome.trim().length > MAX.nome || email.trim().length > MAX.email ||
+      telefone.trim().length > MAX.telefone || porcque.trim().length > MAX.porcque) {
+    return NextResponse.json({ error: "Conteúdo excede o limite permitido." }, { status: 400 })
+  }
+
+  if (telefone.replace(/\D/g, "").length < 8) {
+    return NextResponse.json({ error: "Telefone inválido." }, { status: 400 })
+  }
+
+  const payload = {
     nome: nome.trim(),
     email: email.trim(),
     telefone: telefone.trim(),
@@ -46,7 +108,7 @@ export async function POST(req: NextRequest) {
 
   const errors: string[] = []
 
-  /* ── 1. WhatsApp Business Webhook notification ── */
+  /* ── 5. WhatsApp Business Webhook ── */
   const waWebhookUrl = process.env.WA_WEBHOOK_URL
   if (waWebhookUrl) {
     try {
@@ -58,16 +120,14 @@ export async function POST(req: NextRequest) {
           message: buildWhatsAppText(payload),
         }),
       })
-      if (!waRes.ok) {
-        errors.push(`WhatsApp webhook error: ${waRes.status}`)
-      }
+      if (!waRes.ok) errors.push(`WhatsApp webhook error: ${waRes.status}`)
     } catch (err) {
       errors.push(`WhatsApp webhook failed: ${String(err)}`)
       console.error("[contato] WhatsApp webhook error:", err)
     }
   }
 
-  /* ── 2. Resend email (optional) ── */
+  /* ── 6. Resend email (optional) ── */
   const resendKey = process.env.RESEND_API_KEY
   const resendTo = process.env.RESEND_TO ?? "reservas@vivairtravel.com.br"
   if (resendKey) {
@@ -97,25 +157,19 @@ export async function POST(req: NextRequest) {
           `,
         }),
       })
-      if (!emailRes.ok) {
-        errors.push(`Resend error: ${emailRes.status}`)
-      }
+      if (!emailRes.ok) errors.push(`Resend error: ${emailRes.status}`)
     } catch (err) {
       errors.push(`Resend failed: ${String(err)}`)
       console.error("[contato] Resend error:", err)
     }
   }
 
-  /* ── 3. Always log server-side ── */
+  /* ── 7. Log ── */
   console.log("[contato] New submission:", {
-    nome: payload.nome,
-    email: payload.email,
-    telefone: payload.telefone,
-    porcqueLength: payload.porcque.length,
-    errors,
+    nome: payload.nome, email: payload.email,
+    telefone: payload.telefone, porcqueLength: payload.porcque.length,
+    ip, errors,
   })
 
-  // Return success even if notifications had soft errors
-  // (submission is saved in logs, notifications are best-effort)
   return NextResponse.json({ success: true, warnings: errors.length > 0 ? errors : undefined })
 }
