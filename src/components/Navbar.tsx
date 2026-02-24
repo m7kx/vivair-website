@@ -99,7 +99,7 @@ function HamburgerButton({ open, onClick }: { open: boolean; onClick: () => void
   )
 }
 
-/* ── Main Navbar ─────────────────────────────────────────────────────────── */
+/* ── Main Navbar ──────────────────────────────────────────────────────────── */
 export default function Navbar() {
   const [open,     setOpen]     = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -151,8 +151,6 @@ export default function Navbar() {
         <div style={{
           maxWidth: 1200, margin: "0 auto", padding: "0 20px",
           display: "flex", alignItems: "center",
-          // justify-content controlled by .nav-inner-row CSS (see <style> below)
-          // mobile: flex-end (hamburger right) | desktop: space-between
           height: 64,
         }} className="nav-inner-row">
 
@@ -189,7 +187,7 @@ export default function Navbar() {
             Reserve Online
           </motion.a>
 
-          {/* Hamburger — mobile only */}
+          {/* Hamburger — always visible */}
           <div className="hamburger-btn">
             <HamburgerButton open={open} onClick={() => setOpen(!open)} />
           </div>
@@ -225,7 +223,7 @@ export default function Navbar() {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 position: "fixed", top: 64, left: 0, right: 0,
-                zIndex: 99,
+                zYndex: 99,
                 background: "rgba(10,31,68,0.99)",
                 backdropFilter: "blur(24px)",
                 borderBottom: "1px solid rgba(255,255,255,0.08)",
@@ -279,7 +277,7 @@ export default function Navbar() {
         .nav-inner-row { justify-content: flex-end; }
         @media (min-width: 768px) {
           .desktop-nav { display: flex !important; }
-          .hamburger-btn { display: none !important; }
+          .hamburger-btn { display: flex !important; }
           .nav-inner-row { justify-content: space-between; }
         }
       `}</style>
