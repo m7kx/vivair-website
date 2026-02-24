@@ -24,6 +24,7 @@ export default function FloatingLogo() {
   const [hovered, setHovered] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [isTouch,  setIsTouch]  = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   const rawX = useMotionValue(0)
   const rawY = useMotionValue(0)
@@ -34,6 +35,10 @@ export default function FloatingLogo() {
   useEffect(() => {
     setMounted(true)
     setIsTouch(window.matchMedia("(pointer: coarse)").matches)
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
   useEffect(() => {
@@ -62,13 +67,19 @@ export default function FloatingLogo() {
 
   if (!mounted) return null
 
+  // Responsive sizing
+  const logoSize  = isMobile ? 100 : 153
+  const innerSize = isMobile ? 62  : 95
+  const logoTop   = isMobile ? 10  : 20
+  const logoLeft  = isMobile ? 14  : 36
+
   return (
     <motion.div
       ref={wrapRef}
       style={{
         position: "fixed",
-        top: 20,
-        left: 36,
+        top: logoTop,
+        left: logoLeft,
         zIndex: 1100,
         x: magX,
         y: magY,
@@ -95,7 +106,7 @@ export default function FloatingLogo() {
             transition={{ duration: 2.8, repeat: Infinity, ease: "easeOut", repeatDelay: 1.4 }}
             style={{
               position: "absolute", top: "50%", left: "50%",
-              width: LOGO_SIZE, height: LOGO_SIZE, borderRadius: "50%",
+              width: logoSize, height: logoSize, borderRadius: "50%",
               border: "1.5px solid rgba(196,163,90,0.55)",
               transform: "translate(-50%, -50%)", pointerEvents: "none",
             }}
@@ -107,7 +118,7 @@ export default function FloatingLogo() {
             transition={{ duration: 2.8, repeat: Infinity, ease: "easeOut", repeatDelay: 1.4, delay: 1.2 }}
             style={{
               position: "absolute", top: "50%", left: "50%",
-              width: LOGO_SIZE, height: LOGO_SIZE, borderRadius: "50%",
+              width: logoSize, height: logoSize, borderRadius: "50%",
               border: "1px solid rgba(196,163,90,0.35)",
               transform: "translate(-50%, -50%)", pointerEvents: "none",
             }}
@@ -123,7 +134,7 @@ export default function FloatingLogo() {
             transition={{ type: "spring", stiffness: 380, damping: 22 }}
             style={{
               display: "flex", alignItems: "center", justifyContent: "center",
-              width: LOGO_SIZE, height: LOGO_SIZE, borderRadius: "50%",
+              width: logoSize, height: logoSize, borderRadius: "50%",
               overflow: "hidden", position: "relative",
               textDecoration: "none", cursor: "pointer",
               background: "radial-gradient(circle at 38% 35%, rgba(196,163,90,0.28) 0%, rgba(10,31,68,0.96) 65%)",
@@ -143,7 +154,7 @@ export default function FloatingLogo() {
               src="/vivair-logo.svg"
               alt="VivAir"
               style={{
-                height: INNER_LOGO_SIZE, width: "auto",
+                height: innerSize, width: "auto",
                 display: "block", position: "relative", zIndex: 2,
                 filter: "drop-shadow(0 2px 8px rgba(10,31,68,0.7))",
               }}
