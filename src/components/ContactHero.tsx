@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useEffect, useState } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Image from "next/image"
 
@@ -17,6 +17,16 @@ export default function ContactHero() {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollY } = useScroll()
   const heroY = useTransform(scrollY, [0, 600], [0, -80])
+
+  // Detecta mobile para objectFit responsivo (SSR-safe)
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)")
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
 
   return (
     <section
@@ -41,15 +51,11 @@ export default function ContactHero() {
           y: heroY,
         }}
       >
-        {/* Ken Burns — scale suave, imagem em contain para mostrar o mapa completo */}
+        {/* Ken Burns suave */}
         <motion.div
           animate={{ scale: [1.0, 1.06, 1.0] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-          style={{
-            width: "100%",
-            height: "100%",
-            background: "#0a1f44",
-          }}
+          style={{ width: "100%", height: "100%", background: "#0a1f44" }}
         >
           <Image
             src="/contato-hero.jpg"
@@ -57,15 +63,17 @@ export default function ContactHero() {
             fill
             priority
             style={{
-              objectFit: "contain",
-              objectPosition: "center center",
+              // Desktop: contain mostra o mapa-múndi completo
+              // Mobile: cover preenche a tela, posicionado no mapa
+              objectFit: isMobile ? "cover" : "contain",
+              objectPosition: isMobile ? "50% 40%" : "center center",
             }}
             sizes="100vw"
           />
         </motion.div>
       </motion.div>
 
-      {/* « Cinematic overlay « */}
+      {/* Overlay */}
       <div
         style={{
           position: "absolute",
@@ -101,7 +109,6 @@ export default function ContactHero() {
           maxWidth: 720,
         }}
       >
-        {/* Eyebrow */}
         <motion.p
           variants={fadeUp}
           style={{
@@ -117,7 +124,6 @@ export default function ContactHero() {
           Whycation · Experiências Sob Medida
         </motion.p>
 
-        {/* H1 */}
         <motion.h1
           variants={fadeUp}
           style={{
@@ -132,7 +138,6 @@ export default function ContactHero() {
           Conte-nos Seu Porquê
         </motion.h1>
 
-        {/* Subtitle */}
         <motion.p
           variants={fadeUp}
           style={{
@@ -150,7 +155,6 @@ export default function ContactHero() {
           porquê em memórias que duram a vida toda.
         </motion.p>
 
-        {/* Scroll cue */}
         <motion.div
           variants={fadeUp}
           animate={{ y: [0, 8, 0] }}
