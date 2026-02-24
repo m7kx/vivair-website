@@ -87,13 +87,13 @@ export default function ContactHero() {
         animate="show"
         style={{
           position: "relative",
-          zYndex: 2,
+          zIndex: 2,
           textAlign: "center",
           padding: "0 24px",
           maxWidth: 720,
         }}
       >
-        {/* Eyebrow */}
+        {/* Eyebrow — dourado da paleta, consistente com FloatingLogo/badge */}
         <motion.p
           variants={fadeUp}
           style={{
@@ -102,7 +102,7 @@ export default function ContactHero() {
             fontWeight: 600,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "#ffffff",
+            color: "#c4a35a",
             marginBottom: 16,
           }}
         >
