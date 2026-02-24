@@ -12,7 +12,8 @@ import { motion, useSpring, useMotionValue, AnimatePresence } from "framer-motio
    - Touch devices: magnetic off (preserves perf), float stays
 ──────────────────────────────────────────────────────────────────────────────── */
 
-const LOGO_SIZE = 240       // diameter (px)  — 240px for clear logo visibility [v3]
+const LOGO_SIZE = 180        // diameter (px)  — 180px [v4]
+const INNER_LOGO_SIZE = 112  // fixed inner logo: 10% smaller than previous 240×0.52=124.8px
 const MAGNETIC_RADIUS = 160 // px — distance at which logo starts being pulled
 const MAGNETIC_STRENGTH = 0.38
 
@@ -184,7 +185,7 @@ export default function FloatingLogo() {
               src="/vivair-logo.svg"
               alt="VivAir"
               style={{
-                height: LOGO_SIZE * 0.52,
+                height: INNER_LOGO_SIZE,
                 width: "auto",
                 display: "block",
                 position: "relative",
