@@ -167,15 +167,20 @@ export default function FloatingLogo() {
               position: "relative",
               textDecoration: "none",
               cursor: "pointer",
-              // Glassmorphism + champagne tint
-              background: "radial-gradient(circle at 38% 35%, rgba(196,163,90,0.22) 0%, rgba(10,31,68,0.92) 65%)",
+              // Glassmorphism + champagne tint — fundo escuro garante legibilidade em qualquer imagem
+              background: "radial-gradient(circle at 38% 35%, rgba(196,163,90,0.28) 0%, rgba(10,31,68,0.96) 65%)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
-              border: "1.5px solid rgba(196,163,90,0.38)",
+              // Borda dourada mais firme: 0.38 → 0.70
+              border: "1.5px solid rgba(196,163,90,0.70)",
               boxShadow: [
-                "0 8px 32px rgba(10,31,68,0.55)",
-                "0 2px 8px rgba(10,31,68,0.4)",
-                "inset 0 1px 0 rgba(196,163,90,0.18)",
+                // Sombra externa escura — âncora visual independente da imagem de fundo
+                "0 8px 32px rgba(10,31,68,0.65)",
+                "0 2px 8px rgba(10,31,68,0.55)",
+                // Inner highlight dourado
+                "inset 0 1px 0 rgba(196,163,90,0.28)",
+                // Halo externo dourado sutil — visível mesmo em fundos claros
+                "0 0 0 1px rgba(196,163,90,0.18)",
               ].join(", "),
             }}
           >
@@ -190,8 +195,8 @@ export default function FloatingLogo() {
                 display: "block",
                 position: "relative",
                 zIndex: 2,
-                // Slight drop shadow so white logo is visible even on hover glow
-                filter: "drop-shadow(0 1px 4px rgba(10,31,68,0.4))",
+                // Drop shadow mais firme para logo branco sobre fundos variáveis
+                filter: "drop-shadow(0 2px 8px rgba(10,31,68,0.7))",
               }}
             />
 
