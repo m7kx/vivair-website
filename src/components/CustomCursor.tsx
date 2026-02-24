@@ -75,21 +75,24 @@ export default function CustomCursor() {
           top: dotY,
           zIndex: 99999,
           pointerEvents: "none",
-          mixBlendMode: "difference",
           translateX: "-50%",
           translateY: "-50%",
         }}
       >
         <motion.div
           animate={{
-            width: isHovered ? 8 : 6,
-            height: isHovered ? 8 : 6,
+            width: isHovered ? 9 : 7,
+            height: isHovered ? 9 : 7,
             opacity: isVisible ? 1 : 0,
           }}
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
           style={{
             borderRadius: "50%",
-            background: "#FAF9F6",
+            // Dourado sólido — nítido em qualquer fundo
+            background: isHovered
+              ? "#d4a853"
+              : "#c4a35a",
+            boxShadow: "0 0 4px rgba(196,163,90,0.7)",
           }}
         />
       </motion.div>
@@ -110,14 +113,19 @@ export default function CustomCursor() {
           animate={{
             width: isHovered ? 48 : 32,
             height: isHovered ? 48 : 32,
-            opacity: isVisible ? (isHovered ? 0.6 : 0.35) : 0,
-            borderColor: isHovered ? "rgba(196,163,90,0.9)" : "rgba(250,249,246,0.5)",
+            opacity: isVisible ? (isHovered ? 0.85 : 0.65) : 0,
+            borderColor: isHovered
+              ? "rgba(212,168,83,0.95)"
+              : "rgba(196,163,90,0.75)",
+            borderWidth: isHovered ? "1.5px" : "1.5px",
           }}
           transition={{ type: "spring", stiffness: 220, damping: 28 }}
           style={{
             borderRadius: "50%",
             border: "1.5px solid",
-            borderColor: "rgba(250,249,246,0.5)",
+            borderColor: "rgba(196,163,90,0.75)",
+            // Halo dourado sutil para reforçar visibilidade
+            boxShadow: "0 0 6px rgba(196,163,90,0.25)",
           }}
         />
       </motion.div>
