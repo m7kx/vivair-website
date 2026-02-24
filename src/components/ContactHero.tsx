@@ -40,11 +40,11 @@ export default function ContactHero() {
           y: heroY,
         }}
       >
-        {/* Ken Burns 10% zoom */}
+        {/* Ken Burns: base 1.35x para mostrar detalhes do mapa, oscila +10% */}
         <motion.div
-          animate={{ scale: [1, 1.10, 1] }}
+          animate={{ scale: [1.35, 1.45, 1.35] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", transformOrigin: "center center" }}
         >
           <Image
             src="/contato-hero.jpg"
