@@ -8,7 +8,7 @@ const LINKS = [
   { label: "Destinos",     href: "#destinos" },
   { label: "Experiências", href: "#" },
   { label: "Sobre",        href: "#" },
-  { label: "Contato",      href: "#" },
+  { label: "Contato",      href: "/contato" },
 ]
 
 /* ── Magnetic link with underline ───────────────────────────────────────── */
