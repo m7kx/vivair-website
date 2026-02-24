@@ -40,9 +40,9 @@ export default function ContactHero() {
           y: heroY,
         }}
       >
-        {/* Ken Burns: base 1.35x para mostrar detalhes do mapa, oscila +10% */}
+        {/* Ken Burns: base 1.0x (para mostrar o mapa-múndi completo), oscila +8% */}
         <motion.div
-          animate={{ scale: [1.35, 1.45, 1.35] }}
+          animate={{ scale: [1.0, 1.08, 1.0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           style={{ width: "100%", height: "100%", transformOrigin: "center center" }}
         >
@@ -57,13 +57,13 @@ export default function ContactHero() {
         </motion.div>
       </motion.div>
 
-      {/* ── Cinematic overlay ── */}
+      {/* « Cinematic overlay « */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(155deg, rgba(10,31,68,0.82) 0%, rgba(10,31,68,0.45) 60%, rgba(10,31,68,0.25) 100%)",
+            "linear-gradient(155deg, rgba(10,31,68,0.95) 0%, rgba(10,31,68,0.80) 60%, rgba(10,31,68,0.60) 100%)",
           pointerEvents: "none",
         }}
       />
@@ -80,14 +80,14 @@ export default function ContactHero() {
         }}
       />
 
-      {/* ── Hero text ── */}
+      {/* text */}
       <motion.div
         variants={stagger}
         initial="hidden"
         animate="show"
         style={{
           position: "relative",
-          zIndex: 2,
+          zYndex: 2,
           textAlign: "center",
           padding: "0 24px",
           maxWidth: 720,
@@ -98,11 +98,11 @@ export default function ContactHero() {
           variants={fadeUp}
           style={{
             fontFamily: "var(--btn-font, 'DM Sans', sans-serif)",
-            fontSize: 12,
+            fontSize: 14,
             fontWeight: 600,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "rgba(200,169,110,0.9)",
+            color: "#ffffff",
             marginBottom: 16,
           }}
         >
@@ -114,12 +114,11 @@ export default function ContactHero() {
           variants={fadeUp}
           style={{
             fontFamily: "'DM Serif Display', Georgia, serif",
-            fontSize: "clamp(2.4rem, 6vw, 4.2rem)",
+            fontSize: "clamp(2.64rem, 6.6vw , 4.62rem)",
             fontWeight: 400,
             color: "#ffffff",
             lineHeight: 1.1,
             marginBottom: 20,
-            textShadow: "0 2px 24px rgba(10,31,68,0.6), 0 1px 4px rgba(10,31,68,0.4)",
           }}
         >
           Conte-nos Seu Porquê
@@ -130,9 +129,9 @@ export default function ContactHero() {
           variants={fadeUp}
           style={{
             fontFamily: "'Outfit', 'DM Sans', sans-serif",
-            fontSize: "clamp(1rem, 2.2vw, 1.18rem)",
-            fontWeight: 400,
-            color: "rgba(245,240,232,0.82)",
+            fontSize: "clamp(1.1rem, 2.4vw, 1.3rem)",
+            fontWeight: 500,
+            color: "#ffffff",
             lineHeight: 1.65,
             maxWidth: 580,
             margin: "0 auto",
@@ -150,8 +149,8 @@ export default function ContactHero() {
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           style={{ marginTop: 40 }}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ margin: "0 auto", display: "block", opacity: 0.5 }}>
-            <path d="M12 5v14M5 12l7 7 7-7" stroke="rgba(245,240,232,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style={{ margin: "0 auto", display: "block", opacity: 0.9 }}>
+            <path d="M12 5v14M5 12l7 7 7-7" stroke="rgba(245,240,232,0.95)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </motion.div>
       </motion.div>
