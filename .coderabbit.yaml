@@ -1,0 +1,21 @@
+language: "pt-BR"
+tone_instructions: "Seja objetivo e técnico. Priorize issues reais de qualidade, segurança, performance e acessibilidade. Foco em Next.js 15 best practices e mobile-first."
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  path_instructions:
+    - path: "**/*.tsx"
+      instructions: "Projeto usa Next.js 15 (versão mínima segura: 15.2.0+ por CVE-2025-66478). Verificar: (1) mobile-first nas implementações; (2) animações Framer Motion fluidas e performáticas; (3) nenhuma animação completa importada de @marcos-ds/tokens — apenas motion primitives vêm do design system, animações ficam no catálogo local do projeto (ADR-0005)."
+    - path: "app/**"
+      instructions: "Fluxo de deploy: feature → dev → main. Marcos deve aprovar antes de merge dev → main. Nunca push direto em main. Após merge em dev, Vercel gera preview automático sem cache."
+    - path: "**/*.css"
+      instructions: "Projeto usa Tailwind v4. Tokens de design vêm de @marcos-ds/tokens com prefixo --mds-."
+chat:
+  auto_reply: true
