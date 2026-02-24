@@ -30,9 +30,10 @@ export default function ContactHero() {
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
+        background: "#0a1f44",
       }}
     >
-      {/* ── Parallax image ── */}
+      {/* ── Parallax wrapper ── */}
       <motion.div
         style={{
           position: "absolute",
@@ -40,18 +41,25 @@ export default function ContactHero() {
           y: heroY,
         }}
       >
-        {/* Drift horizontal suave — sem zoom, mapa-múndi sempre visível */}
+        {/* Ken Burns — scale suave, imagem em contain para mostrar o mapa completo */}
         <motion.div
-          animate={{ x: [0, -18, 0] }}
+          animate={{ scale: [1.0, 1.06, 1.0] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-          style={{ width: "100%", height: "100%" }}
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "#0a1f44",
+          }}
         >
           <Image
             src="/contato-hero.jpg"
             alt="Travel map with passports and destinations"
             fill
             priority
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            style={{
+              objectFit: "contain",
+              objectPosition: "center center",
+            }}
             sizes="100vw"
           />
         </motion.div>
@@ -63,11 +71,11 @@ export default function ContactHero() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(155deg, rgba(10,31,68,0.95) 0%, rgba(10,31,68,0.80) 60%, rgba(10,31,68,0.60) 100%)",
+            "linear-gradient(155deg, rgba(10,31,68,0.95) 0%, rgba(10,31,68,0.75) 55%, rgba(10,31,68,0.50) 100%)",
           pointerEvents: "none",
         }}
       />
-      {/* Bottom vignette to blend into form section */}
+      {/* Bottom vignette */}
       <div
         style={{
           position: "absolute",
@@ -93,7 +101,7 @@ export default function ContactHero() {
           maxWidth: 720,
         }}
       >
-        {/* Eyebrow — dourado da paleta */}
+        {/* Eyebrow */}
         <motion.p
           variants={fadeUp}
           style={{
