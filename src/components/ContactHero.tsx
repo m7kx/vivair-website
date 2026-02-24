@@ -40,9 +40,9 @@ export default function ContactHero() {
           y: heroY,
         }}
       >
-        {/* Ken Burns: base 1.35x para mostrar detalhes do mapa, oscila +10% */}
+        {/* Ken Burns: base 1.0x (para mostrar o mapa-múndi completo), oscila +8% */}
         <motion.div
-          animate={{ scale: [1.35, 1.45, 1.35] }}
+          animate={{ scale: [1.0, 1.08, 1.0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           style={{ width: "100%", height: "100%", transformOrigin: "center center" }}
         >
@@ -57,7 +57,7 @@ export default function ContactHero() {
         </motion.div>
       </motion.div>
 
-      {/* ── Cinematic overlay ── */}
+      {/* �+ Cinematic overlay « */}
       <div
         style={{
           position: "absolute",
@@ -80,7 +80,7 @@ export default function ContactHero() {
         }}
       />
 
-      {/* ── Hero text ── */}
+      {/* « Hero text « */}
       <motion.div
         variants={stagger}
         initial="hidden"
@@ -102,7 +102,8 @@ export default function ContactHero() {
             fontWeight: 600,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "rgba(200,169,110,0.9)",
+            color: "#f5f0e8",
+            textShadow: "0 1px 8px rgba(10,31,68,0.7)",
             marginBottom: 16,
           }}
         >
@@ -132,7 +133,8 @@ export default function ContactHero() {
             fontFamily: "'Outfit', 'DM Sans', sans-serif",
             fontSize: "clamp(1rem, 2.2vw, 1.18rem)",
             fontWeight: 400,
-            color: "rgba(245,240,232,0.82)",
+            color: "rgba(245,240,232,0.96)",
+            textShadow: "0 1px 12px rgba(10,31,68,0.6)",
             lineHeight: 1.65,
             maxWidth: 580,
             margin: "0 auto",
@@ -150,8 +152,8 @@ export default function ContactHero() {
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           style={{ marginTop: 40 }}
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ margin: "0 auto", display: "block", opacity: 0.5 }}>
-            <path d="M12 5v14M5 12l7 7 7-7" stroke="rgba(245,240,232,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" style={{ margin: "0 auto", display: "block", opacity: 0.9 }}>
+            <path d="M12 5v14M5 12l7 7 7-7" stroke="rgba(245,240,232,0.95)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </motion.div>
       </motion.div>
