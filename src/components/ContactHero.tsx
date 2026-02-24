@@ -57,13 +57,13 @@ export default function ContactHero() {
         </motion.div>
       </motion.div>
 
-      {/* �+ Cinematic overlay « */}
+      {/* « Cinematic overlay « */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(155deg, rgba(10,31,68,0.82) 0%, rgba(10,31,68,0.45) 60%, rgba(10,31,68,0.25) 100%)",
+            "linear-gradient(155deg, rgba(10,31,68,0.88) 0%, rgba(10,31,68,0.55) 60%, rgba(10,31,68,0.30) 100%)",
           pointerEvents: "none",
         }}
       />
@@ -80,14 +80,14 @@ export default function ContactHero() {
         }}
       />
 
-      {/* « Hero text « */}
+      {/* text */}
       <motion.div
         variants={stagger}
         initial="hidden"
         animate="show"
         style={{
           position: "relative",
-          zIndex: 2,
+          zYndex: 2,
           textAlign: "center",
           padding: "0 24px",
           maxWidth: 720,
@@ -98,12 +98,12 @@ export default function ContactHero() {
           variants={fadeUp}
           style={{
             fontFamily: "var(--btn-font, 'DM Sans', sans-serif)",
-            fontSize: 12,
+            fontSize: 14,
             fontWeight: 600,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "#f5f0e8",
-            textShadow: "0 1px 8px rgba(10,31,68,0.7)",
+            color: "#ffffff",
+            textShadow: "0 0px 12px rgba(0,0,0,0.9), 0 2px 20px rgba(10,31,68,0.95)",
             marginBottom: 16,
           }}
         >
@@ -115,12 +115,12 @@ export default function ContactHero() {
           variants={fadeUp}
           style={{
             fontFamily: "'DM Serif Display', Georgia, serif",
-            fontSize: "clamp(2.4rem, 6vw, 4.2rem)",
+            fontSize: "clamp(2.64rem, 6.6vw , 4.62rem)",
             fontWeight: 400,
             color: "#ffffff",
             lineHeight: 1.1,
             marginBottom: 20,
-            textShadow: "0 2px 24px rgba(10,31,68,0.6), 0 1px 4px rgba(10,31,68,0.4)",
+            textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 1px 6px rgba(0,0,0,0.9)",
           }}
         >
           Conte-nos Seu Porquê
@@ -131,10 +131,10 @@ export default function ContactHero() {
           variants={fadeUp}
           style={{
             fontFamily: "'Outfit', 'DM Sans', sans-serif",
-            fontSize: "clamp(1rem, 2.2vw, 1.18rem)",
-            fontWeight: 400,
-            color: "rgba(245,240,232,0.96)",
-            textShadow: "0 1px 12px rgba(10,31,68,0.6)",
+            fontSize: "clamp(1.1rem, 2.4vw, 1.3rem)",
+            fontWeight: 500,
+            color: "#ffffff",
+            textShadow: "0 1px 16px rgba(0,0,0,0.85), 0 0px 8px rgba(0,0,0,0.7)",
             lineHeight: 1.65,
             maxWidth: 580,
             margin: "0 auto",
