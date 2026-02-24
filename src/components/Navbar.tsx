@@ -223,7 +223,7 @@ export default function Navbar() {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 position: "fixed", top: 64, left: 0, right: 0,
-                zYndex: 99,
+                zIndex: 99,
                 background: "rgba(10,31,68,0.99)",
                 backdropFilter: "blur(24px)",
                 borderBottom: "1px solid rgba(255,255,255,0.08)",
