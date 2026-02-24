@@ -63,7 +63,7 @@ export default function ContactHero() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(155deg, rgba(10,31,68,0.88) 0%, rgba(10,31,68,0.55) 60%, rgba(10,31,68,0.30) 100%)",
+            "linear-gradient(155deg, rgba(10,31,68,0.92) 0%, rgba(10,31,68,0.68) 60%, rgba(10,31,68,0.45) 100%)",
           pointerEvents: "none",
         }}
       />
@@ -80,6 +80,21 @@ export default function ContactHero() {
         }}
       />
 
+      {/* ─ Radial vignette behind text (no text-shadow box effect) ─ */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "80%",
+          height: "70%",
+          background: "radial-gradient(ellipse at center, rgba(10,31,68,0.72) 0%, transparent 72%)",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
+
       {/* text */}
       <motion.div
         variants={stagger}
@@ -87,7 +102,7 @@ export default function ContactHero() {
         animate="show"
         style={{
           position: "relative",
-          zYndex: 2,
+          zIndex: 2,
           textAlign: "center",
           padding: "0 24px",
           maxWidth: 720,
@@ -103,7 +118,6 @@ export default function ContactHero() {
             letterSpacing: "0.18em",
             textTransform: "uppercase",
             color: "#ffffff",
-            textShadow: "0 0px 12px rgba(0,0,0,0.9), 0 2px 20px rgba(10,31,68,0.95)",
             marginBottom: 16,
           }}
         >
@@ -120,7 +134,7 @@ export default function ContactHero() {
             color: "#ffffff",
             lineHeight: 1.1,
             marginBottom: 20,
-            textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 1px 6px rgba(0,0,0,0.9)",
+            textShadow: "0 1px 3px rgba(0,0,0,0.5)",
           }}
         >
           Conte-nos Seu Porquê
@@ -134,7 +148,6 @@ export default function ContactHero() {
             fontSize: "clamp(1.1rem, 2.4vw, 1.3rem)",
             fontWeight: 500,
             color: "#ffffff",
-            textShadow: "0 1px 16px rgba(0,0,0,0.85), 0 0px 8px rgba(0,0,0,0.7)",
             lineHeight: 1.65,
             maxWidth: 580,
             margin: "0 auto",
