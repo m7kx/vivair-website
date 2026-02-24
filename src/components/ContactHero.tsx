@@ -40,11 +40,11 @@ export default function ContactHero() {
           y: heroY,
         }}
       >
-        {/* Ken Burns: base 1.0x (para mostrar o mapa-múndi completo), oscila +8% */}
+        {/* Drift horizontal suave — sem zoom, mapa-múndi sempre visível */}
         <motion.div
-          animate={{ scale: [1.0, 1.08, 1.0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          style={{ width: "100%", height: "100%", transformOrigin: "center center" }}
+          animate={{ x: [0, -18, 0] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          style={{ width: "100%", height: "100%" }}
         >
           <Image
             src="/contato-hero.jpg"
@@ -93,7 +93,7 @@ export default function ContactHero() {
           maxWidth: 720,
         }}
       >
-        {/* Eyebrow — dourado da paleta, consistente com FloatingLogo/badge */}
+        {/* Eyebrow — dourado da paleta */}
         <motion.p
           variants={fadeUp}
           style={{
