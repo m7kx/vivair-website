@@ -1,20 +1,23 @@
 "use client"
 
 import { useRef, useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import { motion, useSpring, useMotionValue, AnimatePresence } from "framer-motion"
 
-/* ── FloatingLogo ─────────────────────────────────────────────────────────────
+/* ── FloatingLogo ──────────────────────────────────────────────────────────────
    - Fixed position, top-left
    - Magnetic: cursor proximity < 160px → logo is attracted toward cursor
    - Float: gentle sine-wave y oscillation when idle
    - Entrance: blur+scale reveal matching the hero cinematic entrance
    - Hover: ring expands, scale pulse, champagne shimmer
    - Touch devices: magnetic off (preserves perf), float stays
-──────────────────────────────────────────────────────────────────────────────── */
+   - Portal: rendered directly in document.body → escapes any transformed
+     ancestor (parallax, Framer Motion wrappers) that would break position:fixed
+───────────────────────────────────────────────────────────────────────────────── */
 
-const LOGO_SIZE = 180        // diameter (px)  — 180px [v4]
-const INNER_LOGO_SIZE = 112  // fixed inner logo: 10% smaller than previous 240×0.52=124.8px
-const MAGNETIC_RADIUS = 160 // px — distance at which logo starts being pulled
+const LOGO_SIZE       = 153   // diameter (px) – 15% smaller than 180px [v5]
+const INNER_LOGO_SIZE =  95   // inner logo: ~15% smaller than previous 112px
+const MAGNETIC_RADIUS = 160   // px – distance at which logo starts being pulled
 const MAGNETIC_STRENGTH = 0.38
 
 export default function FloatingLogo() {
@@ -63,7 +66,10 @@ export default function FloatingLogo() {
     return () => window.removeEventListener("mousemove", onMove)
   }, [isTouch, rawX, rawY])
 
-  return (
+  // Portal only runs on client (SSR-safe: returns null until mounted)
+  if (!mounted) return null
+
+  return createPortal(
     <motion.div
       ref={wrapRef}
       style={{
@@ -90,7 +96,7 @@ export default function FloatingLogo() {
         {/* ── Entrance animation ── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.7, filter: "blur(12px)" }}
-          animate={mounted ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
           transition={{
             duration: 1.4,
             delay: 0.3,
@@ -150,7 +156,7 @@ export default function FloatingLogo() {
           {/* ── The circular medallion ── */}
           <motion.a
             href="/"
-            aria-label="VivAir — Home"
+            aria-label="VivAir – Home"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             whileHover={{ scale: 1.10 }}
@@ -167,19 +173,14 @@ export default function FloatingLogo() {
               position: "relative",
               textDecoration: "none",
               cursor: "pointer",
-              // Glassmorphism + champagne tint — fundo escuro garante legibilidade em qualquer imagem
               background: "radial-gradient(circle at 38% 35%, rgba(196,163,90,0.28) 0%, rgba(10,31,68,0.96) 65%)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
-              // Borda dourada mais firme: 0.38 → 0.70
               border: "1.5px solid rgba(196,163,90,0.70)",
               boxShadow: [
-                // Sombra externa escura — âncora visual independente da imagem de fundo
                 "0 8px 32px rgba(10,31,68,0.65)",
                 "0 2px 8px rgba(10,31,68,0.55)",
-                // Inner highlight dourado
                 "inset 0 1px 0 rgba(196,163,90,0.28)",
-                // Halo externo dourado sutil — visível mesmo em fundos claros
                 "0 0 0 1px rgba(196,163,90,0.18)",
               ].join(", "),
             }}
@@ -195,7 +196,6 @@ export default function FloatingLogo() {
                 display: "block",
                 position: "relative",
                 zIndex: 2,
-                // Drop shadow mais firme para logo branco sobre fundos variáveis
                 filter: "drop-shadow(0 2px 8px rgba(10,31,68,0.7))",
               }}
             />
@@ -244,6 +244,7 @@ export default function FloatingLogo() {
           </motion.a>
         </motion.div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   )
 }
