@@ -186,7 +186,7 @@ export default function Navbar() {
           </motion.a>
 
           {/* Hamburger — mobile only */}
-          <div className="nav-hamburger">
+          <div className="nav-hamburger" style={{ marginLeft: "auto" }}>
             <HamburgerButton open={open} onClick={() => setOpen(!open)} />
           </div>
         </div>
