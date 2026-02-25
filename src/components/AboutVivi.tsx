@@ -142,40 +142,26 @@ export default function AboutVivi() {
               border: "1px solid rgba(196,163,90,0.15)",
             }}
           >
-            {/* TODO: Substituir por foto real da Vivi (blazer azul) */}
-            {/* <Image src="/vivi-blazer-azul.jpg" alt="Vivi — Travel Designer VivAir" fill style={{ objectFit: "cover" }} /> */}
-
-            {/* Placeholder visual until photo is provided */}
-            <div
+            {/* Vivi — Travel Designer portrait (navy blazer, vintage globe, editorial lighting) */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/vivi.jpg"
+              alt="Vivi — Travel Designer VivAir"
               style={{
                 position: "absolute", inset: 0,
-                background: "linear-gradient(135deg, rgba(10,31,68,0.8) 0%, rgba(196,163,90,0.15) 100%)",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 16,
+                width: "100%", height: "100%",
+                objectFit: "cover",
+                objectPosition: "center top",
               }}
-            >
-              <div style={{
-                width: 80, height: 80, borderRadius: "50%",
-                background: "rgba(196,163,90,0.2)",
-                border: "1px solid rgba(196,163,90,0.4)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                <span style={{ fontSize: 32 }}>✦</span>
-              </div>
-              <p style={{
-                fontSize: 13, color: "rgba(250,249,246,0.4)",
-                fontFamily: "var(--p-font-primary)",
-                textAlign: "center",
-                padding: "0 24px",
-              }}>
-                Foto da Vivi<br />em breve
-              </p>
-            </div>
+            />
+            {/* Gradient overlay — readability of badge below */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(to bottom, transparent 55%, rgba(8,24,55,0.80) 100%)",
+              pointerEvents: "none",
+            }} />
 
-            {/* Name badge */}
+                        {/* Name badge */}
             <div style={{
               position: "absolute", bottom: 24, left: 24, right: 24,
               background: "rgba(8,24,55,0.85)",
