@@ -13,7 +13,7 @@ const DESTINATIONS = [
     tag: 'Mais buscado',
     desc: 'Bangalôs sobre a água, recifes de corais e pôr do sol que para o tempo. Para casais e lua de mel.',
     tags: ['Lua de mel', 'Resort', 'All-inclusive'],
-    image: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=900&q=80&auto=format&fit=crop',
+    image: '/images/dest-maldivas.jpg',
     gradient: 'linear-gradient(135deg, #0a4f6e 0%, #0a8a8a 100%)',
     accent: '#00d4d4',
   },
