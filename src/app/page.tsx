@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import React, { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Navbar from "@/components/Navbar"
 import AboutVivi from "@/components/AboutVivi"
