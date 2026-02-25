@@ -168,7 +168,7 @@ export default function Navbar() {
           {/* CTA button — desktop only */}
           <motion.a
             className="desktop-nav"
-            href="https://app.onertravel.com/vivairtraveldesign/home"
+            href="https://app.onertravel.com/vivairtraveldesign"
             target="_blank" rel="noopener noreferrer"
             style={{
               background: "var(--grad-cta)", color: "white",
@@ -248,7 +248,7 @@ export default function Navbar() {
                   </motion.a>
                 ))}
                 <motion.a
-                  href="https://app.onertravel.com/vivairtraveldesign/home"
+                  href="https://app.onertravel.com/vivairtraveldesign"
                   target="_blank" rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
                   initial={{ opacity: 0, y: 8 }}
