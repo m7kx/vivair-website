@@ -205,24 +205,8 @@ export default function Home() {
             </span>
           </motion.div>
 
-          {/* Text scrim — subtle dark glow behind headline+subtitle for contrast */}
-          <div style={{
-            position: "relative",
-          }}>
-            <div
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                inset: "-32px -60px",
-                background: "radial-gradient(ellipse 90% 80% at 50% 50%, rgba(5,16,40,0.52) 0%, transparent 72%)",
-                borderRadius: 32,
-                pointerEvents: "none",
-                zIndex: 0,
-              }}
-            />
-
           {/* Main headline — word-by-word reveal */}
-          <div style={{ marginBottom: 28, justifyContent: "center", position: "relative", zIndex: 1 }}>
+          <div style={{ marginBottom: 28, justifyContent: "center" }}>
             <AnimatedText
               text="Sua próxima viagem começa aqui"
               delay={0.3}
@@ -257,7 +241,7 @@ export default function Home() {
           >
             <RotatingText />
           </motion.div>
-          </div>{/* /text-scrim wrapper */}
+
 
           {/* CTAs */}
           <motion.div
@@ -641,12 +625,20 @@ export default function Home() {
           <div style={{ borderTop: "1px solid rgba(250,249,246,0.08)", paddingTop: 24, textAlign: "center" }}>
             <p style={{ fontSize: 12, fontWeight: 500, color: "var(--on-dark-3)" }}>
               VivAir Travel Design Ltda · CNPJ: 61.722.893/0001-73 · Empresa ativa no Cadastur
-          </p>
-          <p style={{ fontSize: 12, color: "rgba(250,249,246,0.3)", marginTop: 6 }}>
-            Rio de Janeiro, RJ — Brasil
-          </p>
-          <p style={{ fontSize: 12, color: "rgba(250,249,246,0.3)", marginTop: 6 }}>
-            © 2026 VivAir Travel Design. Todos os direitos reservados.
+            </p>
+            {/* IATA credential badge */}
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 10, padding: "5px 14px", borderRadius: 100, border: "1px solid rgba(196,163,90,0.25)", background: "rgba(196,163,90,0.06)" }}>
+              <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "rgba(196,163,90,0.85)" }}>IATA</span>
+              <span style={{ width: 1, height: 10, background: "rgba(196,163,90,0.2)" }} />
+              <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(250,249,246,0.55)", letterSpacing: "0.08em" }}>96219093</span>
+              <span style={{ width: 1, height: 10, background: "rgba(196,163,90,0.2)" }} />
+              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "rgba(196,163,90,0.6)" }}>Agente Credenciado</span>
+            </div>
+            <p style={{ fontSize: 12, color: "rgba(250,249,246,0.3)", marginTop: 10 }}>
+              Rio de Janeiro, RJ — Brasil
+            </p>
+            <p style={{ fontSize: 12, color: "rgba(250,249,246,0.3)", marginTop: 6 }}>
+              © 2026 VivAir Travel Design. Todos os direitos reservados.
             </p>
           </div>
         </div>
