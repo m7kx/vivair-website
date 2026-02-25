@@ -137,7 +137,7 @@ export default function Home() {
               backdropFilter: "blur(12px)",
             }}>
               <span style={{ fontSize: 16 }}>✦</span>
-              Travel Design · Est. 2026
+              Travel Design Experience
             </span>
           </motion.div>
 
