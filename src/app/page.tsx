@@ -3,7 +3,8 @@
 import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Navbar from "@/components/Navbar"
-import PartnersCarousel from "@/components/PartnersCarousel"
+import AboutVivi from "@/components/AboutVivi"
+import RotatingText from "@/components/RotatingText"
 import WhatsAppButton from "@/components/WhatsAppButton"
 import DestinationsSection from "@/components/DestinationsSection"
 import MarqueeStrip from "@/components/MarqueeStrip"
@@ -16,7 +17,7 @@ const steps = [
   { num: "01", title: "Conta pra gente",  desc: "Seu destino dos sonhos, datas e quem vai junto" },
   { num: "02", title: "A gente desenha",  desc: "Roteiro personalizado com voos, hotel e experiências" },
   { num: "03", title: "Você aprova",       desc: "Revisa, ajusta e a gente cuida de toda a reserva" },
-  { num: "04", title: "Só aproveitar",     desc: "E postar nos Stories 😉" },
+  { num: "04", title: "Só aproveitar",     desc: "Cada detalhe pensado para você" },
 ]
 
 /* ── Stat item ────────────────────────────────────────────────────── */
@@ -75,7 +76,7 @@ export default function Home() {
   const heroBgScale    = useTransform(heroScroll, [0, 1], [1, 1.08])
 
   return (
-    <main style={{ background: "var(--surface-page)", minHeight: "100vh", overflowX: "hidden" }}>
+    <main style={{ background: "var(--surface-page)", minHeight: "100vh", overflowX: "hidden", paddingTop: 0 }}>
       <Navbar />
 
       {/* ════ HERO ════════════════════════════════════════════════════ */}
@@ -159,7 +160,7 @@ export default function Home() {
           {/* Main headline — word-by-word reveal */}
           <div style={{ marginBottom: 28, justifyContent: "center", position: "relative", zIndex: 1 }}>
             <AnimatedText
-              text="Sua próxima viagem começa com uma conversa"
+              text="Sua próxima viagem começa aqui"
               delay={0.3}
               stagger={0.065}
               style={{
@@ -179,28 +180,19 @@ export default function Home() {
             />
           </div>
 
-          {/* Subheadline */}
-          <motion.p
+          {/* Rotating destination text */}
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              fontFamily: "var(--body-font)",
-              fontSize: "clamp(16px, 2vw, 19px)",
-              fontWeight: 400, color: "rgba(255,253,248,1.0)",
-              lineHeight: 1.65, marginBottom: 48,
-              maxWidth: 520, marginLeft: "auto", marginRight: "auto",
+              fontSize: "clamp(18px, 2.2vw, 26px)",
+              marginBottom: 48,
               position: "relative", zIndex: 1,
-              textShadow: [
-                "0 2px 24px rgba(0,0,0,0.85)",
-                "0 1px 6px rgba(0,0,0,0.95)",
-                "0 0 40px rgba(10,31,68,0.7)",
-              ].join(", "),
             }}
           >
-            Desenhamos experiências de viagem com a sua cara.
-            Da inspiração ao embarque, a gente cuida de tudo.
-          </motion.p>
+            <RotatingText />
+          </motion.div>
           </div>{/* /text-scrim wrapper */}
 
           {/* CTAs */}
@@ -287,9 +279,9 @@ export default function Home() {
             maxWidth: 860, margin: "0 auto",
             display: "flex", justifyContent: "space-around", flexWrap: "wrap", gap: 16,
           }}>
-            <StatItem value="40+"  label="Parceiros globais" />
-            <StatItem value="500+" label="Roteiros criados" />
-            <StatItem value="100%" label="Personalizado" />
+            <StatItem value="40+"  label="Destinos no mundo" />
+            <StatItem value="100%" label="Roteiros personalizados" />
+            <StatItem value="★"    label="Atendimento exclusivo" />
             <StatItem value="5★"   label="Experiência" />
           </div>
         </motion.div>
@@ -298,11 +290,12 @@ export default function Home() {
       {/* ════ MARQUEE ═════════════════════════════════════════════════ */}
       <MarqueeStrip direction="left" speed={50} />
 
-      {/* ════ PARCEIROS ═══════════════════════════════════════════════ */}
-      <PartnersCarousel />
 
       {/* ════ DESTINATIONS ════════════════════════════════════════════ */}
       <DestinationsSection />
+
+      {/* ════ SOBRE + VIVI ════════════════════════════════════════ */}
+      <AboutVivi />
 
       {/* ════ COMO FUNCIONA ═══════════════════════════════════════════ */}
       <section style={{
@@ -480,7 +473,7 @@ export default function Home() {
               </p>
             </div>
             {([
-              ["Navegação", ["Início", "Destinos", "Experiências", "Sobre", "Contato"]],
+              ["Navegação", ["Destinos", "Sobre", "Contato"]],
               ["Contato",   ["WhatsApp", "reservas@vivairtravel.com.br", "@vivair.travel"]],
               ["Legal",     ["Política de Privacidade", "Termos de Uso"]],
             ] as [string, string[]][]).map(([title, links]) => (
@@ -496,7 +489,13 @@ export default function Home() {
           </div>
           <div style={{ borderTop: "1px solid rgba(250,249,246,0.08)", paddingTop: 24, textAlign: "center" }}>
             <p style={{ fontSize: 12, fontWeight: 500, color: "var(--on-dark-3)" }}>
-              © 2026 VivAir Travel Design. Todos os direitos reservados.
+              VivAir Travel Design Ltda · CNPJ: [A PREENCHER] · Cadastur: [A PREENCHER]
+          </p>
+          <p style={{ fontSize: 12, color: "rgba(250,249,246,0.3)", marginTop: 6 }}>
+            Rio de Janeiro, RJ — Brasil
+          </p>
+          <p style={{ fontSize: 12, color: "rgba(250,249,246,0.3)", marginTop: 6 }}>
+            © 2026 VivAir Travel Design. Todos os direitos reservados.
             </p>
           </div>
         </div>
