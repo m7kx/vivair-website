@@ -134,14 +134,26 @@ export default function HeroBackground({
     })
   }, [])
 
-  // Cycle slides
+  // Cycle slides — pause when tab hidden to avoid stale timer accumulation
   useEffect(() => {
     if (!isMounted) return
     const entranceTimer = setTimeout(() => { firstDoneRef.current = true }, ENTRANCE_S * 1000 + 500)
-    const interval = setInterval(() => {
-      setIndex((i) => (i + 1) % SLIDES.length)
-    }, SLIDE_DURATION)
-    return () => { clearInterval(interval); clearTimeout(entranceTimer) }
+    let interval: ReturnType<typeof setInterval> | null = null
+    const start = () => {
+      if (interval) return
+      interval = setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), SLIDE_DURATION)
+    }
+    const stop = () => {
+      if (interval) { clearInterval(interval); interval = null }
+    }
+    const onVisibility = () => document.visibilityState === "hidden" ? stop() : start()
+    start()
+    document.addEventListener("visibilitychange", onVisibility)
+    return () => {
+      stop()
+      clearTimeout(entranceTimer)
+      document.removeEventListener("visibilitychange", onVisibility)
+    }
   }, [isMounted])
 
   const isCinematic = index === 0 && !firstDoneRef.current
@@ -162,7 +174,7 @@ export default function HeroBackground({
       }}
     >
       {/* ── Slideshow ── */}
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         <SlideItem
           key={index}
           slide={SLIDES[index]}
