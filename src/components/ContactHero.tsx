@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useEffect, useState } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Image from "next/image"
 
@@ -18,6 +18,16 @@ export default function ContactHero() {
   const { scrollY } = useScroll()
   const heroY = useTransform(scrollY, [0, 600], [0, -80])
 
+  // Detecta mobile para objectFit/objectPosition responsivos (SSR-safe)
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)")
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+
   return (
     <section
       ref={ref}
@@ -30,9 +40,10 @@ export default function ContactHero() {
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
+        background: "#0a1f44",
       }}
     >
-      {/* ── Parallax image ── */}
+      {/* ── Parallax wrapper ── */}
       <motion.div
         style={{
           position: "absolute",
@@ -40,34 +51,45 @@ export default function ContactHero() {
           y: heroY,
         }}
       >
-        {/* Ken Burns: base 1.0x (para mostrar o mapa-múndi completo), oscila +8% */}
+        {/*
+          Ken Burns:
+          • Mobile:  base 1.0  → escala natural, objectPosition mostra o mapa
+          • Desktop: base 1.15 → zoom +15% para nitidez, depois Ken Burns sobe até 1.21
+        */}
         <motion.div
-          animate={{ scale: [1.0, 1.08, 1.0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          style={{ width: "100%", height: "100%", transformOrigin: "center center" }}
+          animate={{
+            scale: isMobile ? [1.0, 1.06, 1.0] : [1.15, 1.21, 1.15],
+          }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          style={{ width: "100%", height: "100%", background: "#0a1f44" }}
         >
           <Image
             src="/contato-hero.jpg"
             alt="Travel map with passports and destinations"
             fill
             priority
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            style={{
+              // Mobile:  cover posicionado alto para priorizar o mapa
+              // Desktop: contain com base scale 1.15 via wrapper
+              objectFit: isMobile ? "cover" : "contain",
+              objectPosition: isMobile ? "50% 15%" : "center center",
+            }}
             sizes="100vw"
           />
         </motion.div>
       </motion.div>
 
-      {/* « Cinematic overlay « */}
+      {/* Overlay */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(155deg, rgba(10,31,68,0.95) 0%, rgba(10,31,68,0.80) 60%, rgba(10,31,68,0.60) 100%)",
+            "linear-gradient(155deg, rgba(10,31,68,0.95) 0%, rgba(10,31,68,0.75) 55%, rgba(10,31,68,0.50) 100%)",
           pointerEvents: "none",
         }}
       />
-      {/* Bottom vignette to blend into form section */}
+      {/* Bottom vignette */}
       <div
         style={{
           position: "absolute",
@@ -87,13 +109,12 @@ export default function ContactHero() {
         animate="show"
         style={{
           position: "relative",
-          zYndex: 2,
+          zIndex: 2,
           textAlign: "center",
           padding: "0 24px",
           maxWidth: 720,
         }}
       >
-        {/* Eyebrow */}
         <motion.p
           variants={fadeUp}
           style={{
@@ -102,14 +123,13 @@ export default function ContactHero() {
             fontWeight: 600,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "#ffffff",
+            color: "#c4a35a",
             marginBottom: 16,
           }}
         >
           Whycation · Experiências Sob Medida
         </motion.p>
 
-        {/* H1 */}
         <motion.h1
           variants={fadeUp}
           style={{
@@ -124,7 +144,6 @@ export default function ContactHero() {
           Conte-nos Seu Porquê
         </motion.h1>
 
-        {/* Subtitle */}
         <motion.p
           variants={fadeUp}
           style={{
@@ -142,7 +161,6 @@ export default function ContactHero() {
           porquê em memórias que duram a vida toda.
         </motion.p>
 
-        {/* Scroll cue */}
         <motion.div
           variants={fadeUp}
           animate={{ y: [0, 8, 0] }}

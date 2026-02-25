@@ -11,12 +11,11 @@ export default function CustomCursor() {
   const cursorX = useMotionValue(-100)
   const cursorY = useMotionValue(-100)
 
-  // Spring physics — outer ring lags behind for premium feel
-  const springConfig = { damping: 28, stiffness: 220, mass: 0.5 }
-  const dotX = useSpring(cursorX, { damping: 50, stiffness: 500, mass: 0.2 })
-  const dotY = useSpring(cursorY, { damping: 50, stiffness: 500, mass: 0.2 })
-  const ringX = useSpring(cursorX, springConfig)
-  const ringY = useSpring(cursorY, springConfig)
+  // Spring physics — dot: instantâneo; ring: leve lag para profundidade (não arrasto)
+  const dotX = useSpring(cursorX, { damping: 50, stiffness: 600, mass: 0.15 })
+  const dotY = useSpring(cursorY, { damping: 50, stiffness: 600, mass: 0.15 })
+  const ringX = useSpring(cursorX, { damping: 26, stiffness: 380, mass: 0.25 })
+  const ringY = useSpring(cursorY, { damping: 26, stiffness: 380, mass: 0.25 })
 
   useEffect(() => {
     // Only show on non-touch devices
@@ -32,7 +31,6 @@ export default function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false)
 
     const onEnterLink = () => setCursorState("link")
-    const onEnterHover = () => setCursorState("hover")
     const onLeaveInteractive = () => setCursorState("default")
 
     window.addEventListener("mousemove", moveCursor)
@@ -75,26 +73,26 @@ export default function CustomCursor() {
           top: dotY,
           zIndex: 99999,
           pointerEvents: "none",
-          mixBlendMode: "difference",
           translateX: "-50%",
           translateY: "-50%",
         }}
       >
         <motion.div
           animate={{
-            width: isHovered ? 8 : 6,
-            height: isHovered ? 8 : 6,
+            width: isHovered ? 9 : 7,
+            height: isHovered ? 9 : 7,
             opacity: isVisible ? 1 : 0,
           }}
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
           style={{
             borderRadius: "50%",
-            background: "#FAF9F6",
+            background: isHovered ? "#d4a853" : "#c4a35a",
+            boxShadow: "0 0 4px rgba(196,163,90,0.7)",
           }}
         />
       </motion.div>
 
-      {/* Ring — lags behind for depth */}
+      {/* Ring — leve lag para profundidade */}
       <motion.div
         style={{
           position: "fixed",
@@ -110,14 +108,17 @@ export default function CustomCursor() {
           animate={{
             width: isHovered ? 48 : 32,
             height: isHovered ? 48 : 32,
-            opacity: isVisible ? (isHovered ? 0.6 : 0.35) : 0,
-            borderColor: isHovered ? "rgba(196,163,90,0.9)" : "rgba(250,249,246,0.5)",
+            opacity: isVisible ? (isHovered ? 0.85 : 0.65) : 0,
+            borderColor: isHovered
+              ? "rgba(212,168,83,0.95)"
+              : "rgba(196,163,90,0.75)",
           }}
           transition={{ type: "spring", stiffness: 220, damping: 28 }}
           style={{
             borderRadius: "50%",
             border: "1.5px solid",
-            borderColor: "rgba(250,249,246,0.5)",
+            borderColor: "rgba(196,163,90,0.75)",
+            boxShadow: "0 0 6px rgba(196,163,90,0.25)",
           }}
         />
       </motion.div>
