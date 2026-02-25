@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { DM_Sans, Outfit, DM_Serif_Display } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import SmoothScrollProvider from "@/components/SmoothScrollProvider"
 import CustomCursor from "@/components/CustomCursor"
 import FloatingLogo from "@/components/FloatingLogo"
@@ -57,6 +58,7 @@ export default function RootLayout({
           {children}
         </SmoothScrollProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
