@@ -222,7 +222,7 @@ export default function Home() {
               </svg>
             </motion.a>
             <motion.a
-              href="https://app.onertravel.com/vivairtraveldesign/home"
+              href="https://app.onertravel.com/vivairtraveldesign"
               target="_blank" rel="noopener noreferrer"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
@@ -489,7 +489,7 @@ export default function Home() {
           </div>
           <div style={{ borderTop: "1px solid rgba(250,249,246,0.08)", paddingTop: 24, textAlign: "center" }}>
             <p style={{ fontSize: 12, fontWeight: 500, color: "var(--on-dark-3)" }}>
-              VivAir Travel Design Ltda · CNPJ: [A PREENCHER] · Cadastur: [A PREENCHER]
+              VivAir Travel Design Ltda · CNPJ: 61.722.893/0001-73 · Empresa ativa no Cadastur
           </p>
           <p style={{ fontSize: 12, color: "rgba(250,249,246,0.3)", marginTop: 6 }}>
             Rio de Janeiro, RJ — Brasil
