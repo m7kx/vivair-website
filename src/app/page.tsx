@@ -177,7 +177,7 @@ export default function Home() {
           style={{
             position: "relative", zIndex: 5,
             maxWidth: 860, margin: "0 auto",
-            padding: "140px 24px 120px",
+            padding: "clamp(80px,12vw,140px) 24px clamp(160px,20vw,200px)",
             textAlign: "center",
             y: heroContentY,
             opacity: heroOpacity,
@@ -248,7 +248,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontSize: "clamp(21px, 2.53vw, 30px)",
               marginBottom: 48,
@@ -544,7 +544,7 @@ export default function Home() {
               {[
                 { label: "Destinos", href: "#destinos" },
                 { label: "Sobre",    href: "#sobre"    },
-                { label: "Contato",  href: "#contato"  },
+                { label: "Contato",  href: "/contato"  },
               ].map(({ label, href }) => (
                 <FooterLink key={label} href={href} label={label} />
               ))}
