@@ -9,27 +9,37 @@ interface Slide {
   dy: number   // Ken Burns vertical drift (px, from center)
 }
 
-// 4 destinos paradisíacos — Unsplash CDN, 1920w, q=85
+// 6 destinos VivAir — fotos editoriais geradas via Gemini Nano Banana (2K, 16:9)
 const SLIDES: Slide[] = [
   {
-    // Maldivas — overwater bungalows, turquoise water
-    url: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1920&q=85&auto=format&fit=crop",
+    // Rio de Janeiro — Botafogo golden hour (MUST HAVE)
+    url: "/hero/hero-rio.jpg",
     dx: 18, dy: -12,
   },
   {
-    // Santorini — caldera, blue domes at sunset
-    url: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1920&q=85&auto=format&fit=crop",
+    // Maldivas — overwater bungalows sunset
+    url: "/hero/hero-maldivas.jpg",
     dx: -16, dy: -8,
   },
   {
-    // Bali — tropical rice terraces
-    url: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1920&q=85&auto=format&fit=crop",
+    // Santorini — blue domes blue hour
+    url: "/hero/hero-santorini.jpg",
     dx: 14, dy: -10,
   },
   {
-    // Dubai — skyline + desert at golden hour
-    url: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1920&q=85&auto=format&fit=crop",
-    dx: -20, dy: 8,
+    // Tokyo — cherry blossom at dusk
+    url: "/hero/hero-tokyo.jpg",
+    dx: -18, dy: 10,
+  },
+  {
+    // Paris — Eiffel Tower golden hour
+    url: "/hero/hero-paris.jpg",
+    dx: 20, dy: -8,
+  },
+  {
+    // Patagônia — Torres del Paine sunrise
+    url: "/hero/hero-patagonia.jpg",
+    dx: -14, dy: -12,
   },
 ]
 
@@ -252,7 +262,7 @@ export default function HeroBackground({
             color: "rgba(250,249,246,0.65)",
             fontFamily: "var(--heading-font)",
           }}>
-            {["Maldivas", "Santorini", "Bali", "Dubai"][index]}
+            {["Rio de Janeiro", "Maldivas", "Santorini", "Tokyo", "Paris", "Patagônia"][index]}
           </span>
         </motion.div>
       </AnimatePresence>

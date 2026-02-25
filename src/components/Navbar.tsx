@@ -4,10 +4,8 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 
 const LINKS = [
-  { label: "Início",       href: "#" },
   { label: "Destinos",     href: "#destinos" },
-  { label: "Experiências", href: "#" },
-  { label: "Sobre",        href: "#" },
+  { label: "Sobre",        href: "#sobre" },
   { label: "Contato",      href: "/contato" },
 ]
 
@@ -129,11 +127,11 @@ export default function Navbar() {
         animate={{ y: 0,  opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         style={{
-          position: "sticky", top: 0, zIndex: 1000,
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          background: scrolled ? "rgba(10,31,68,0.97)" : "rgba(10,31,68,0.88)",
-          borderBottom: "1px solid rgba(255,255,255,0.07)",
+          position: "fixed", top: 0, zIndex: 1000,
+          backdropFilter: scrolled ? "blur(24px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
+          background: scrolled ? "rgba(8,24,55,0.95)" : "transparent",
+          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none",
           transition: "background 0.4s ease",
           willChange: "transform",
         }}
@@ -184,7 +182,7 @@ export default function Navbar() {
             whileHover={{ scale: 1.05, y: -1 }}
             whileTap={{ scale: 0.97 }}
           >
-            Reserve Online
+            Monte seu Roteiro →
           </motion.a>
 
           {/* Hamburger — always visible */}
@@ -242,7 +240,7 @@ export default function Navbar() {
                     style={{
                       fontFamily: "var(--nav-font)", fontSize: 17, fontWeight: 500,
                       color: "rgba(250,249,246,0.8)", textDecoration: "none",
-                      padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.07)",
+                      padding: "12px 0", borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none",
                       display: "block", textAlign: "right" as const,
                     }}
                   >
@@ -263,7 +261,7 @@ export default function Navbar() {
                     textDecoration: "none", textAlign: "center", display: "block",
                   }}
                 >
-                  Reserve Online
+                  Monte seu Roteiro →
                 </motion.a>
               </div>
             </motion.div>
