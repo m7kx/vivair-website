@@ -186,7 +186,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              fontSize: "clamp(18px, 2.2vw, 26px)",
+              fontSize: "clamp(21px, 2.53vw, 30px)",
               marginBottom: 48,
               position: "relative", zIndex: 1,
             }}
