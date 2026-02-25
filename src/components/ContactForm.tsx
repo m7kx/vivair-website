@@ -519,6 +519,9 @@ export default function ContactForm() {
           >
             +55 (21) 99683-2196
           </a>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(245,240,232,0.35)" }}>
+            ou reservas@vivairtravel.com.br
+          </p>
         </motion.div>
       </div>
     </section>
