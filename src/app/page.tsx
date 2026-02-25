@@ -63,6 +63,70 @@ function GlowOrb({ top, left, size = 500, color = "rgba(196,163,90,0.06)", delay
 }
 
 /* ── Main page ────────────────────────────────────────────────────── */
+/* ── FooterLink ─────────────────────────────────────────────────────────── */
+interface FooterLinkProps {
+  href: string
+  label: string
+  icon?: React.ReactNode
+  target?: string
+}
+
+function FooterLink({ href, label, icon, target = "_self" }: FooterLinkProps) {
+  const [hovered, setHovered] = React.useState(false)
+  return (
+    <a
+      href={href}
+      target={target}
+      rel={target === "_blank" ? "noopener noreferrer" : undefined}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 7,
+        textDecoration: "none",
+        fontSize: 14,
+        fontWeight: 500,
+        lineHeight: 2.2,
+        color: hovered ? "rgba(250,249,246,0.95)" : "var(--on-dark-2)",
+        transition: "color 0.2s ease",
+      }}
+    >
+      {icon && (
+        <span style={{
+          display: "flex",
+          alignItems: "center",
+          flexShrink: 0,
+          transform: hovered ? "scale(1.12)" : "scale(1)",
+          transition: "transform 0.2s ease",
+          marginTop: 1,
+        }}>
+          {icon}
+        </span>
+      )}
+      <span style={{
+        position: "relative",
+        paddingBottom: 1,
+      }}>
+        {label}
+        <span style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          height: "1px",
+          width: "100%",
+          background: "rgba(200,169,110,0.6)",
+          borderRadius: 1,
+          transform: hovered ? "scaleX(1)" : "scaleX(0)",
+          transformOrigin: hovered ? "left" : "right",
+          transition: "transform 0.22s ease",
+          display: "block",
+        }}/>
+      </span>
+    </a>
+  )
+}
+
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null)
 
@@ -472,20 +536,79 @@ export default function Home() {
                 Travel Design — Desenhamos viagens com a sua cara.
               </p>
             </div>
-            {([
-              ["Navegação", ["Destinos", "Sobre", "Contato"]],
-              ["Contato",   ["WhatsApp", "reservas@vivairtravel.com.br", "@vivair.travel"]],
-              ["Legal",     ["Política de Privacidade", "Termos de Uso"]],
-            ] as [string, string[]][]).map(([title, links]) => (
-              <div key={title as string}>
-                <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "var(--on-dark-accent)", marginBottom: 16 }}>
-                  {title}
-                </p>
-                {(links as string[]).map((l) => (
-                  <p key={l} style={{ fontSize: 14, fontWeight: 500, color: "var(--on-dark-2)", lineHeight: 2.2 }}>{l}</p>
-                ))}
-              </div>
-            ))}
+            {/* Navegação */}
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "var(--on-dark-accent)", marginBottom: 16 }}>
+                Navegação
+              </p>
+              {[
+                { label: "Destinos", href: "#destinos" },
+                { label: "Sobre",    href: "#sobre"    },
+                { label: "Contato",  href: "#contato"  },
+              ].map(({ label, href }) => (
+                <FooterLink key={label} href={href} label={label} />
+              ))}
+            </div>
+
+            {/* Contato */}
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "var(--on-dark-accent)", marginBottom: 16 }}>
+                Contato
+              </p>
+              <FooterLink
+                href="https://wa.me/5521996832196"
+                label="+55 (21) 99683-2196"
+                target="_blank"
+                icon={
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.978-1.405A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2Z" fill="#25D366"/>
+                    <path d="M8.5 8.5c.2-.45.55-.5.9-.5h.4c.3 0 .55.2.65.45l.75 1.8c.1.25.05.55-.1.75l-.5.55c-.05.1-.05.2 0 .3.35.65.82 1.22 1.4 1.7.15.13.3.1.42-.02l.5-.5c.2-.2.5-.25.75-.1l1.8.85c.25.12.4.38.38.65v.42c-.02.5-.25.9-.6 1.15-.5.33-1.15.45-1.8.3-1.5-.35-2.85-1.2-3.85-2.4-.85-1-1.35-2.2-1.4-3.4-.03-.6.12-1.2.45-1.6Z" fill="white"/>
+                  </svg>
+                }
+              />
+              <FooterLink
+                href="mailto:reservas@vivairtravel.com.br"
+                label="reservas@vivairtravel.com.br"
+                icon={
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <rect x="2" y="4" width="20" height="16" rx="3" stroke="rgba(200,169,110,0.85)" strokeWidth="1.6"/>
+                    <path d="M2 7l9.293 6.293a1 1 0 0 0 1.414 0L22 7" stroke="rgba(200,169,110,0.85)" strokeWidth="1.6" strokeLinecap="round"/>
+                  </svg>
+                }
+              />
+              <FooterLink
+                href="https://instagram.com/vivair.travel"
+                label="@vivair.travel"
+                target="_blank"
+                icon={
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <defs>
+                      <linearGradient id="ig2" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stopColor="#f09433"/>
+                        <stop offset="50%" stopColor="#dc2743"/>
+                        <stop offset="100%" stopColor="#bc1888"/>
+                      </linearGradient>
+                    </defs>
+                    <rect x="2" y="2" width="20" height="20" rx="6" stroke="url(#ig2)" strokeWidth="1.6"/>
+                    <circle cx="12" cy="12" r="4.5" stroke="url(#ig2)" strokeWidth="1.5"/>
+                    <circle cx="17.5" cy="6.5" r="1.1" fill="url(#ig2)"/>
+                  </svg>
+                }
+              />
+            </div>
+
+            {/* Legal */}
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "var(--on-dark-accent)", marginBottom: 16 }}>
+                Legal
+              </p>
+              {[
+                { label: "Política de Privacidade", href: "/privacidade" },
+                { label: "Termos de Uso",           href: "/termos"     },
+              ].map(({ label, href }) => (
+                <FooterLink key={label} href={href} label={label} />
+              ))}
+            </div>
           </div>
           <div style={{ borderTop: "1px solid rgba(250,249,246,0.08)", paddingTop: 24, textAlign: "center" }}>
             <p style={{ fontSize: 12, fontWeight: 500, color: "var(--on-dark-3)" }}>
