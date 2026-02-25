@@ -190,3 +190,12 @@
     border-radius: 4px;
   }
 }
+
+/* ── Stats bar responsive: desktop inside hero / mobile below hero ── */
+.stats-bar-desktop { display: flex !important; }
+.stats-bar-mobile  { display: none  !important; }
+
+@media (max-width: 767px) {
+  .stats-bar-desktop { display: none  !important; }
+  .stats-bar-mobile  { display: block !important; }
+}
