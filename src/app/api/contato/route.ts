@@ -139,7 +139,7 @@ export async function POST(req: NextRequest) {
           Authorization: `Bearer ${resendKey}`,
         },
         body: JSON.stringify({
-          from: "site@vivairtravel.com.br",
+          from: process.env.RESEND_FROM ?? "onboarding@resend.dev",
           to: [resendTo],
           subject: `✦ Nova Whycation: ${payload.nome}`,
           html: `
