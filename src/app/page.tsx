@@ -196,8 +196,8 @@ export default function Home() {
               fontSize: 11, fontWeight: 700, letterSpacing: "0.16em",
               textTransform: "uppercase" as const,
               color: "var(--on-dark-accent)",
-              border: "1px solid rgba(196,163,90,0.35)",
-              background: "rgba(196,163,90,0.08)",
+              border: "1px solid rgba(196,163,90,0.20)",
+              background: "rgba(196,163,90,0.05)",
               backdropFilter: "blur(12px)",
             }}>
               <span style={{ fontSize: 16 }}>✦</span>
@@ -269,6 +269,7 @@ export default function Home() {
             <motion.a
               href="https://wa.me/5521996832196"
               target="_blank" rel="noopener noreferrer"
+              className="hero-cta-btn"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 10,
                 background: "var(--grad-cta)", color: "white",
@@ -288,6 +289,7 @@ export default function Home() {
             <motion.a
               href="https://app.onertravel.com/vivairtraveldesign"
               target="_blank" rel="noopener noreferrer"
+              className="hero-cta-btn"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 background: "rgba(255,255,255,0.10)", color: "var(--on-dark-1)",
