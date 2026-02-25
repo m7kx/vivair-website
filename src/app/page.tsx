@@ -326,11 +326,12 @@ export default function Home() {
           </motion.div>
         </motion.div>
 
-        {/* Stats bar */}
+        {/* Stats bar — desktop only (absolute, sobrepõe hero) */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.8, type: "spring" }}
+          className="stats-bar-desktop"
           style={{
             position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 6,
             background: "rgba(10,31,68,0.70)",
@@ -350,6 +351,33 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
+
+      {/* Stats bar — mobile only (fora da hero, aparece ao rolar) */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, type: "spring" }}
+        style={{
+          background: "rgba(10,31,68,0.95)",
+          backdropFilter: "blur(24px)",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          padding: "20px 24px",
+          // Only visible on mobile
+          display: "none",
+        }}
+        className="stats-bar-mobile"
+      >
+        <div style={{
+          maxWidth: 860, margin: "0 auto",
+          display: "flex", justifyContent: "space-around", flexWrap: "wrap", gap: 16,
+        }}>
+          <StatItem value="40+"  label="Destinos no mundo" />
+          <StatItem value="100%" label="Roteiros personalizados" />
+          <StatItem value="★"    label="Atendimento exclusivo" />
+          <StatItem value="5★"   label="Experiência" />
+        </div>
+      </motion.div>
 
       {/* ════ MARQUEE ═════════════════════════════════════════════════ */}
       <MarqueeStrip direction="left" speed={50} />
