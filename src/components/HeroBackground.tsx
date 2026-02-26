@@ -22,7 +22,7 @@ const SLIDES: Slide[] = [
   {
     url: "/hero/hero-rio.jpg",
     dx: 18, dy: -12,
-    desktopPos: "center 40%",
+    desktopPos: "center 15%",  // subido de 40% para expor Pão de Açúcar
     mobileCrop: "0% 4% 0% 64%",   // Pão de Açúcar at x≈80%
     label: "Rio de Janeiro",
   },
@@ -51,7 +51,7 @@ const SLIDES: Slide[] = [
     url: "/hero/hero-paris.jpg",
     dx: 20, dy: -8,
     desktopPos: "40% center",
-    mobileCrop: "8% 64% 0% 0%",   // Eiffel Tower at x≈15% — leftInset=0 exposes it
+    mobileCrop: "8% 64% 0% 0%",   // Eiffel Tower at x≈15% ‐ leftInset=0 exposes it
     label: "Paris",
   },
   {
@@ -65,10 +65,9 @@ const SLIDES: Slide[] = [
 
 const SLIDE_DURATION = 7000
 const CROSSFADE_S    = 2.5
-const ENTRANCE_S     = 2.0
-const KEN_DURATION   = SLIDE_DURATION / 1000
+const ENUPS��W��H����const KEN_DURATION   = SLIDE_DURATION / 1000
 
-// ── Single slide item ────────────────────────────────────────────────────────
+// ── Single slide item ───────────────────────────────────────────────────────
 function SlideItem({
   slide,
   isCinematic,
