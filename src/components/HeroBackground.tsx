@@ -6,10 +6,10 @@ import { motion, AnimatePresence, MotionValue } from "framer-motion"
 interface Slide {
   url: string
   urlMobile?: string   // Optional 9:16 portrait asset (generate in Gemini when needed)
-  dx: number           // Ken Burns horizontal drift (px) — desktop
+  dx: number           // Ken Burns horizontal drift (px) ┄ desktop
   dy: number           // Ken Burns vertical drift (px)
   desktopPos: string   // object-position on desktop/tablet
-  mobileCrop: string   // object-view-box inset() — portrait window centered on subject
+  mobileCrop: string   // object-view-box inset() ┄ portrait window centered on subject
   label: string
 }
 
@@ -51,7 +51,7 @@ const SLIDES: Slide[] = [
     url: "/hero/hero-paris.jpg",
     dx: 20, dy: -8,
     desktopPos: "40% center",
-    mobileCrop: "8% 51% 0% 17%",  // Eiffel Tower at x≈33%
+    mobileCrop: "8% 64% 0% 0%",   // Eiffel Tower at x≈15% — leftInset=0 exposes it
     label: "Paris",
   },
   {
@@ -68,7 +68,7 @@ const CROSSFADE_S    = 2.5
 const ENTRANCE_S     = 2.0
 const KEN_DURATION   = SLIDE_DURATION / 1000
 
-// ── Single slide item ──────────────────────────────────────────────────────────
+// ── Single slide item ────────────────────────────────────────────────────────
 function SlideItem({
   slide,
   isCinematic,
@@ -146,7 +146,7 @@ function SlideItem({
   )
 }
 
-// ── Main HeroBackground ────────────────────────────────────────────────────────
+// ── Main HeroBackground ──────────────────────────────────────────────────────
 export default function HeroBackground({
   y,
   scale: scrollScale,
@@ -221,7 +221,7 @@ export default function HeroBackground({
         />
       </AnimatePresence>
 
-      {/* ── Gradient overlay ── */}
+      {/* ── Gradient overlay ──  */}
       <div
         aria-hidden="true"
         style={{
