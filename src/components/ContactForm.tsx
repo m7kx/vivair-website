@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useId, useRef, useEffect } from "react"
+import { useState, useId, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
-/* ─────────────────── helpers ─────────────────── */
+/* ─────────────────────────── helpers ─────────────────────────────────── */
 
 const MAX = { nome: 80, email: 120, telefone: 25, mensagem: 600 } as const
 
@@ -26,7 +26,7 @@ function formatPhone(raw: string): string {
     return r
   }
 
-  // International or BR shorter — keep digits + original separators (free format)
+  // International or BR shorter – keep digits + original separators (free format)
   if (raw.startsWith("+")) return "+" + digits.slice(0, MAX.telefone - 1)
   return raw.slice(0, MAX.telefone)
 }
@@ -43,7 +43,7 @@ function validateField(name: keyof typeof MAX, value: string): string {
     return `${labels[name]} é obrigatório.`
   }
   if (name === "email" && !isValidEmail(v))
-    return "Informe um e-mail válido — ex: nome@exemplo.com"
+    return "Informe um e-mail válido – ex: nome@exemplo.com"
   if (name === "telefone" && v.replace(/\D/g, "").length < 8)
     return "Número muito curto. Verifique o telefone."
   if (value.length > MAX[name])
@@ -51,7 +51,7 @@ function validateField(name: keyof typeof MAX, value: string): string {
   return ""
 }
 
-/* ─────────────────── error hint ─────────────────── */
+/* ─────────────────────────── error hint ──────────────────────────────── */
 
 function ErrorHint({ msg }: { msg: string }) {
   return (
@@ -67,7 +67,7 @@ function ErrorHint({ msg }: { msg: string }) {
             marginTop: 6,
             paddingLeft: 4,
             fontSize: 12.5,
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: "\'DM Sans\', sans-serif",
             color: "rgba(255,140,120,0.92)",
             letterSpacing: "0.01em",
             display: "flex",
@@ -86,7 +86,7 @@ function ErrorHint({ msg }: { msg: string }) {
   )
 }
 
-/* ─────────────────── floating field ─────────────────── */
+/* ─────────────────────────── floating field ──────────────────────────── */
 
 interface FieldProps {
   label: string
@@ -124,7 +124,7 @@ function FloatingField({
     }`,
     borderRadius: 12,
     color: "#f5f0e8",
-    fontFamily: "'DM Sans', sans-serif",
+    fontFamily: "\'DM Sans\', sans-serif",
     fontSize: 16,
     padding: multiline ? "28px 20px 14px" : "24px 20px 10px",
     width: "100%",
@@ -170,7 +170,7 @@ function FloatingField({
           position: "absolute",
           top: multiline ? 16 : 17,
           left: 20,
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "\'DM Sans\', sans-serif",
           fontSize: 15,
           fontWeight: 500,
           pointerEvents: "none",
@@ -226,7 +226,7 @@ function FloatingField({
             style={{
               marginLeft: "auto",
               fontSize: 12,
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "\'DM Sans\', sans-serif",
               color: value.length > max * 0.9
                 ? "rgba(255,140,120,0.8)"
                 : "rgba(245,240,232,0.3)",
@@ -244,12 +244,7 @@ function FloatingField({
   )
 }
 
-/* ─────────────────── main form ─────────────────── */
-
-type Fields = { nome: string; email: string; telefone: string; mensagem: string }
-type Errors = Partial<Record<keyof Fields, string>>
-
-/* ── ContactLink ────────────────────────────────────────────────────────── */
+/* ─────────────────────────── ContactLink ─────────────────────────────── */
 
 interface ContactLinkProps {
   href: string
@@ -274,7 +269,7 @@ function ContactLink({ href, label, icon, iconColor, target = "_blank" }: Contac
         alignItems: "center",
         gap: 9,
         textDecoration: "none",
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "\'DM Sans\', sans-serif",
         fontSize: 14,
         fontWeight: 500,
         letterSpacing: "0.01em",
@@ -285,7 +280,7 @@ function ContactLink({ href, label, icon, iconColor, target = "_blank" }: Contac
         paddingBottom: 2,
       }}
     >
-      {/* Icon wrapper — glow on hover */}
+      {/* Icon wrapper – glow on hover */}
       <span
         style={{
           display: "flex",
@@ -323,12 +318,16 @@ function ContactLink({ href, label, icon, iconColor, target = "_blank" }: Contac
   )
 }
 
+/* ─────────────────────────── main form ───────────────────────────────── */
+
+type Fields = { nome: string; email: string; telefone: string; mensagem: string }
+type Errors = Partial<Record<keyof Fields, string>>
+
 export default function ContactForm() {
   const [form, setForm] = useState<Fields>({ nome: "", email: "", telefone: "", mensagem: "" })
   const [errors, setErrors] = useState<Errors>({})
   const [touched, setTouched] = useState<Partial<Record<keyof Fields, boolean>>>({})
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
-  const mountedAt = useRef<number>(Date.now())
 
   // Touch field on blur for per-field validation
   const touch = (field: keyof Fields) => () => {
@@ -367,20 +366,26 @@ export default function ContactForm() {
     if (!validate()) return
     setStatus("loading")
     try {
-      const res = await fetch("/api/contato", {
+      const res = await fetch("https://formsubmit.co/ajax/contato@vivairtravel.com.br", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           nome: form.nome,
           email: form.email,
           telefone: form.telefone,
-          porcque: form.mensagem,
-          // Anti-bot fields
-          _hp: "",                          // honeypot — must stay empty
-          _t: mountedAt.current,            // mount timestamp
+          mensagem: form.mensagem,
+          _subject: `✦ Nova Whycation: ${form.nome}`,
+          _replyto: form.email,
+          _captcha: "false",
+          _template: "table",
         }),
       })
       if (!res.ok) throw new Error("failed")
+      const data = await res.json()
+      if (data.success !== "true" && data.success !== true) throw new Error("rejected")
       setStatus("success")
     } catch {
       setStatus("error")
@@ -405,25 +410,25 @@ export default function ContactForm() {
           style={{ textAlign: "center", marginBottom: 52 }}
         >
           <p style={{
-            fontFamily: "var(--btn-font, 'DM Sans', sans-serif)",
+            fontFamily: "var(--btn-font, \'DM Sans\', sans-serif)",
             fontSize: 11, fontWeight: 600, letterSpacing: "0.18em",
             textTransform: "uppercase", color: "rgba(200,169,110,0.8)", marginBottom: 12,
           }}>
             Vamos Conversar
           </p>
           <h2 style={{
-            fontFamily: "'DM Serif Display', Georgia, serif",
+            fontFamily: "\'DM Serif Display\', Georgia, serif",
             fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 400,
             color: "#f5f0e8", lineHeight: 1.2, marginBottom: 14,
           }}>
             Envie Sua Mensagem
           </h2>
           <p style={{
-            fontFamily: "'Outfit', 'DM Sans', sans-serif", fontSize: 15,
+            fontFamily: "\'Outfit\', \'DM Sans\', sans-serif", fontSize: 15,
             color: "rgba(245,240,232,0.6)", lineHeight: 1.6,
             maxWidth: 480, margin: "0 auto",
           }}>
-            Qual é o propósito da sua próxima aventura? Conte-nos — e
+            Qual é o propósito da sua próxima aventura? Conte-nos – e
             criaremos uma Whycation feita para você.
           </p>
         </motion.div>
@@ -460,13 +465,13 @@ export default function ContactForm() {
                 </svg>
               </motion.div>
               <h3 style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: "\'DM Serif Display\', Georgia, serif",
                 fontSize: "1.6rem", color: "#f5f0e8", marginBottom: 10, fontWeight: 400,
               }}>
                 Recebemos seu porquê. ✦
               </h3>
               <p style={{
-                fontFamily: "'Outfit', sans-serif", fontSize: 15,
+                fontFamily: "\'Outfit\', sans-serif", fontSize: 15,
                 color: "rgba(245,240,232,0.6)", lineHeight: 1.65,
               }}>
                 Nosso time vai traçar sua rota e entrar em contato em breve.
@@ -480,10 +485,10 @@ export default function ContactForm() {
               noValidate
               style={{ display: "flex", flexDirection: "column", gap: 20 }}
             >
-              {/* Honeypot — visually hidden, bots fill it, humans don't */}
+              {/* Honeypot – visually hidden, bots fill it, humans don't */}
               <input
                 type="text"
-                name="_hp"
+                name="_honey"
                 autoComplete="off"
                 tabIndex={-1}
                 aria-hidden="true"
@@ -520,7 +525,7 @@ export default function ContactForm() {
 
               {/* Mensagem com contador */}
               <FloatingField
-                label="Seu Porquê — Motivação da Viagem" name="mensagem"
+                label="Seu Porquê – Motivação da Viagem" name="mensagem"
                 value={form.mensagem}
                 onChange={set("mensagem")} onBlur={touch("mensagem")}
                 placeholder="Aniversário de casamento? Primeira viagem em família? Fuga da rotina? Conte-nos..."
@@ -536,7 +541,7 @@ export default function ContactForm() {
                     exit={{ opacity: 0 }}
                     style={{
                       color: "rgba(255,140,120,0.85)", fontSize: 14,
-                      fontFamily: "'DM Sans', sans-serif", textAlign: "center",
+                      fontFamily: "\'DM Sans\', sans-serif", textAlign: "center",
                     }}
                   >
                     Algo deu errado. Tente novamente ou fale pelo WhatsApp.
@@ -556,7 +561,7 @@ export default function ContactForm() {
                   borderRadius: "var(--btn-radius, 100px)",
                   background: status === "loading" ? "rgba(200,169,110,0.5)" : "rgba(200,169,110,0.85)",
                   color: "#0a1f44",
-                  fontFamily: "var(--btn-font, 'DM Sans', sans-serif)",
+                  fontFamily: "var(--btn-font, \'DM Sans\', sans-serif)",
                   fontSize: 15, fontWeight: 700, border: "none",
                   cursor: status === "loading" ? "not-allowed" : "pointer",
                   letterSpacing: "0.02em",
@@ -569,7 +574,7 @@ export default function ContactForm() {
           )}
         </AnimatePresence>
 
-        {/* Footer info — contact links with icons + hover */}
+        {/* Footer info – contact links with icons + hover */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -601,8 +606,8 @@ export default function ContactForm() {
 
           {/* Email */}
           <ContactLink
-            href="mailto:reservas@vivairtravel.com.br"
-            label="reservas@vivairtravel.com.br"
+            href="mailto:contato@vivairtravel.com.br"
+            label="contato@vivairtravel.com.br"
             icon={
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="2" y="4" width="20" height="16" rx="3" stroke="rgba(200,169,110,0.9)" strokeWidth="1.6"/>
