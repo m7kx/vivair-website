@@ -5,50 +5,61 @@ import { motion, AnimatePresence, MotionValue } from "framer-motion"
 
 interface Slide {
   url: string
-  dx: number            // Ken Burns horizontal drift (px) — desktop
-  dy: number            // Ken Burns vertical drift (px)   — desktop
-  desktopPos: string    // backgroundPosition on desktop/tablet (≥768px)
-  mobilePos: string     // backgroundPosition on mobile (<768px)
+  urlMobile?: string   // Optional 9:16 portrait asset (generate in Gemini when needed)
+  dx: number           // Ken Burns horizontal drift (px) — desktop
+  dy: number           // Ken Burns vertical drift (px)
+  desktopPos: string   // object-position on desktop/tablet
+  mobileCrop: string   // object-view-box inset() — portrait window centered on subject
+  label: string
 }
 
-// 6 destinos VivAir — fotos editoriais geradas via Gemini Imagen 3 (2K, 16:9)
-// Focal points auditados por análise de composição — Wave 5 QA v3
+// Crop math for 9:16 portrait window from 16:9 source:
+//   cropWidth  = (9/16) / (16/9) = 81/256 ≈ 0.316 of image width
+//   leftInset  = max(0, subjectX − 0.158)
+//   rightInset = max(0, 1 − leftInset − 0.316)
+// Subject x-positions confirmed from Wave 5 focal-point audit.
 const SLIDES: Slide[] = [
   {
-    url: "/hero/hero-rio.jpg",       // Botafogo golden hour — Pão de Açúcar centro-direita
+    url: "/hero/hero-rio.jpg",
     dx: 18, dy: -12,
-    desktopPos: "center 40%",        // horizonte + montanhas visíveis, menos prédios
-    mobilePos: "80% center",         // shift direita: Pão de Açúcar no portrait
+    desktopPos: "center 40%",
+    mobileCrop: "0% 4% 0% 64%",   // Pão de Açúcar at x≈80%
+    label: "Rio de Janeiro",
   },
   {
-    url: "/hero/hero-maldivas.jpg",  // overwater bungalows sunset — composição simétrica
+    url: "/hero/hero-maldivas.jpg",
     dx: -16, dy: -8,
-    desktopPos: "center 45%",        // horizonte + bangalôs no centro-alto
-    mobilePos: "center center",      // simetria: sol + bangalôs centrados no portrait
+    desktopPos: "center 45%",
+    mobileCrop: "5% 34% 5% 34%",  // Bungalows centered at x≈50%
+    label: "Maldivas",
   },
   {
-    url: "/hero/hero-santorini.jpg", // blue domes blue hour — cúpulas centro-direita
+    url: "/hero/hero-santorini.jpg",
     dx: 14, dy: -10,
-    desktopPos: "60% center",        // cúpulas visíveis + espaço negativo esquerda p/ texto
-    mobilePos: "75% center",         // prioriza cúpulas azuis no corte portrait
+    desktopPos: "60% center",
+    mobileCrop: "8% 9% 0% 59%",   // Blue domes at x≈75%
+    label: "Santorini",
   },
   {
-    url: "/hero/hero-tokyo.jpg",     // Torre de Tokyo — levemente esquerda do centro
+    url: "/hero/hero-tokyo.jpg",
     dx: -18, dy: 10,
-    desktopPos: "40% center",        // torre levemente esquerda, espaço negativo direita
-    mobilePos: "38% center",         // trava Torre de Tokyo no corte portrait
+    desktopPos: "40% center",
+    mobileCrop: "0% 46% 5% 22%",  // Tokyo Tower at x≈38%
+    label: "Tokyo",
   },
   {
-    url: "/hero/hero-paris.jpg",     // Eiffel Tower golden hour — levemente esquerda
+    url: "/hero/hero-paris.jpg",
     dx: 20, dy: -8,
-    desktopPos: "40% center",        // Torre Eiffel visível, moldura de prédios preservada
-    mobilePos: "33% center",         // garante torre no corte vertical portrait
+    desktopPos: "40% center",
+    mobileCrop: "8% 51% 0% 17%",  // Eiffel Tower at x≈33%
+    label: "Paris",
   },
   {
-    url: "/hero/hero-patagonia.jpg", // Torres del Paine sunrise — deck + cadeiras esquerda
+    url: "/hero/hero-patagonia.jpg",
     dx: -14, dy: -12,
-    desktopPos: "center 60%",        // montanhas no topo + deck no primeiro plano
-    mobilePos: "20% center",         // deck + cadeiras visíveis no corte portrait
+    desktopPos: "center 60%",
+    mobileCrop: "5% 64% 0% 4%",   // Deck + peaks at x≈20%
+    label: "Patagônia",
   },
 ]
 
@@ -57,24 +68,37 @@ const CROSSFADE_S    = 2.5
 const ENTRANCE_S     = 2.0
 const KEN_DURATION   = SLIDE_DURATION / 1000
 
-// ── Single slide item ─────────────────────────────────────────────────────────
+// ── Single slide item ──────────────────────────────────────────────────────────
 function SlideItem({
   slide,
   isCinematic,
   isMobile,
+  isFirst,
 }: {
   slide: Slide
   isCinematic: boolean
   isMobile: boolean
+  isFirst: boolean
 }) {
-  const bgPos = isMobile ? slide.mobilePos : slide.desktopPos
+  const imgRef = useRef<HTMLImageElement>(null)
 
-  // Mobile: dezoom — cover já escala 16:9 → portrait de forma agressiva;
-  // reduzir inset e scale evita zoom excessivo e melhora enquadramento.
-  const innerInset  = isMobile ? "-2%" : "-6%"
-  const endScale    = isMobile ? 1.02  : 1.08
-  const dxFinal     = isMobile ? slide.dx * 0.35 : slide.dx
-  const dyFinal     = isMobile ? slide.dy * 0.35 : slide.dy
+  // object-view-box is not yet in React's CSSProperties — set via DOM ref.
+  // When urlMobile (portrait crop) is available it supersedes mobileCrop.
+  useEffect(() => {
+    const el = imgRef.current
+    if (!el) return
+    if (isMobile && slide.mobileCrop && !slide.urlMobile) {
+      el.style.setProperty("object-view-box", `inset(${slide.mobileCrop})`)
+    } else {
+      el.style.removeProperty("object-view-box")
+    }
+  }, [isMobile, slide.mobileCrop, slide.urlMobile])
+
+  const imgSrc     = isMobile && slide.urlMobile ? slide.urlMobile : slide.url
+  const innerInset = isMobile ? "-2%" : "-6%"
+  const endScale   = isMobile ? 1.02  : 1.08
+  const dxFinal    = isMobile ? slide.dx * 0.35 : slide.dx
+  const dyFinal    = isMobile ? slide.dy * 0.35 : slide.dy
 
   return (
     <motion.div
@@ -86,32 +110,43 @@ function SlideItem({
       animate={{ opacity: 1, scale: 1.0, filter: "blur(0px)" }}
       exit={{ opacity: 0, scale: 1.03, filter: "blur(8px)" }}
       transition={{
-        opacity:  { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S,       ease: [0.25, 0.46, 0.45, 0.94] },
-        scale:    { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S * 0.9, ease: [0.25, 0.46, 0.45, 0.94] },
-        filter:   { duration: isCinematic ? ENTRANCE_S * 0.75 : CROSSFADE_S * 0.7, ease: "easeOut" },
+        opacity: { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S,           ease: [0.25, 0.46, 0.45, 0.94] },
+        scale:   { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S * 0.9,     ease: [0.25, 0.46, 0.45, 0.94] },
+        filter:  { duration: isCinematic ? ENTRANCE_S * 0.75 : CROSSFADE_S * 0.7, ease: "easeOut" },
       }}
       style={{ position: "absolute", inset: 0 }}
     >
-      {/* Inner wrapper — Ken Burns (scale + drift) independent of fade */}
+      {/* Ken Burns wrapper — scale + drift independent of fade */}
       <motion.div
-        style={{
-          position: "absolute",
-          inset: innerInset,
-          backgroundImage: `url(${slide.url})`,
-          backgroundSize: "cover",
-          backgroundPosition: bgPos,
-          backgroundRepeat: "no-repeat",
-          willChange: "transform",
-        }}
+        style={{ position: "absolute", inset: innerInset, willChange: "transform" }}
         initial={{ x: 0, y: 0, scale: 1.0 }}
         animate={{ x: dxFinal, y: dyFinal, scale: endScale }}
         transition={{ duration: KEN_DURATION, ease: "linear" }}
-      />
+      >
+        <img
+          ref={imgRef}
+          src={imgSrc}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          loading={isFirst ? "eager" : "lazy"}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            // objectPosition baseline — fallback for browsers without object-view-box
+            objectPosition: isMobile ? "center" : slide.desktopPos,
+            userSelect: "none",
+            pointerEvents: "none",
+            display: "block",
+          }}
+        />
+      </motion.div>
     </motion.div>
   )
 }
 
-// ── Main HeroBackground ───────────────────────────────────────────────────────
+// ── Main HeroBackground ────────────────────────────────────────────────────────
 export default function HeroBackground({
   y,
   scale: scrollScale,
@@ -119,20 +154,18 @@ export default function HeroBackground({
   y?: MotionValue<string>
   scale?: MotionValue<number>
 }) {
-  const [index,     setIndex]    = useState(0)
-  const [isMounted, setMounted]  = useState(false)
+  const [index,     setIndex]   = useState(0)
+  const [isMounted, setMounted] = useState(false)
   const [isMobile,  setIsMobile] = useState(false)
   const firstDoneRef = useRef(false)
 
-  // Detect mobile on mount + on resize
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-    return () => window.removeEventListener("resize", checkMobile)
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
   }, [])
 
-  // Preload all images on mount
   useEffect(() => {
     setMounted(true)
     SLIDES.forEach((s) => {
@@ -141,7 +174,6 @@ export default function HeroBackground({
     })
   }, [])
 
-  // Cycle slides — pause when tab hidden to avoid stale timer accumulation
   useEffect(() => {
     if (!isMounted) return
     const entranceTimer = setTimeout(() => { firstDoneRef.current = true }, ENTRANCE_S * 1000 + 500)
@@ -153,20 +185,18 @@ export default function HeroBackground({
     const stop = () => {
       if (interval) { clearInterval(interval); interval = null }
     }
-    const onVisibility = () => document.visibilityState === "hidden" ? stop() : start()
+    const onVis = () => document.visibilityState === "hidden" ? stop() : start()
     start()
-    document.addEventListener("visibilitychange", onVisibility)
+    document.addEventListener("visibilitychange", onVis)
     return () => {
       stop()
       clearTimeout(entranceTimer)
-      document.removeEventListener("visibilitychange", onVisibility)
+      document.removeEventListener("visibilitychange", onVis)
     }
   }, [isMounted])
 
   const isCinematic = index === 0 && !firstDoneRef.current
-
-  // Mobile: outer inset menor → menos zoom headroom → imagem aparece mais "distante"
-  const outerInset = isMobile ? "-3%" : "-20%"
+  const outerInset  = isMobile ? "-3%" : "-20%"
 
   return (
     <motion.div
@@ -187,6 +217,7 @@ export default function HeroBackground({
           slide={SLIDES[index]}
           isCinematic={isCinematic}
           isMobile={isMobile}
+          isFirst={index === 0}
         />
       </AnimatePresence>
 
@@ -254,7 +285,7 @@ export default function HeroBackground({
         </div>
       )}
 
-      {/* ── Destination label — responsive bottom position ── */}
+      {/* ── Destination label ── */}
       <AnimatePresence mode="wait">
         <motion.div
           key={`label-${index}`}
@@ -287,7 +318,7 @@ export default function HeroBackground({
             color: "rgba(250,249,246,0.65)",
             fontFamily: "var(--heading-font)",
           }}>
-            {["Rio de Janeiro", "Maldivas", "Santorini", "Tokyo", "Paris", "Patagônia"][index]}
+            {SLIDES[index].label}
           </span>
         </motion.div>
       </AnimatePresence>
