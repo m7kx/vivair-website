@@ -1,31 +1,27 @@
 import type { Metadata } from "next"
-import { DM_Sans, Outfit, DM_Serif_Display } from "next/font/google"
+import { Instrument_Serif, Outfit } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import SmoothScrollProvider from "@/components/SmoothScrollProvider"
 import CustomCursor from "@/components/CustomCursor"
 import FloatingLogo from "@/components/FloatingLogo"
 import "./globals.css"
 
-const dmSans = DM_Sans({
+// — Display font: Instrument Serif (headlines, CTAs, editorial) ————————————
+
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
   subsets: ["latin"],
-  variable: "--font-dm-sans",
-  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
+  variable: "--font-display",
+  style: ["normal", "italic"],
 })
 
+// — Body/UI font: Outfit (navigation, body, UI elements) ————————————
 const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-outfit",
-  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
-})
-
-const dmSerifDisplay = DM_Serif_Display({
-  subsets: ["latin"],
-  variable: "--font-dm-serif",
-  weight: "400",
-  style: ["normal", "italic"],
-  display: "swap",
+  variable: "--font-body",
+  weight: ["300", "400", "500", "600", "700"],
 })
 
 export const metadata: Metadata = {
@@ -42,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body
-        className={`${dmSans.variable} ${outfit.variable} ${dmSerifDisplay.variable}`}
+        className={`${instrumentSerif.variable} ${outfit.variable}`}
         style={{ cursor: "none" }}
       >
         <CustomCursor />

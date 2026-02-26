@@ -1,9 +1,10 @@
 "use client"
 
-import { useRef } from "react"
+import React, { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import Navbar from "@/components/Navbar"
-import PartnersCarousel from "@/components/PartnersCarousel"
+import AboutVivi from "@/components/AboutVivi"
+import RotatingText from "@/components/RotatingText"
 import WhatsAppButton from "@/components/WhatsAppButton"
 import DestinationsSection from "@/components/DestinationsSection"
 import MarqueeStrip from "@/components/MarqueeStrip"
@@ -16,7 +17,7 @@ const steps = [
   { num: "01", title: "Conta pra gente",  desc: "Seu destino dos sonhos, datas e quem vai junto" },
   { num: "02", title: "A gente desenha",  desc: "Roteiro personalizado com voos, hotel e experiências" },
   { num: "03", title: "Você aprova",       desc: "Revisa, ajusta e a gente cuida de toda a reserva" },
-  { num: "04", title: "Só aproveitar",     desc: "E postar nos Stories 😉" },
+  { num: "04", title: "Só aproveitar",     desc: "Cada detalhe pensado para você" },
 ]
 
 /* ── Stat item ────────────────────────────────────────────────────── */
@@ -62,6 +63,70 @@ function GlowOrb({ top, left, size = 500, color = "rgba(196,163,90,0.06)", delay
 }
 
 /* ── Main page ────────────────────────────────────────────────────── */
+/* ── FooterLink ─────────────────────────────────────────────────────────── */
+interface FooterLinkProps {
+  href: string
+  label: string
+  icon?: React.ReactNode
+  target?: string
+}
+
+function FooterLink({ href, label, icon, target = "_self" }: FooterLinkProps) {
+  const [hovered, setHovered] = React.useState(false)
+  return (
+    <a
+      href={href}
+      target={target}
+      rel={target === "_blank" ? "noopener noreferrer" : undefined}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 7,
+        textDecoration: "none",
+        fontSize: 14,
+        fontWeight: 500,
+        lineHeight: 2.2,
+        color: hovered ? "rgba(250,249,246,0.95)" : "var(--on-dark-2)",
+        transition: "color 0.2s ease",
+      }}
+    >
+      {icon && (
+        <span style={{
+          display: "flex",
+          alignItems: "center",
+          flexShrink: 0,
+          transform: hovered ? "scale(1.12)" : "scale(1)",
+          transition: "transform 0.2s ease",
+          marginTop: 1,
+        }}>
+          {icon}
+        </span>
+      )}
+      <span style={{
+        position: "relative",
+        paddingBottom: 1,
+      }}>
+        {label}
+        <span style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          height: "1px",
+          width: "100%",
+          background: "rgba(200,169,110,0.6)",
+          borderRadius: 1,
+          transform: hovered ? "scaleX(1)" : "scaleX(0)",
+          transformOrigin: hovered ? "left" : "right",
+          transition: "transform 0.22s ease",
+          display: "block",
+        }}/>
+      </span>
+    </a>
+  )
+}
+
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null)
 
@@ -75,7 +140,7 @@ export default function Home() {
   const heroBgScale    = useTransform(heroScroll, [0, 1], [1, 1.08])
 
   return (
-    <main style={{ background: "var(--surface-page)", minHeight: "100vh", overflowX: "hidden" }}>
+    <main style={{ background: "var(--surface-page)", minHeight: "100vh", overflowX: "hidden", paddingTop: 0 }}>
       <Navbar />
 
       {/* ════ HERO ════════════════════════════════════════════════════ */}
@@ -112,7 +177,7 @@ export default function Home() {
           style={{
             position: "relative", zIndex: 5,
             maxWidth: 860, margin: "0 auto",
-            padding: "140px 24px 120px",
+            padding: "clamp(80px,12vw,140px) 24px clamp(160px,20vw,200px)",
             textAlign: "center",
             y: heroContentY,
             opacity: heroOpacity,
@@ -131,35 +196,19 @@ export default function Home() {
               fontSize: 11, fontWeight: 700, letterSpacing: "0.16em",
               textTransform: "uppercase" as const,
               color: "var(--on-dark-accent)",
-              border: "1px solid rgba(196,163,90,0.35)",
-              background: "rgba(196,163,90,0.08)",
+              border: "1px solid rgba(196,163,90,0.20)",
+              background: "rgba(196,163,90,0.05)",
               backdropFilter: "blur(12px)",
             }}>
               <span style={{ fontSize: 16 }}>✦</span>
-              Travel Design · Est. 2026
+              Travel Design Experience
             </span>
           </motion.div>
 
-          {/* Text scrim — subtle dark glow behind headline+subtitle for contrast */}
-          <div style={{
-            position: "relative",
-          }}>
-            <div
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                inset: "-32px -60px",
-                background: "radial-gradient(ellipse 90% 80% at 50% 50%, rgba(5,16,40,0.52) 0%, transparent 72%)",
-                borderRadius: 32,
-                pointerEvents: "none",
-                zIndex: 0,
-              }}
-            />
-
           {/* Main headline — word-by-word reveal */}
-          <div style={{ marginBottom: 28, justifyContent: "center", position: "relative", zIndex: 1 }}>
+          <div style={{ marginBottom: 28, justifyContent: "center" }}>
             <AnimatedText
-              text="Sua próxima viagem começa com uma conversa"
+              text="Sua próxima viagem começa aqui"
               delay={0.3}
               stagger={0.065}
               style={{
@@ -179,29 +228,20 @@ export default function Home() {
             />
           </div>
 
-          {/* Subheadline */}
-          <motion.p
+          {/* Rotating destination text */}
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              fontFamily: "var(--body-font)",
-              fontSize: "clamp(16px, 2vw, 19px)",
-              fontWeight: 400, color: "rgba(255,253,248,1.0)",
-              lineHeight: 1.65, marginBottom: 48,
-              maxWidth: 520, marginLeft: "auto", marginRight: "auto",
+              fontSize: "clamp(21px, 2.53vw, 30px)",
+              marginBottom: 48,
               position: "relative", zIndex: 1,
-              textShadow: [
-                "0 2px 24px rgba(0,0,0,0.85)",
-                "0 1px 6px rgba(0,0,0,0.95)",
-                "0 0 40px rgba(10,31,68,0.7)",
-              ].join(", "),
             }}
           >
-            Desenhamos experiências de viagem com a sua cara.
-            Da inspiração ao embarque, a gente cuida de tudo.
-          </motion.p>
-          </div>{/* /text-scrim wrapper */}
+            <RotatingText />
+          </motion.div>
+
 
           {/* CTAs */}
           <motion.div
@@ -216,8 +256,8 @@ export default function Home() {
               style={{
                 display: "inline-flex", alignItems: "center", gap: 10,
                 background: "var(--grad-cta)", color: "white",
-                padding: "18px 40px", borderRadius: "var(--btn-radius)",
-                fontFamily: "var(--btn-font)", fontSize: 17,
+                padding: "clamp(11px,2.5vw,18px) clamp(20px,5vw,40px)", borderRadius: "var(--btn-radius)",
+                fontFamily: "var(--btn-font)", fontSize: "clamp(13px,3.5vw,17px)",
                 fontWeight: 600, textDecoration: "none",
               }}
               whileHover={{ scale: 1.05, y: -3 }}
@@ -230,13 +270,13 @@ export default function Home() {
               </svg>
             </motion.a>
             <motion.a
-              href="https://app.onertravel.com/vivairtraveldesign/home"
+              href="https://app.onertravel.com/vivairtraveldesign"
               target="_blank" rel="noopener noreferrer"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 background: "rgba(255,255,255,0.10)", color: "var(--on-dark-1)",
-                padding: "18px 40px", borderRadius: "var(--btn-radius)",
-                fontFamily: "var(--btn-font)", fontSize: 17, fontWeight: 500,
+                padding: "clamp(11px,2.5vw,18px) clamp(20px,5vw,40px)", borderRadius: "var(--btn-radius)",
+                fontFamily: "var(--btn-font)", fontSize: "clamp(13px,3.5vw,17px)", fontWeight: 500,
                 border: "1px solid rgba(255,255,255,0.20)", textDecoration: "none",
                 backdropFilter: "blur(12px)",
               }}
@@ -270,11 +310,12 @@ export default function Home() {
           </motion.div>
         </motion.div>
 
-        {/* Stats bar */}
+        {/* Stats bar — desktop only (absolute, sobrepõe hero) */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.8, type: "spring" }}
+          className="stats-bar-desktop"
           style={{
             position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 6,
             background: "rgba(10,31,68,0.70)",
@@ -287,22 +328,50 @@ export default function Home() {
             maxWidth: 860, margin: "0 auto",
             display: "flex", justifyContent: "space-around", flexWrap: "wrap", gap: 16,
           }}>
-            <StatItem value="40+"  label="Parceiros globais" />
-            <StatItem value="500+" label="Roteiros criados" />
-            <StatItem value="100%" label="Personalizado" />
+            <StatItem value="40+"  label="Destinos no mundo" />
+            <StatItem value="100%" label="Roteiros personalizados" />
+            <StatItem value="★"    label="Atendimento exclusivo" />
             <StatItem value="5★"   label="Experiência" />
           </div>
         </motion.div>
       </section>
 
+      {/* Stats bar — mobile only (fora da hero, aparece ao rolar) */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, type: "spring" }}
+        style={{
+          background: "rgba(10,31,68,0.95)",
+          backdropFilter: "blur(24px)",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          padding: "20px 24px",
+          // Only visible on mobile
+          display: "none",
+        }}
+        className="stats-bar-mobile"
+      >
+        <div style={{
+          maxWidth: 860, margin: "0 auto",
+          display: "flex", justifyContent: "space-around", flexWrap: "wrap", gap: 16,
+        }}>
+          <StatItem value="40+"  label="Destinos no mundo" />
+          <StatItem value="100%" label="Roteiros personalizados" />
+          <StatItem value="★"    label="Atendimento exclusivo" />
+          <StatItem value="5★"   label="Experiência" />
+        </div>
+      </motion.div>
+
       {/* ════ MARQUEE ═════════════════════════════════════════════════ */}
       <MarqueeStrip direction="left" speed={50} />
 
-      {/* ════ PARCEIROS ═══════════════════════════════════════════════ */}
-      <PartnersCarousel />
 
       {/* ════ DESTINATIONS ════════════════════════════════════════════ */}
       <DestinationsSection />
+
+      {/* ════ SOBRE + VIVI ════════════════════════════════════════ */}
+      <AboutVivi />
 
       {/* ════ COMO FUNCIONA ═══════════════════════════════════════════ */}
       <section style={{
@@ -448,13 +517,13 @@ export default function Home() {
             style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}
           >
             <motion.a href="https://wa.me/5521996832196" target="_blank" rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--grad-cta)", color: "white", padding: "18px 40px", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: 17, fontWeight: 600, textDecoration: "none" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--grad-cta)", color: "white", padding: "clamp(11px,2.5vw,18px) clamp(20px,5vw,40px)", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: "clamp(13px,3.5vw,17px)", fontWeight: 600, textDecoration: "none" }}
               whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}>
               Desenhe sua viagem
             </motion.a>
             <motion.a href="https://wa.me/5521996832196" target="_blank" rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.08)", color: "var(--on-dark-1)", padding: "18px 40px", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: 17, fontWeight: 500, border: "1px solid rgba(255,255,255,0.18)", textDecoration: "none", backdropFilter: "blur(12px)" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.08)", color: "var(--on-dark-1)", padding: "clamp(11px,2.5vw,18px) clamp(20px,5vw,40px)", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: "clamp(13px,3.5vw,17px)", fontWeight: 500, border: "1px solid rgba(255,255,255,0.18)", textDecoration: "none", backdropFilter: "blur(12px)" }}
               whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}>
               WhatsApp
@@ -479,23 +548,96 @@ export default function Home() {
                 Travel Design — Desenhamos viagens com a sua cara.
               </p>
             </div>
-            {([
-              ["Navegação", ["Início", "Destinos", "Experiências", "Sobre", "Contato"]],
-              ["Contato",   ["WhatsApp", "reservas@vivairtravel.com.br", "@vivair.travel"]],
-              ["Legal",     ["Política de Privacidade", "Termos de Uso"]],
-            ] as [string, string[]][]).map(([title, links]) => (
-              <div key={title as string}>
-                <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "var(--on-dark-accent)", marginBottom: 16 }}>
-                  {title}
-                </p>
-                {(links as string[]).map((l) => (
-                  <p key={l} style={{ fontSize: 14, fontWeight: 500, color: "var(--on-dark-2)", lineHeight: 2.2 }}>{l}</p>
-                ))}
-              </div>
-            ))}
+            {/* Navegação */}
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "var(--on-dark-accent)", marginBottom: 16 }}>
+                Navegação
+              </p>
+              {[
+                { label: "Destinos", href: "#destinos" },
+                { label: "Sobre",    href: "#sobre"    },
+                { label: "Contato",  href: "/contato"  },
+              ].map(({ label, href }) => (
+                <FooterLink key={label} href={href} label={label} />
+              ))}
+            </div>
+
+            {/* Contato */}
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "var(--on-dark-accent)", marginBottom: 16 }}>
+                Contato
+              </p>
+              <FooterLink
+                href="https://wa.me/5521996832196"
+                label="+55 (21) 99683-2196"
+                target="_blank"
+                icon={
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.978-1.405A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2Z" fill="#25D366"/>
+                    <path d="M8.5 8.5c.2-.45.55-.5.9-.5h.4c.3 0 .55.2.65.45l.75 1.8c.1.25.05.55-.1.75l-.5.55c-.05.1-.05.2 0 .3.35.65.82 1.22 1.4 1.7.15.13.3.1.42-.02l.5-.5c.2-.2.5-.25.75-.1l1.8.85c.25.12.4.38.38.65v.42c-.02.5-.25.9-.6 1.15-.5.33-1.15.45-1.8.3-1.5-.35-2.85-1.2-3.85-2.4-.85-1-1.35-2.2-1.4-3.4-.03-.6.12-1.2.45-1.6Z" fill="white"/>
+                  </svg>
+                }
+              />
+              <FooterLink
+                href="mailto:reservas@vivairtravel.com.br"
+                label="reservas@vivairtravel.com.br"
+                icon={
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <rect x="2" y="4" width="20" height="16" rx="3" stroke="rgba(200,169,110,0.85)" strokeWidth="1.6"/>
+                    <path d="M2 7l9.293 6.293a1 1 0 0 0 1.414 0L22 7" stroke="rgba(200,169,110,0.85)" strokeWidth="1.6" strokeLinecap="round"/>
+                  </svg>
+                }
+              />
+              <FooterLink
+                href="https://instagram.com/vivair.travel"
+                label="@vivair.travel"
+                target="_blank"
+                icon={
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <defs>
+                      <linearGradient id="ig2" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stopColor="#f09433"/>
+                        <stop offset="50%" stopColor="#dc2743"/>
+                        <stop offset="100%" stopColor="#bc1888"/>
+                      </linearGradient>
+                    </defs>
+                    <rect x="2" y="2" width="20" height="20" rx="6" stroke="url(#ig2)" strokeWidth="1.6"/>
+                    <circle cx="12" cy="12" r="4.5" stroke="url(#ig2)" strokeWidth="1.5"/>
+                    <circle cx="17.5" cy="6.5" r="1.1" fill="url(#ig2)"/>
+                  </svg>
+                }
+              />
+            </div>
+
+            {/* Legal */}
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "var(--on-dark-accent)", marginBottom: 16 }}>
+                Legal
+              </p>
+              {[
+                { label: "Política de Privacidade", href: "/privacidade" },
+                { label: "Termos de Uso",           href: "/termos"     },
+              ].map(({ label, href }) => (
+                <FooterLink key={label} href={href} label={label} />
+              ))}
+            </div>
           </div>
           <div style={{ borderTop: "1px solid rgba(250,249,246,0.08)", paddingTop: 24, textAlign: "center" }}>
             <p style={{ fontSize: 12, fontWeight: 500, color: "var(--on-dark-3)" }}>
+              VivAir Travel Design Ltda · CNPJ: 61.722.893/0001-73 · Empresa ativa no Cadastur
+            </p>
+            {/* IATA credential badge */}
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 10, padding: "5px 14px", borderRadius: 100, border: "1px solid rgba(196,163,90,0.25)", background: "rgba(196,163,90,0.06)" }}>
+              <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "rgba(196,163,90,0.85)" }}>IATA</span>
+              <span style={{ width: 1, height: 10, background: "rgba(196,163,90,0.2)" }} />
+              <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(250,249,246,0.55)", letterSpacing: "0.08em" }}>96219093</span>
+              <span style={{ width: 1, height: 10, background: "rgba(196,163,90,0.2)" }} />
+              <span style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "rgba(196,163,90,0.6)" }}>Agente Credenciado</span>
+            </div>
+            <p style={{ fontSize: 12, color: "rgba(250,249,246,0.3)", marginTop: 10 }}>
+              Rio de Janeiro, RJ — Brasil
+            </p>
+            <p style={{ fontSize: 12, color: "rgba(250,249,246,0.3)", marginTop: 6 }}>
               © 2026 VivAir Travel Design. Todos os direitos reservados.
             </p>
           </div>

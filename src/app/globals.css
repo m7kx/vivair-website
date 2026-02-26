@@ -9,6 +9,9 @@
 
 @layer base {
   :root {
+    /* ── Next.js Font variables (injected by layout.tsx) ─────────── */
+    /* --font-display → Instrument Serif (headlines, editorial)      */
+    /* --font-body    → Outfit (UI, navigation, body text)           */
     /* ── LAYER 0: PRIMITIVAS ────────────────────────────────
        Raw values. Change here to update everything.
        ────────────────────────────────────────────────────── */
@@ -29,8 +32,8 @@
     --p-gray-100:       #F3F3F0;
 
     /* Typography — swap = change these 2 lines */
-    --p-font-primary:   'DM Sans', sans-serif;
-    --p-font-accent:    'DM Serif Display', serif;
+    --p-font-primary:   var(--font-body), 'Outfit', system-ui, sans-serif;
+    --p-font-accent:    var(--font-display), 'Instrument Serif', Georgia, serif;
 
     /* Type scale (modular ~1.25) */
     --p-text-xs:   11px;
@@ -136,7 +139,7 @@
     --hero-lh:     1.1;
 
     /* Section heading */
-    --heading-font:   var(--p-font-primary);
+    --heading-font:   var(--p-font-accent);
     --heading-weight: var(--p-w-bold);
 
     /* Body copy */
@@ -187,3 +190,13 @@
     border-radius: 4px;
   }
 }
+
+/* ── Stats bar responsive: desktop inside hero / mobile below hero ── */
+.stats-bar-desktop { display: flex !important; }
+.stats-bar-mobile  { display: none  !important; }
+
+@media (max-width: 767px) {
+  .stats-bar-desktop { display: none  !important; }
+  .stats-bar-mobile  { display: block !important; }
+}
+

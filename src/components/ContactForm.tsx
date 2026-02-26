@@ -249,6 +249,80 @@ function FloatingField({
 type Fields = { nome: string; email: string; telefone: string; mensagem: string }
 type Errors = Partial<Record<keyof Fields, string>>
 
+/* ── ContactLink ────────────────────────────────────────────────────────── */
+
+interface ContactLinkProps {
+  href: string
+  label: string
+  icon: React.ReactNode
+  iconColor: string
+  target?: string
+}
+
+function ContactLink({ href, label, icon, iconColor, target = "_blank" }: ContactLinkProps) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <a
+      href={href}
+      target={target}
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 9,
+        textDecoration: "none",
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: 14,
+        fontWeight: 500,
+        letterSpacing: "0.01em",
+        color: hovered ? "#f5f0e8" : "rgba(245,240,232,0.55)",
+        transform: hovered ? "translateY(-1px)" : "translateY(0)",
+        transition: "color 0.22s ease, transform 0.22s ease",
+        position: "relative",
+        paddingBottom: 2,
+      }}
+    >
+      {/* Icon wrapper — glow on hover */}
+      <span
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+          filter: hovered ? `drop-shadow(0 0 6px ${iconColor})` : "none",
+          transform: hovered ? "scale(1.15)" : "scale(1)",
+          transition: "filter 0.25s ease, transform 0.25s ease",
+        }}
+      >
+        {icon}
+      </span>
+
+      {/* Label with slide-in underline */}
+      <span style={{ position: "relative" }}>
+        {label}
+        <span
+          style={{
+            position: "absolute",
+            bottom: -1,
+            left: 0,
+            height: 1,
+            width: "100%",
+            background: iconColor,
+            borderRadius: 2,
+            transform: hovered ? "scaleX(1)" : "scaleX(0)",
+            transformOrigin: hovered ? "left" : "right",
+            transition: "transform 0.25s ease",
+            display: "block",
+          }}
+        />
+      </span>
+    </a>
+  )
+}
+
 export default function ContactForm() {
   const [form, setForm] = useState<Fields>({ nome: "", email: "", telefone: "", mensagem: "" })
   const [errors, setErrors] = useState<Errors>({})
@@ -495,7 +569,7 @@ export default function ContactForm() {
           )}
         </AnimatePresence>
 
-        {/* Footer info */}
+        {/* Footer info — contact links with icons + hover */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -503,22 +577,67 @@ export default function ContactForm() {
           transition={{ delay: 0.5, duration: 0.6 }}
           style={{
             textAlign: "center", marginTop: 52,
-            display: "flex", flexDirection: "column", gap: 6,
+            display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
           }}
         >
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(245,240,232,0.35)" }}>
-            Ou fale diretamente pelo WhatsApp
-          </p>
-          <a
+          {/* WhatsApp */}
+          <ContactLink
             href="https://wa.me/5521996832196"
-            target="_blank" rel="noopener noreferrer"
-            style={{
-              fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600,
-              color: "rgba(200,169,110,0.75)", textDecoration: "none", letterSpacing: "0.01em",
-            }}
-          >
-            +55 (21) 99683-2196
-          </a>
+            label="+55 (21) 99683-2196"
+            icon={
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.978-1.405A9.953 9.953 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2Z"
+                  fill="#25D366"
+                />
+                <path
+                  d="M8.5 8.5c.2-.45.55-.5.9-.5h.4c.3 0 .55.2.65.45l.75 1.8c.1.25.05.55-.1.75l-.5.55c-.05.1-.05.2 0 .3.35.65.82 1.22 1.4 1.7.15.13.3.1.42-.02l.5-.5c.2-.2.5-.25.75-.1l1.8.85c.25.12.4.38.38.65v.42c-.02.5-.25.9-.6 1.15-.5.33-1.15.45-1.8.3-1.5-.35-2.85-1.2-3.85-2.4-.85-1-1.35-2.2-1.4-3.4-.03-.6.12-1.2.45-1.6Z"
+                  fill="white"
+                />
+              </svg>
+            }
+            iconColor="#25D366"
+          />
+
+          {/* Email */}
+          <ContactLink
+            href="mailto:reservas@vivairtravel.com.br"
+            label="reservas@vivairtravel.com.br"
+            icon={
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="4" width="20" height="16" rx="3" stroke="rgba(200,169,110,0.9)" strokeWidth="1.6"/>
+                <path
+                  d="M2 7l9.293 6.293a1 1 0 0 0 1.414 0L22 7"
+                  stroke="rgba(200,169,110,0.9)" strokeWidth="1.6" strokeLinecap="round"
+                />
+              </svg>
+            }
+            iconColor="rgba(200,169,110,0.9)"
+          />
+
+          {/* Instagram */}
+          <ContactLink
+            href="https://instagram.com/vivair.travel"
+            label="@vivair.travel"
+            target="_blank"
+            icon={
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="ig-grad" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#f09433"/>
+                    <stop offset="25%" stopColor="#e6683c"/>
+                    <stop offset="50%" stopColor="#dc2743"/>
+                    <stop offset="75%" stopColor="#cc2366"/>
+                    <stop offset="100%" stopColor="#bc1888"/>
+                  </linearGradient>
+                </defs>
+                <rect x="2" y="2" width="20" height="20" rx="6" stroke="url(#ig-grad)" strokeWidth="1.7"/>
+                <circle cx="12" cy="12" r="4.5" stroke="url(#ig-grad)" strokeWidth="1.6"/>
+                <circle cx="17.5" cy="6.5" r="1.1" fill="url(#ig-grad)"/>
+              </svg>
+            }
+            iconColor="#e1306c"
+          />
         </motion.div>
       </div>
     </section>

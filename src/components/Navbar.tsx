@@ -4,10 +4,8 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 
 const LINKS = [
-  { label: "Início",       href: "#" },
   { label: "Destinos",     href: "#destinos" },
-  { label: "Experiências", href: "#" },
-  { label: "Sobre",        href: "#" },
+  { label: "Sobre",        href: "#sobre" },
   { label: "Contato",      href: "/contato" },
 ]
 
@@ -72,7 +70,6 @@ function HamburgerButton({ open, onClick }: { open: boolean; onClick: () => void
     <button
       onClick={onClick}
       aria-label={open ? "Fechar menu" : "Abrir menu"}
-      className="hamburger-btn"
       style={{
         background: "none", border: "none", cursor: "pointer",
         padding: "8px", display: "flex", flexDirection: "column",
@@ -111,7 +108,7 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    const onResize = () => { if (window.innerWidth >= 768) setOpen(false) }
+    const onResize = () => { if (window.innerWidth >= 1024) setOpen(false) }
     window.addEventListener("resize", onResize)
     return () => window.removeEventListener("resize", onResize)
   }, [])
@@ -129,11 +126,11 @@ export default function Navbar() {
         animate={{ y: 0,  opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         style={{
-          position: "sticky", top: 0, zIndex: 1000,
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          background: scrolled ? "rgba(10,31,68,0.97)" : "rgba(10,31,68,0.88)",
-          borderBottom: "1px solid rgba(255,255,255,0.07)",
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
+          backdropFilter: scrolled ? "blur(24px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
+          background: scrolled ? "rgba(8,24,55,0.95)" : "transparent",
+          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none",
           transition: "background 0.4s ease",
           willChange: "transform",
         }}
@@ -149,18 +146,18 @@ export default function Navbar() {
         />
 
         <div style={{
-          maxWidth: 1200, margin: "0 auto", padding: "0 20px",
-          display: "flex", alignItems: "center",
+          maxWidth: 1200, margin: "0 auto", padding: "0 24px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
           height: 64,
-        }} className="nav-inner-row">
+        }}>
 
-          {/* Left spacer — matches FloatingLogo width so nav feels balanced */}
-          <div className="desktop-nav" style={{ width: 68, flexShrink: 0 }} />
+          {/* Left spacer — matches FloatingLogo width so nav feels balanced (desktop only) */}
+          <div className="nav-spacer" style={{ width: 68, flexShrink: 0 }} />
 
           {/* Desktop nav — centered */}
           <div
-            className="desktop-nav"
-            style={{ display: "flex", gap: 32, alignItems: "center" }}
+            className="nav-links"
+            style={{ display: "flex", gap: 32, alignItems: "center", flex: 1, justifyContent: "center" }}
           >
             {LINKS.map((l, i) => (
               <NavLink key={l.label} label={l.label} href={l.href} index={i} />
@@ -169,14 +166,15 @@ export default function Navbar() {
 
           {/* CTA button — desktop only */}
           <motion.a
-            className="desktop-nav"
-            href="https://app.onertravel.com/vivairtraveldesign/home"
+            className="nav-cta"
+            href="https://app.onertravel.com/vivairtraveldesign"
             target="_blank" rel="noopener noreferrer"
             style={{
               background: "var(--grad-cta)", color: "white",
               padding: "10px 22px", borderRadius: "var(--btn-radius)",
               fontFamily: "var(--btn-font)", fontSize: 14,
               fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap",
+              flexShrink: 0,
             }}
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -184,11 +182,11 @@ export default function Navbar() {
             whileHover={{ scale: 1.05, y: -1 }}
             whileTap={{ scale: 0.97 }}
           >
-            Reserve Online
+            Monte seu Roteiro →
           </motion.a>
 
-          {/* Hamburger — always visible */}
-          <div className="hamburger-btn">
+          {/* Hamburger — mobile only */}
+          <div className="nav-hamburger" style={{ marginLeft: "auto" }}>
             <HamburgerButton open={open} onClick={() => setOpen(!open)} />
           </div>
         </div>
@@ -250,7 +248,7 @@ export default function Navbar() {
                   </motion.a>
                 ))}
                 <motion.a
-                  href="https://app.onertravel.com/vivairtraveldesign/home"
+                  href="https://app.onertravel.com/vivairtraveldesign"
                   target="_blank" rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
                   initial={{ opacity: 0, y: 8 }}
@@ -263,7 +261,7 @@ export default function Navbar() {
                     textDecoration: "none", textAlign: "center", display: "block",
                   }}
                 >
-                  Reserve Online
+                  Monte seu Roteiro →
                 </motion.a>
               </div>
             </motion.div>
@@ -272,13 +270,18 @@ export default function Navbar() {
       </AnimatePresence>
 
       <style>{`
-        .desktop-nav { display: none !important; }
-        .hamburger-btn { display: flex !important; }
-        .nav-inner-row { justify-content: flex-end; }
-        @media (min-width: 768px) {
-          .desktop-nav { display: flex !important; }
-          .hamburger-btn { display: flex !important; }
-          .nav-inner-row { justify-content: space-between; }
+        /* ── Mobile default: only hamburger visible ── */
+        .nav-spacer  { display: none; }
+        .nav-links   { display: none !important; }
+        .nav-cta     { display: none !important; }
+        .nav-hamburger { display: flex; }
+
+        /* ── Desktop ≥1024px: full nav, no hamburger ── */
+        @media (min-width: 1024px) {
+          .nav-spacer    { display: block; }
+          .nav-links     { display: flex !important; }
+          .nav-cta       { display: block !important; }
+          .nav-hamburger { display: none; }
         }
       `}</style>
     </>

@@ -5,47 +5,70 @@ import { motion, AnimatePresence, MotionValue } from "framer-motion"
 
 interface Slide {
   url: string
-  dx: number   // Ken Burns horizontal drift (px, from center)
-  dy: number   // Ken Burns vertical drift (px, from center)
+  dx: number            // Ken Burns horizontal drift (px)
+  dy: number            // Ken Burns vertical drift (px)
+  desktopPos: string    // backgroundPosition on desktop/tablet (≥768px)
+  mobilePos: string     // backgroundPosition on mobile (<768px)
 }
 
-// 4 destinos paradisíacos — Unsplash CDN, 1920w, q=85
+// 6 destinos VivAir — fotos editoriais geradas via Gemini Imagen 3 (2K, 16:9)
+// mobilePos: ajustado para portrait — foca no assunto principal, evita céu vazio
 const SLIDES: Slide[] = [
   {
-    // Maldivas — overwater bungalows, turquoise water
-    url: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1920&q=85&auto=format&fit=crop",
+    url: "/hero/hero-rio.jpg",       // Botafogo golden hour
     dx: 18, dy: -12,
+    desktopPos: "center center",
+    mobilePos: "center 70%",         // puxa para baixo — mar + montanhas
   },
   {
-    // Santorini — caldera, blue domes at sunset
-    url: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1920&q=85&auto=format&fit=crop",
+    url: "/hero/hero-maldivas.jpg",  // overwater bungalows sunset
     dx: -16, dy: -8,
+    desktopPos: "center center",
+    mobilePos: "center 75%",         // bungalôs ficam visíveis, menos céu
   },
   {
-    // Bali — tropical rice terraces
-    url: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1920&q=85&auto=format&fit=crop",
+    url: "/hero/hero-santorini.jpg", // blue domes blue hour
     dx: 14, dy: -10,
+    desktopPos: "center center",
+    mobilePos: "center 50%",         // cúpulas já estão no centro
   },
   {
-    // Dubai — skyline + desert at golden hour
-    url: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1920&q=85&auto=format&fit=crop",
-    dx: -20, dy: 8,
+    url: "/hero/hero-tokyo.jpg",     // cherry blossom at dusk
+    dx: -18, dy: 10,
+    desktopPos: "center center",
+    mobilePos: "center 35%",         // galhos da cerejeira no topo
+  },
+  {
+    url: "/hero/hero-paris.jpg",     // Eiffel Tower golden hour
+    dx: 20, dy: -8,
+    desktopPos: "center center",
+    mobilePos: "center 45%",         // torre no centro vertical
+  },
+  {
+    url: "/hero/hero-patagonia.jpg", // Torres del Paine sunrise
+    dx: -14, dy: -12,
+    desktopPos: "center center",
+    mobilePos: "center 65%",         // picos + base do glaciar visíveis
   },
 ]
 
-const SLIDE_DURATION = 7000  // ms each slide stays
-const CROSSFADE_S   = 2.5   // crossfade — defocus-dissolve, premium timing
-const ENTRANCE_S    = 2.0   // cinematic entrance duration (seconds)
-const KEN_DURATION  = SLIDE_DURATION / 1000 // Ken Burns duration matches slide
+const SLIDE_DURATION = 7000
+const CROSSFADE_S    = 2.5
+const ENTRANCE_S     = 2.0
+const KEN_DURATION   = SLIDE_DURATION / 1000
 
-// ── Single slide item (isolated closure — prevents stale backgroundImage) ──
+// ── Single slide item ─────────────────────────────────────────────────────────
 function SlideItem({
   slide,
   isCinematic,
+  isMobile,
 }: {
   slide: Slide
   isCinematic: boolean
+  isMobile: boolean
 }) {
+  const bgPos = isMobile ? slide.mobilePos : slide.desktopPos
+
   return (
     <motion.div
       initial={{
@@ -54,24 +77,11 @@ function SlideItem({
         filter: isCinematic ? "blur(18px)" : "blur(10px)",
       }}
       animate={{ opacity: 1, scale: 1.0, filter: "blur(0px)" }}
-      exit={{
-        opacity: 0,
-        scale: 1.03,
-        filter: "blur(8px)",
-      }}
+      exit={{ opacity: 0, scale: 1.03, filter: "blur(8px)" }}
       transition={{
-        opacity: {
-          duration: isCinematic ? ENTRANCE_S : CROSSFADE_S,
-          ease: [0.25, 0.46, 0.45, 0.94],
-        },
-        scale: {
-          duration: isCinematic ? ENTRANCE_S : CROSSFADE_S * 0.9,
-          ease: [0.25, 0.46, 0.45, 0.94],
-        },
-        filter: {
-          duration: isCinematic ? ENTRANCE_S * 0.75 : CROSSFADE_S * 0.7,
-          ease: "easeOut",
-        },
+        opacity:  { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S,       ease: [0.25, 0.46, 0.45, 0.94] },
+        scale:    { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S * 0.9, ease: [0.25, 0.46, 0.45, 0.94] },
+        filter:   { duration: isCinematic ? ENTRANCE_S * 0.75 : CROSSFADE_S * 0.7, ease: "easeOut" },
       }}
       style={{ position: "absolute", inset: 0 }}
     >
@@ -79,22 +89,16 @@ function SlideItem({
       <motion.div
         style={{
           position: "absolute",
-          inset: "-6%",   // oversized: room to pan without clipping
+          inset: "-6%",
           backgroundImage: `url(${slide.url})`,
           backgroundSize: "cover",
-          backgroundPosition: "center center",
+          backgroundPosition: bgPos,
+          backgroundRepeat: "no-repeat",
           willChange: "transform",
         }}
         initial={{ x: 0, y: 0, scale: 1.0 }}
-        animate={{
-          x: slide.dx,
-          y: slide.dy,
-          scale: 1.08,
-        }}
-        transition={{
-          duration: KEN_DURATION,
-          ease: "linear",
-        }}
+        animate={{ x: slide.dx, y: slide.dy, scale: 1.08 }}
+        transition={{ duration: KEN_DURATION, ease: "linear" }}
       />
     </motion.div>
   )
@@ -108,11 +112,20 @@ export default function HeroBackground({
   y?: MotionValue<string>
   scale?: MotionValue<number>
 }) {
-  const [index,    setIndex]    = useState(0)
-  const [isMounted, setMounted] = useState(false)
+  const [index,     setIndex]    = useState(0)
+  const [isMounted, setMounted]  = useState(false)
+  const [isMobile,  setIsMobile] = useState(false)
   const firstDoneRef = useRef(false)
 
-  // Preload all images immediately on mount
+  // Detect mobile on mount + on resize
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  // Preload all images on mount
   useEffect(() => {
     setMounted(true)
     SLIDES.forEach((s) => {
@@ -121,24 +134,38 @@ export default function HeroBackground({
     })
   }, [])
 
-  // Cycle slides
+  // Cycle slides — pause when tab hidden to avoid stale timer accumulation
   useEffect(() => {
     if (!isMounted) return
     const entranceTimer = setTimeout(() => { firstDoneRef.current = true }, ENTRANCE_S * 1000 + 500)
-    const interval = setInterval(() => {
-      setIndex((i) => (i + 1) % SLIDES.length)
-    }, SLIDE_DURATION)
-    return () => { clearInterval(interval); clearTimeout(entranceTimer) }
+    let interval: ReturnType<typeof setInterval> | null = null
+    const start = () => {
+      if (interval) return
+      interval = setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), SLIDE_DURATION)
+    }
+    const stop = () => {
+      if (interval) { clearInterval(interval); interval = null }
+    }
+    const onVisibility = () => document.visibilityState === "hidden" ? stop() : start()
+    start()
+    document.addEventListener("visibilitychange", onVisibility)
+    return () => {
+      stop()
+      clearTimeout(entranceTimer)
+      document.removeEventListener("visibilitychange", onVisibility)
+    }
   }, [isMounted])
 
-  // Determine if this render is the cinematic first entrance
   const isCinematic = index === 0 && !firstDoneRef.current
+
+  // On mobile: reduce outer inset to avoid iOS Chrome overflow/clipping
+  const outerInset = isMobile ? "-8%" : "-20%"
 
   return (
     <motion.div
       style={{
         position: "absolute",
-        inset: "-20%",
+        inset: outerInset,
         y,
         scale: scrollScale,
         zIndex: 0,
@@ -147,26 +174,26 @@ export default function HeroBackground({
       }}
     >
       {/* ── Slideshow ── */}
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         <SlideItem
           key={index}
           slide={SLIDES[index]}
           isCinematic={isCinematic}
+          isMobile={isMobile}
         />
       </AnimatePresence>
 
-      {/* ── Gradient overlay: readability + brand color retention ── */}
-      {/* Top/bottom dark for navbar + stats bar */}
+      {/* ── Gradient overlay ── */}
       <div
         aria-hidden="true"
         style={{
           position: "absolute", inset: 0, zIndex: 10, pointerEvents: "none",
           background: [
             "linear-gradient(to bottom,",
-            "  rgba(10,31,68,0.78) 0%,",     // navbar area
-            "  rgba(10,31,68,0.28) 38%,",    // image shines through (center)
-            "  rgba(10,31,68,0.20) 55%,",    // image shines through
-            "  rgba(10,31,68,0.65) 100%",    // stats bar / bottom
+            "  rgba(10,31,68,0.82) 0%,",      // navbar safe area
+            "  rgba(10,31,68,0.28) 38%,",
+            "  rgba(10,31,68,0.20) 55%,",
+            "  rgba(10,31,68,0.70) 100%",      // stats bar / bottom
             ")",
           ].join(""),
         }}
@@ -181,7 +208,7 @@ export default function HeroBackground({
         }}
       />
 
-      {/* Champagne glow (top-center) — brand tint on image */}
+      {/* Champagne glow */}
       <div
         aria-hidden="true"
         style={{
@@ -190,35 +217,37 @@ export default function HeroBackground({
         }}
       />
 
-      {/* ── Slide progress pills (right edge) ── */}
-      <div
-        style={{
-          position: "absolute",
-          right: 28,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 20,
-          display: "flex",
-          flexDirection: "column",
-          gap: 6,
-          pointerEvents: "none",
-        }}
-      >
-        {SLIDES.map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              height:          i === index ? 28 : 8,
-              opacity:         i === index ? 1  : 0.3,
-              backgroundColor: i === index ? "rgba(196,163,90,0.95)" : "rgba(250,249,246,0.4)",
-            }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            style={{ width: 2, borderRadius: 1 }}
-          />
-        ))}
-      </div>
+      {/* ── Slide progress pills — desktop only ── */}
+      {!isMobile && (
+        <div
+          style={{
+            position: "absolute",
+            right: 28,
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 20,
+            display: "flex",
+            flexDirection: "column",
+            gap: 6,
+            pointerEvents: "none",
+          }}
+        >
+          {SLIDES.map((_, i) => (
+            <motion.div
+              key={i}
+              animate={{
+                height:          i === index ? 28 : 8,
+                opacity:         i === index ? 1  : 0.3,
+                backgroundColor: i === index ? "rgba(196,163,90,0.95)" : "rgba(250,249,246,0.4)",
+              }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{ width: 2, borderRadius: 1 }}
+            />
+          ))}
+        </div>
+      )}
 
-      {/* ── Destination label (bottom-left) ── */}
+      {/* ── Destination label — responsive bottom position ── */}
       <AnimatePresence mode="wait">
         <motion.div
           key={`label-${index}`}
@@ -228,8 +257,8 @@ export default function HeroBackground({
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: "absolute",
-            bottom: 100,      // above stats bar
-            left: 36,
+            bottom: "clamp(72px, 13vw, 108px)",   // responsive — tracks stats bar height
+            left: 28,
             zIndex: 20,
             pointerEvents: "none",
             display: "flex",
@@ -237,7 +266,6 @@ export default function HeroBackground({
             gap: 10,
           }}
         >
-          {/* Champagne dot */}
           <div style={{
             width: 6, height: 6,
             borderRadius: "50%",
@@ -252,7 +280,7 @@ export default function HeroBackground({
             color: "rgba(250,249,246,0.65)",
             fontFamily: "var(--heading-font)",
           }}>
-            {["Maldivas", "Santorini", "Bali", "Dubai"][index]}
+            {["Rio de Janeiro", "Maldivas", "Santorini", "Tokyo", "Paris", "Patagônia"][index]}
           </span>
         </motion.div>
       </AnimatePresence>
