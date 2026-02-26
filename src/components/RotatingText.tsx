@@ -51,10 +51,11 @@ export default function RotatingText() {
             justifyContent: "center",
             fontFamily: "var(--heading-font)",
             fontStyle: "italic",
-            fontWeight: 400,
-            color: "rgba(250,249,246,0.75)",
+            fontWeight: 500,
+            color: "rgba(250,249,246,0.95)",
             whiteSpace: "nowrap",
             letterSpacing: "0.01em",
+            textShadow: "0 1px 12px rgba(10,31,68,0.55), 0 0px 32px rgba(10,31,68,0.35)",
           }}
         >
           {destinations[index]}
