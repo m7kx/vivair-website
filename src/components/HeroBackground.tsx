@@ -12,43 +12,43 @@ interface Slide {
 }
 
 // 6 destinos VivAir — fotos editoriais geradas via Gemini Imagen 3 (2K, 16:9)
-// mobilePos: ajustado para portrait — foca no assunto principal, evita céu vazio
+// Focal points auditados por análise de composição — Wave 5 QA v2
 const SLIDES: Slide[] = [
   {
-    url: "/hero/hero-rio.jpg",       // Botafogo golden hour
+    url: "/hero/hero-rio.jpg",       // Botafogo golden hour — Pão de Açúcar centro-direita
     dx: 18, dy: -12,
-    desktopPos: "center center",
-    mobilePos: "center 70%",         // puxa para baixo — mar + montanhas
+    desktopPos: "center 40%",        // horizonte + montanhas visíveis, menos prédios
+    mobilePos: "80% center",         // shift direita: Pão de Açúcar no portrait
   },
   {
-    url: "/hero/hero-maldivas.jpg",  // overwater bungalows sunset
+    url: "/hero/hero-maldivas.jpg",  // overwater bungalows sunset — composição simétrica
     dx: -16, dy: -8,
-    desktopPos: "center center",
-    mobilePos: "center 75%",         // bungalôs ficam visíveis, menos céu
+    desktopPos: "center 45%",        // horizonte + bangalôs no centro-alto
+    mobilePos: "center center",      // simetria: sol + bangalôs centrados no portrait
   },
   {
-    url: "/hero/hero-santorini.jpg", // blue domes blue hour
+    url: "/hero/hero-santorini.jpg", // blue domes blue hour — cúpulas centro-direita
     dx: 14, dy: -10,
-    desktopPos: "center center",
-    mobilePos: "center 50%",         // cúpulas já estão no centro
+    desktopPos: "60% center",        // cúpulas visíveis + espaço negativo esquerda p/ texto
+    mobilePos: "75% center",         // prioriza cúpulas azuis no corte portrait
   },
   {
-    url: "/hero/hero-tokyo.jpg",     // cherry blossom at dusk
+    url: "/hero/hero-tokyo.jpg",     // Torre de Tokyo — levemente esquerda do centro
     dx: -18, dy: 10,
-    desktopPos: "center center",
-    mobilePos: "center 35%",         // galhos da cerejeira no topo
+    desktopPos: "40% center",        // torre levemente esquerda, espaço negativo direita
+    mobilePos: "38% center",         // trava Torre de Tokyo no corte portrait
   },
   {
-    url: "/hero/hero-paris.jpg",     // Eiffel Tower golden hour
+    url: "/hero/hero-paris.jpg",     // Eiffel Tower golden hour — levemente esquerda
     dx: 20, dy: -8,
-    desktopPos: "center center",
-    mobilePos: "center 45%",         // torre no centro vertical
+    desktopPos: "40% center",        // Torre Eiffel visível, moldura de prédios preservada
+    mobilePos: "33% center",         // garante torre no corte vertical portrait
   },
   {
-    url: "/hero/hero-patagonia.jpg", // Torres del Paine sunrise
+    url: "/hero/hero-patagonia.jpg", // Torres del Paine sunrise — deck + cadeiras esquerda
     dx: -14, dy: -12,
-    desktopPos: "center center",
-    mobilePos: "center 65%",         // picos + base do glaciar visíveis
+    desktopPos: "center 60%",        // montanhas no topo + deck no primeiro plano
+    mobilePos: "20% center",         // deck + cadeiras visíveis no corte portrait
   },
 ]
 
