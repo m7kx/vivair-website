@@ -9,7 +9,7 @@ const LINKS = [
   { label: "Contato",      href: "/contato" },
 ]
 
-/* ── Magnetic link with underline ───────────────────────────────────────── */
+/* ── Magnetic link with underline ───────────────────────────────────────────── */
 function NavLink({ label, href, index }: { label: string; href: string; index: number }) {
   const [hovered, setHovered] = useState(false)
   const shouldReduceMotion = useReducedMotion()
@@ -64,7 +64,7 @@ function NavLink({ label, href, index }: { label: string; href: string; index: n
   )
 }
 
-/* ── Hamburger button ────────────────────────────────────────────────────── */
+/* ── Hamburger button ──────────────────────────────────────────────────────── */
 function HamburgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
   return (
     <button
@@ -96,7 +96,7 @@ function HamburgerButton({ open, onClick }: { open: boolean; onClick: () => void
   )
 }
 
-/* ── Main Navbar ──────────────────────────────────────────────────────────── */
+/* ── Main Navbar ───────────────────────────────────────────────────────────── */
 export default function Navbar() {
   const [open,     setOpen]     = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -164,26 +164,8 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA button — desktop only */}
-          <motion.a
-            className="nav-cta"
-            href="https://app.onertravel.com/vivairtraveldesign"
-            target="_blank" rel="noopener noreferrer"
-            style={{
-              background: "var(--grad-cta)", color: "white",
-              padding: "10px 22px", borderRadius: "var(--btn-radius)",
-              fontFamily: "var(--btn-font)", fontSize: 14,
-              fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap",
-              flexShrink: 0,
-            }}
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ scale: 1.05, y: -1 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Monte seu Roteiro →
-          </motion.a>
+          {/* Right spacer — keeps nav centered (desktop only) */}
+          <div className="nav-spacer" style={{ width: 68, flexShrink: 0 }} />
 
           {/* Hamburger — mobile only */}
           <div className="nav-hamburger" style={{ marginLeft: "auto" }}>
@@ -247,22 +229,6 @@ export default function Navbar() {
                     {l.label}
                   </motion.a>
                 ))}
-                <motion.a
-                  href="https://app.onertravel.com/vivairtraveldesign"
-                  target="_blank" rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: LINKS.length * 0.06 + 0.05, duration: 0.35 }}
-                  style={{
-                    marginTop: 16, background: "var(--grad-cta)", color: "white",
-                    padding: "14px 24px", borderRadius: "var(--btn-radius)",
-                    fontFamily: "var(--btn-font)", fontSize: 15, fontWeight: 600,
-                    textDecoration: "none", textAlign: "center", display: "block",
-                  }}
-                >
-                  Monte seu Roteiro →
-                </motion.a>
               </div>
             </motion.div>
           </>
@@ -273,14 +239,12 @@ export default function Navbar() {
         /* ── Mobile default: only hamburger visible ── */
         .nav-spacer  { display: none; }
         .nav-links   { display: none !important; }
-        .nav-cta     { display: none !important; }
         .nav-hamburger { display: flex; }
 
         /* ── Desktop ≥1024px: full nav, no hamburger ── */
         @media (min-width: 1024px) {
           .nav-spacer    { display: block; }
           .nav-links     { display: flex !important; }
-          .nav-cta       { display: block !important; }
           .nav-hamburger { display: none; }
         }
       `}</style>
