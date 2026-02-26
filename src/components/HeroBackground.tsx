@@ -5,14 +5,14 @@ import { motion, AnimatePresence, MotionValue } from "framer-motion"
 
 interface Slide {
   url: string
-  dx: number            // Ken Burns horizontal drift (px)
-  dy: number            // Ken Burns vertical drift (px)
+  dx: number            // Ken Burns horizontal drift (px) — desktop
+  dy: number            // Ken Burns vertical drift (px)   — desktop
   desktopPos: string    // backgroundPosition on desktop/tablet (≥768px)
   mobilePos: string     // backgroundPosition on mobile (<768px)
 }
 
 // 6 destinos VivAir — fotos editoriais geradas via Gemini Imagen 3 (2K, 16:9)
-// Focal points auditados por análise de composição — Wave 5 QA v2
+// Focal points auditados por análise de composição — Wave 5 QA v3
 const SLIDES: Slide[] = [
   {
     url: "/hero/hero-rio.jpg",       // Botafogo golden hour — Pão de Açúcar centro-direita
@@ -69,6 +69,13 @@ function SlideItem({
 }) {
   const bgPos = isMobile ? slide.mobilePos : slide.desktopPos
 
+  // Mobile: dezoom — cover já escala 16:9 → portrait de forma agressiva;
+  // reduzir inset e scale evita zoom excessivo e melhora enquadramento.
+  const innerInset  = isMobile ? "-2%" : "-6%"
+  const endScale    = isMobile ? 1.02  : 1.08
+  const dxFinal     = isMobile ? slide.dx * 0.35 : slide.dx
+  const dyFinal     = isMobile ? slide.dy * 0.35 : slide.dy
+
   return (
     <motion.div
       initial={{
@@ -89,7 +96,7 @@ function SlideItem({
       <motion.div
         style={{
           position: "absolute",
-          inset: "-6%",
+          inset: innerInset,
           backgroundImage: `url(${slide.url})`,
           backgroundSize: "cover",
           backgroundPosition: bgPos,
@@ -97,7 +104,7 @@ function SlideItem({
           willChange: "transform",
         }}
         initial={{ x: 0, y: 0, scale: 1.0 }}
-        animate={{ x: slide.dx, y: slide.dy, scale: 1.08 }}
+        animate={{ x: dxFinal, y: dyFinal, scale: endScale }}
         transition={{ duration: KEN_DURATION, ease: "linear" }}
       />
     </motion.div>
@@ -158,8 +165,8 @@ export default function HeroBackground({
 
   const isCinematic = index === 0 && !firstDoneRef.current
 
-  // On mobile: reduce outer inset to avoid iOS Chrome overflow/clipping
-  const outerInset = isMobile ? "-8%" : "-20%"
+  // Mobile: outer inset menor → menos zoom headroom → imagem aparece mais "distante"
+  const outerInset = isMobile ? "-3%" : "-20%"
 
   return (
     <motion.div
@@ -190,10 +197,10 @@ export default function HeroBackground({
           position: "absolute", inset: 0, zIndex: 10, pointerEvents: "none",
           background: [
             "linear-gradient(to bottom,",
-            "  rgba(10,31,68,0.82) 0%,",      // navbar safe area
+            "  rgba(10,31,68,0.82) 0%,",
             "  rgba(10,31,68,0.28) 38%,",
             "  rgba(10,31,68,0.20) 55%,",
-            "  rgba(10,31,68,0.70) 100%",      // stats bar / bottom
+            "  rgba(10,31,68,0.70) 100%",
             ")",
           ].join(""),
         }}
@@ -257,7 +264,7 @@ export default function HeroBackground({
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: "absolute",
-            bottom: "clamp(72px, 13vw, 108px)",   // responsive — tracks stats bar height
+            bottom: "clamp(72px, 13vw, 108px)",
             left: 28,
             zIndex: 20,
             pointerEvents: "none",
