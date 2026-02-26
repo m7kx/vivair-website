@@ -22,7 +22,7 @@ const SLIDES: Slide[] = [
   {
     url: "/hero/hero-rio.jpg",
     dx: 18, dy: -12,
-    desktopPos: "center 15%",
+    desktopPos: "center 5%",
     mobileCrop: "0% 4% 0% 64%",   // Pão de Açúcar at x≈80%
     label: "Rio de Janeiro",
   },
@@ -118,6 +118,7 @@ function SlideItem({
     >
       {/* Ken Burns wrapper — scale + drift independent of fade */}
       <motion.div
+        key={slide.url}
         style={{ position: "absolute", inset: innerInset, willChange: "transform" }}
         initial={{ x: 0, y: 0, scale: 1.0 }}
         animate={{ x: dxFinal, y: dyFinal, scale: endScale }}
