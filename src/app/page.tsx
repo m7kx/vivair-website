@@ -522,11 +522,11 @@ export default function Home() {
               transition={{ type: "spring", stiffness: 350, damping: 20 }}>
               Desenhe sua viagem
             </motion.a>
-            <motion.a href="https://wa.me/5521996832196" target="_blank" rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.08)", color: "var(--on-dark-1)", padding: "clamp(11px,2.5vw,18px) clamp(20px,5vw,40px)", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: "clamp(13px,3.5vw,17px)", fontWeight: 500, border: "1px solid rgba(255,255,255,0.18)", textDecoration: "none", backdropFilter: "blur(12px)" }}
-              whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+            <motion.a href="https://app.onertravel.com/vivairtraveldesign" target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.10)", color: "var(--on-dark-1)", padding: "clamp(11px,2.5vw,18px) clamp(20px,5vw,40px)", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: "clamp(13px,3.5vw,17px)", fontWeight: 500, border: "1px solid rgba(255,255,255,0.20)", textDecoration: "none", backdropFilter: "blur(12px)" }}
+              whileHover={{ scale: 1.03, background: "rgba(255,255,255,0.16)" }} whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}>
-              WhatsApp
+              Reserve Online
             </motion.a>
           </motion.div>
         </div>
