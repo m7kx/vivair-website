@@ -72,13 +72,12 @@ export async function POST(req: NextRequest) {
 
   /* ── 2. Honeypot ── */
   if (_hp && _hp.trim().length > 0) {
-    // Silently accept (don't signal to bot that it was caught)
     return NextResponse.json({ success: true })
   }
 
   /* ── 3. Timing check (< 1500ms = bot) ── */
   if (_t && Date.now() - _t < 1500) {
-    return NextResponse.json({ success: true }) // silent reject
+    return NextResponse.json({ success: true })
   }
 
   /* ── 4. Field validation ── */
@@ -127,40 +126,64 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  /* ── 6. Resend email (optional) ── */
-  const resendKey = process.env.RESEND_API_KEY
-  const resendTo = process.env.RESEND_TO ?? "reservas@vivairtravel.com.br"
+  /* ── 6. Resend email ──────────────────────────────────────────────────────
+     RESEND_FROM: verified sender address (e.g. site@vivairtravel.com.br).
+       — Requires domain verified in Resend dashboard (DNS: SPF + DKIM).
+       — Fallback: onboarding@resend.dev (Resend shared sender, test-only —
+         only delivers to the Resend account owner's email address).
+     RESEND_TO:   destination address. Defaults to reservas@vivairtravel.com.br.
+     ─────────────────────────────────────────────────────────────────────── */
+  const resendKey  = process.env.RESEND_API_KEY
+  const resendFrom = process.env.RESEND_FROM ?? "onboarding@resend.dev"
+  const resendTo   = process.env.RESEND_TO   ?? "reservas@vivairtravel.com.br"
+
   if (resendKey) {
     try {
+      const emailBody: Record<string, unknown> = {
+        from:    resendFrom,
+        to:      [resendTo],
+        subject: `✦ Nova Whycation: ${payload.nome}`,
+        html: `
+          <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;background:#0a1f44;color:#f5f0e8;border-radius:12px">
+            <h2 style="color:#c8a96e;margin-bottom:24px">✦ Nova Whycation — VivAir</h2>
+            <p><strong>Nome:</strong> ${payload.nome}</p>
+            <p><strong>E-mail:</strong> ${payload.email}</p>
+            <p><strong>Telefone:</strong> ${payload.telefone}</p>
+            <hr style="border-color:rgba(200,169,110,0.25);margin:20px 0"/>
+            <p><strong>Porquê (Motivação):</strong></p>
+            <blockquote style="border-left:3px solid #c8a96e;margin:0;padding:12px 16px;color:rgba(245,240,232,0.8)">
+              ${payload.porcque}
+            </blockquote>
+            <hr style="border-color:rgba(200,169,110,0.25);margin:20px 0"/>
+            <p style="font-size:12px;color:rgba(245,240,232,0.45);margin:0">
+              Enviado de: ${payload.email} · ${payload.telefone}
+            </p>
+          </div>
+        `,
+      }
+
+      // Add reply-to pointing to the visitor's email when using a no-reply sender
+      if (!resendFrom.includes("vivairtravel.com.br")) {
+        emailBody.reply_to = payload.email
+      }
+
       const emailRes = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${resendKey}`,
         },
-        body: JSON.stringify({
-          from: "site@vivairtravel.com.br",
-          to: [resendTo],
-          subject: `✦ Nova Whycation: ${payload.nome}`,
-          html: `
-            <div style="font-family:sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;background:#0a1f44;color:#f5f0e8;border-radius:12px">
-              <h2 style="color:#c8a96e;margin-bottom:24px">✦ Nova Whycation — VivAir</h2>
-              <p><strong>Nome:</strong> ${payload.nome}</p>
-              <p><strong>E-mail:</strong> ${payload.email}</p>
-              <p><strong>Telefone:</strong> ${payload.telefone}</p>
-              <hr style="border-color:rgba(200,169,110,0.25);margin:20px 0"/>
-              <p><strong>Porquê (Motivação):</strong></p>
-              <blockquote style="border-left:3px solid #c8a96e;margin:0;padding:12px 16px;color:rgba(245,240,232,0.8)">
-                ${payload.porcque}
-              </blockquote>
-            </div>
-          `,
-        }),
+        body: JSON.stringify(emailBody),
       })
-      if (!emailRes.ok) errors.push(`Resend error: ${emailRes.status}`)
+
+      if (!emailRes.ok) {
+        const detail = await emailRes.text().catch(() => "")
+        errors.push(`Resend error: ${emailRes.status} ${detail}`)
+        console.error("[contato] Resend error:", emailRes.status, detail)
+      }
     } catch (err) {
       errors.push(`Resend failed: ${String(err)}`)
-      console.error("[contato] Resend error:", err)
+      console.error("[contato] Resend exception:", err)
     }
   }
 
@@ -168,7 +191,7 @@ export async function POST(req: NextRequest) {
   console.log("[contato] New submission:", {
     nome: payload.nome, email: payload.email,
     telefone: payload.telefone, porcqueLength: payload.porcque.length,
-    ip, errors,
+    ip, errors, resendFrom: process.env.RESEND_FROM ? "custom" : "fallback",
   })
 
   return NextResponse.json({ success: true, warnings: errors.length > 0 ? errors : undefined })
