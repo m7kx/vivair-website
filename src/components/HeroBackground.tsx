@@ -5,60 +5,61 @@ import { motion, AnimatePresence, MotionValue } from "framer-motion"
 
 interface Slide {
   url: string
-  urlMobile?: string   // Optional 9:16 portrait asset (generate in Gemini when needed)
-  dx: number           // Ken Burns horizontal drift (px) ┄ desktop
-  dy: number           // Ken Burns vertical drift (px)
-  desktopPos: string   // object-position on desktop/tablet
-  mobileCrop: string   // object-view-box inset() ┄ portrait window centered on subject
+  urlMobile?: string  // Optional portrait asset — when provided, overrides mobileX crop
+  dx: number          // Ken Burns horizontal drift (px)
+  dy: number          // Ken Burns vertical drift (px)
+  yOffset?: number    // Desktop vertical crop (px). Formula: top_row ≈ (255.6 − yOffset) / 1411.2 × 1071
+  mobileX: string     // Mobile horizontal pan (0%–100%). Formula: (subjectCol × 0.869 − 215) / 1239 × 100
+  desktopPos: string  // object-position for desktop — only horizontal % has effect (vertical = no-op)
   label: string
 }
 
-// Crop math for 9:16 portrait window from 16:9 source:
-//   cropWidth  = (9/16) / (16/9) = 81/256 ≈ 0.316 of image width
-//   leftInset  = max(0, subjectX − 0.158)
-//   rightInset = max(0, 1 − leftInset − 0.316)
-// Subject x-positions confirmed from Wave 5 focal-point audit.
+// ── All hero images: 1920×1071 (ratio 1.793) ────────────────────────────────
+// Desktop  — Ken Burns container ratio ~1.60 → cover fills HEIGHT → vertical object-position useless.
+//            Use `yOffset` (px) to shift which rows are visible. +px = expose top, −px = expose bottom.
+// Mobile   — Portrait container ratio ~0.46 → cover fills HEIGHT → massive horizontal overflow.
+//            Use `mobileX` (%) to pan left/right. Vertical is nearly full-image, no offset needed.
 const SLIDES: Slide[] = [
   {
     url: "/hero/hero-rio.jpg",
-    dx: 18, dy: -12,
-    desktopPos: "center 5%",
-    mobileCrop: "0% 4% 0% 64%",   // Pão de Açúcar at x≈80%
+    dx: 18, dy: -12, yOffset: 160, // row ~80  → céu dourado + Pão de Açúcar + baía
+    mobileX: "63%",                 // col ~1150 → Pão de Açúcar centrado
+    desktopPos: "center 0%",
     label: "Rio de Janeiro",
   },
   {
     url: "/hero/hero-maldivas.jpg",
-    dx: -16, dy: -8,
-    desktopPos: "center 45%",
-    mobileCrop: "5% 34% 5% 34%",  // Bungalows centered at x≈50%
+    dx: -16, dy: -8, yOffset: 100, // row ~136 → nuvens do pôr do sol + bungalows + água turquesa
+    mobileX: "50%",                 // col ~960  → bungalows centrados (simétrico)
+    desktopPos: "center center",
     label: "Maldivas",
   },
   {
     url: "/hero/hero-santorini.jpg",
-    dx: 14, dy: -10,
+    dx: 14, dy: -10, yOffset: 80,  // row ~155 → céu noturno + cúpulas azuis + mar
+    mobileX: "32%",                 // col ~700  → cúpula azul centrada
     desktopPos: "60% center",
-    mobileCrop: "8% 9% 0% 59%",   // Blue domes at x≈75%
     label: "Santorini",
   },
   {
     url: "/hero/hero-tokyo.jpg",
-    dx: -18, dy: 10,
+    dx: -18, dy: 10, yOffset: 125, // row ~107 → cerejeiras emoldurando + Torre de Tokyo + skyline
+    mobileX: "39%",                 // col ~800  → Torre de Tokyo centrada
     desktopPos: "40% center",
-    mobileCrop: "0% 46% 5% 22%",  // Tokyo Tower at x≈38%
     label: "Tokyo",
   },
   {
     url: "/hero/hero-paris.jpg",
-    dx: 20, dy: -8,
+    dx: 20, dy: -8, yOffset: 70,   // row ~141 → Torre Eiffel (corpo) + céu dourado + edifícios
+    mobileX: "28%",                 // col ~640  → Torre Eiffel centrada
     desktopPos: "40% center",
-    mobileCrop: "8% 64% 0% 0%",   // Eiffel Tower at x≈15% — leftInset=0 exposes it
     label: "Paris",
   },
   {
     url: "/hero/hero-patagonia.jpg",
-    dx: -14, dy: -12,
-    desktopPos: "center 60%",
-    mobileCrop: "5% 64% 0% 4%",   // Deck + peaks at x≈20%
+    dx: -14, dy: -12, yOffset: 100, // row ~118 → picos Torres del Paine + lago + deck
+    mobileX: "10%",                  // col ~390  → cabana à esq. + montanhas ao fundo
+    desktopPos: "center center",
     label: "Patagônia",
   },
 ]
@@ -80,25 +81,15 @@ function SlideItem({
   isMobile: boolean
   isFirst: boolean
 }) {
-  const imgRef = useRef<HTMLImageElement>(null)
-
-  // object-view-box is not yet in React's CSSProperties — set via DOM ref.
-  // When urlMobile (portrait crop) is available it supersedes mobileCrop.
-  useEffect(() => {
-    const el = imgRef.current
-    if (!el) return
-    if (isMobile && slide.mobileCrop && !slide.urlMobile) {
-      el.style.setProperty("object-view-box", `inset(${slide.mobileCrop})`)
-    } else {
-      el.style.removeProperty("object-view-box")
-    }
-  }, [isMobile, slide.mobileCrop, slide.urlMobile])
-
-  const imgSrc     = isMobile && slide.urlMobile ? slide.urlMobile : slide.url
+  const imgSrc    = isMobile && slide.urlMobile ? slide.urlMobile : slide.url
   const innerInset = isMobile ? "-2%" : "-6%"
   const endScale   = isMobile ? 1.02  : 1.08
   const dxFinal    = isMobile ? slide.dx * 0.35 : slide.dx
   const dyFinal    = isMobile ? slide.dy * 0.35 : slide.dy
+  const yBase      = isMobile ? 0 : (slide.yOffset ?? 0)
+  const objPos     = isMobile
+    ? (slide.urlMobile ? "center center" : `${slide.mobileX} center`)
+    : slide.desktopPos
 
   return (
     <motion.div
@@ -110,8 +101,8 @@ function SlideItem({
       animate={{ opacity: 1, scale: 1.0, filter: "blur(0px)" }}
       exit={{ opacity: 0, scale: 1.03, filter: "blur(8px)" }}
       transition={{
-        opacity: { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S,           ease: [0.25, 0.46, 0.45, 0.94] },
-        scale:   { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S * 0.9,     ease: [0.25, 0.46, 0.45, 0.94] },
+        opacity: { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S,              ease: [0.25, 0.46, 0.45, 0.94] },
+        scale:   { duration: isCinematic ? ENTRANCE_S : CROSSFADE_S * 0.9,        ease: [0.25, 0.46, 0.45, 0.94] },
         filter:  { duration: isCinematic ? ENTRANCE_S * 0.75 : CROSSFADE_S * 0.7, ease: "easeOut" },
       }}
       style={{ position: "absolute", inset: 0 }}
@@ -120,12 +111,11 @@ function SlideItem({
       <motion.div
         key={slide.url}
         style={{ position: "absolute", inset: innerInset, willChange: "transform" }}
-        initial={{ x: 0, y: 0, scale: 1.0 }}
-        animate={{ x: dxFinal, y: dyFinal, scale: endScale }}
+        initial={{ x: 0, y: yBase, scale: 1.0 }}
+        animate={{ x: dxFinal, y: yBase + dyFinal, scale: endScale }}
         transition={{ duration: KEN_DURATION, ease: "linear" }}
       >
         <img
-          ref={imgRef}
           src={imgSrc}
           alt=""
           aria-hidden="true"
@@ -135,8 +125,7 @@ function SlideItem({
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            // objectPosition baseline — fallback for browsers without object-view-box
-            objectPosition: isMobile ? "center" : slide.desktopPos,
+            objectPosition: objPos,
             userSelect: "none",
             pointerEvents: "none",
             display: "block",
@@ -212,7 +201,7 @@ export default function HeroBackground({
       }}
     >
       {/* ── Slideshow ── */}
-      <AnimatePresence initial={false}>
+      <AnimatePresence>
         <SlideItem
           key={index}
           slide={SLIDES[index]}
