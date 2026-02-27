@@ -253,7 +253,7 @@ export default function Home() {
             <motion.a
               href="https://wa.me/5521996832196?text=Ol%C3%A1%21%20Quero%20que%20voc%C3%AAs%20desenhem%20minha%20viagem%20dos%20sonhos%20para%20mim.%20Por%20onde%20come%C3%A7amos%3F%20%F0%9F%8C%8D%E2%9C%88%EF%B8%8F"
               target="_blank" rel="noopener noreferrer"
-              style={
+              style={{
                 display: "inline-flex", alignItems: "center", gap: 10,
                 background: "var(--grad-cta)", color: "white",
                 padding: "clamp(11px,2.5vw,18px) clamp(20px,5vw,40px)", borderRadius: "var(--btn-radius)",
@@ -517,7 +517,7 @@ export default function Home() {
             style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}
           >
             <motion.a href="https://wa.me/5521996832196?text=Ol%C3%A1%21%20Quero%20que%20voc%C3%AAs%20desenhem%20minha%20viagem%20dos%20sonhos%20para%20mim.%20Por%20onde%20come%C3%A7amos%3F%20%F0%9F%8C%8D%E2%9C%88%EF%B8%8F" target="_blank" rel="noopener noreferrer"
-              style={ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--grad-cta)", color: "white", padding: "clamp(11px,2.5vw,18px) clamp(20px,5vw,40px)", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: "clamp(13px,3.5vw,17px)", fontWeight: 600, textDecoration: "none" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "var(--grad-cta)", color: "white", padding: "clamp(11px,2.5vw,18px) clamp(20px,5vw,40px)", borderRadius: "var(--btn-radius)", fontFamily: "var(--btn-font)", fontSize: "clamp(13px,3.5vw,17px)", fontWeight: 600, textDecoration: "none" }}
               whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}>
               Desenhe sua viagem
