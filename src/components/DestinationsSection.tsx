@@ -227,7 +227,7 @@ function DestinationRow({ dest, index }: { dest: typeof DESTINATIONS[0]; index: 
               src={`/images/flags/${dest.countryCode}.svg`}
               width={22}
               height={15}
-              style={{ opacity: 0.5, borderRadius: 2, objectFit: 'cover', display: 'inline-block' }}
+              style={{ opacity: 0.5, borderRadius: 2, objectFit: 'cover', display: 'inline-block', boxShadow: '0 0 0 1px rgba(0,0,0,0.15)' }}
               alt=""
             />
           {dest.country}
