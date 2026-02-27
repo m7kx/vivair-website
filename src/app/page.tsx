@@ -330,7 +330,7 @@ export default function Home() {
           }}>
             <StatItem value="40+"  label="Destinos no mundo" />
             <StatItem value="100%" label="Roteiros personalizados" />
-            <StatItem value="★"    label="Atendimento exclusivo" />
+            <StatItem value="∞"    label="Experiências únicas" />
             <StatItem value="5★"   label="Experiência" />
           </div>
         </motion.div>
@@ -358,7 +358,7 @@ export default function Home() {
         }}>
           <StatItem value="40+"  label="Destinos no mundo" />
           <StatItem value="100%" label="Roteiros personalizados" />
-          <StatItem value="★"    label="Atendimento exclusivo" />
+          <StatItem value="∞"    label="Experiências únicas" />
           <StatItem value="5★"   label="Experiência" />
         </div>
       </motion.div>
