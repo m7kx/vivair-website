@@ -9,7 +9,7 @@ const DESTINATIONS = [
     id: 1,
     name: 'Maldivas',
     country: 'Oceano Índico',
-    emoji: '🌊',
+    countryCode: 'mv',
     tag: 'Mais buscado',
     desc: 'Bangalôs sobre a água, recifes de corais e pôr do sol que para o tempo. Para casais e lua de mel.',
     tags: ['Lua de mel', 'Resort', 'All-inclusive'],
@@ -21,7 +21,7 @@ const DESTINATIONS = [
     id: 2,
     name: 'Paris',
     country: 'França',
-    emoji: '🗼',
+    countryCode: 'fr',
     tag: 'Clássico',
     desc: 'A cidade que nunca sai de moda. Arte, gastronomia e o Sena ao entardecer. Imprescindível.',
     tags: ['Cultura', 'Gastronomia', 'Romântico'],
@@ -33,7 +33,7 @@ const DESTINATIONS = [
     id: 3,
     name: 'Dubai',
     country: 'Emirados Árabes',
-    emoji: '🏙️',
+    countryCode: 'ae',
     tag: 'Premium',
     desc: 'Arranha-céus, desertos dourados e hotéis que redefinem o luxo. Onde o impossível é cotidiano.',
     tags: ['Luxo', 'Aventura', 'Compras'],
@@ -45,7 +45,7 @@ const DESTINATIONS = [
     id: 4,
     name: 'Tokyo',
     country: 'Japão',
-    emoji: '⛩️',
+    countryCode: 'jp',
     tag: 'Trending',
     desc: 'Tradição milenar encontra o futuro. Templos, neon, ramen e cerejeiras. Uma experiência de outro mundo.',
     tags: ['Cultura', 'Gastronomia', 'Singular'],
@@ -57,7 +57,7 @@ const DESTINATIONS = [
     id: 5,
     name: 'Santorini',
     country: 'Grécia',
-    emoji: '🌅',
+    countryCode: 'gr',
     tag: 'Romântico',
     desc: 'Casas brancas sobre o vulcão, caldeira azul e o por do sol mais fotogênico da Europa.',
     tags: ['Romântico', 'Natureza', 'Fotografia'],
@@ -223,7 +223,13 @@ function DestinationRow({ dest, index }: { dest: typeof DESTINATIONS[0]; index: 
           viewport={{ once: true }}
           transition={{ delay: index * 0.05 + 0.2 }}
         >
-          <span style={{ fontSize: 18 }}>{dest.emoji}</span>
+          <img
+              src={`/images/flags/${dest.countryCode}.svg`}
+              width={22}
+              height={15}
+              style={{ opacity: 0.5, borderRadius: 2, objectFit: 'cover', display: 'inline-block' }}
+              alt=""
+            />
           {dest.country}
         </motion.p>
 
