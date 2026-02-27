@@ -59,7 +59,7 @@ const DESTINATIONS = [
     country: 'Grécia',
     emoji: '🌅',
     tag: 'Romântico',
-    desc: 'Casas brancas sobre o vulcão, caldeira azul e o por do sol mais fotogénico da Europa.',
+    desc: 'Casas brancas sobre o vulcão, caldeira azul e o por do sol mais fotogênico da Europa.',
     tags: ['Romântico', 'Natureza', 'Fotografia'],
     image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=900&q=80&auto=format&fit=crop',
     gradient: 'linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%)',
