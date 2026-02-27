@@ -10,6 +10,7 @@ const DESTINATIONS = [
     name: 'Maldivas',
     country: 'Oceano Índico',
     countryCode: 'mv',
+    waMessage: 'Olá! Me apaixonei pelas Maldivas no site de vocês e quero muito planejar essa viagem. Podem me ajudar? 🌊',
     tag: 'Mais buscado',
     desc: 'Bangalôs sobre a água, recifes de corais e pôr do sol que para o tempo. Para casais e lua de mel.',
     tags: ['Lua de mel', 'Resort', 'All-inclusive'],
@@ -22,6 +23,7 @@ const DESTINATIONS = [
     name: 'Paris',
     country: 'França',
     countryCode: 'fr',
+    waMessage: 'Olá! Estou com Paris nos olhos depois de ver o site de vocês. Quero planejar essa viagem, podem me ajudar? 🗼',
     tag: 'Clássico',
     desc: 'A cidade que nunca sai de moda. Arte, gastronomia e o Sena ao entardecer. Imprescindível.',
     tags: ['Cultura', 'Gastronomia', 'Romântico'],
@@ -34,6 +36,7 @@ const DESTINATIONS = [
     name: 'Dubai',
     country: 'Emirados Árabes',
     countryCode: 'ae',
+    waMessage: 'Olá! Vi Dubai no site de vocês e fiquei impressionado! Quero planejar essa experiência, podem me ajudar? 🏙️',
     tag: 'Premium',
     desc: 'Arranha-céus, desertos dourados e hotéis que redefinem o luxo. Onde o impossível é cotidiano.',
     tags: ['Luxo', 'Aventura', 'Compras'],
@@ -46,6 +49,7 @@ const DESTINATIONS = [
     name: 'Tokyo',
     country: 'Japão',
     countryCode: 'jp',
+    waMessage: 'Olá! Me encantei com o Japão no site de vocês. Sonho em conhecer Tokyo, podem me ajudar a planejar? ⛩️',
     tag: 'Trending',
     desc: 'Tradição milenar encontra o futuro. Templos, neon, ramen e cerejeiras. Uma experiência de outro mundo.',
     tags: ['Cultura', 'Gastronomia', 'Singular'],
@@ -58,6 +62,7 @@ const DESTINATIONS = [
     name: 'Santorini',
     country: 'Grécia',
     countryCode: 'gr',
+    waMessage: 'Olá! Santorini é um sonho e vi que vocês trabalham com destinos assim. Podem me ajudar a planejar essa viagem? 🌅',
     tag: 'Romântico',
     desc: 'Casas brancas sobre o vulcão, caldeira azul e o por do sol mais fotogênico da Europa.',
     tags: ['Romântico', 'Natureza', 'Fotografia'],
@@ -300,7 +305,7 @@ function DestinationRow({ dest, index }: { dest: typeof DESTINATIONS[0]; index: 
           transition={{ delay: index * 0.05 + 0.6, type: 'spring', stiffness: 120 }}
         >
           <motion.a
-            href="https://wa.me/5521996832196"
+            href={`https://wa.me/5521996832196?text=${encodeURIComponent(dest.waMessage)}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{
