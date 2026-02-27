@@ -188,25 +188,6 @@ function DestinationRow({ dest, index }: { dest: typeof DESTINATIONS[0]; index: 
             {dest.tag}
           </span>
         </motion.div>
-        {/* Number */}
-        <motion.div
-          style={{
-            position: 'absolute',
-            bottom: 24, left: isEven ? 24 : 'auto',
-            right: isEven ? 'auto' : 24,
-            zIndex: 4,
-            fontSize: 80,
-            fontWeight: 900,
-            color: 'rgba(255,255,255,0.08)',
-            lineHeight: 1,
-            fontFamily: 'var(--p-font-primary)',
-            userSelect: 'none',
-          }}
-          animate={{ opacity: hovered ? 0 : 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          {String(index + 1).padStart(2, '0')}
-        </motion.div>
       </div>
 
       {/* ── Content side ── */}
