@@ -56,6 +56,13 @@ const SLIDES: Slide[] = [
     label: "Paris",
   },
   {
+    url: "/hero/hero-dubai.jpg",
+    dx: -16, dy: -10, yOffset: -166, // row ~320 → horizon golden glow + full skyline + Burj Khalifa
+    mobileX: "52%",                   // col ~975  → Burj Khalifa ligeiramente à direita do centro — skyline balanceado
+    desktopPos: "center 0%",
+    label: "Dubai",
+  },
+  {
     url: "/hero/hero-patagonia.jpg",
     dx: -14, dy: -12, yOffset: 100, // row ~118 → picos Torres del Paine + lago + deck
     mobileX: "10%",                  // col ~390  → cabana à esq. + montanhas ao fundo

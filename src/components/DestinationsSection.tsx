@@ -37,7 +37,7 @@ const DESTINATIONS = [
     tag: 'Premium',
     desc: 'Arranha-céus, desertos dourados e hotéis que redefinem o luxo. Onde o impossível é cotidiano.',
     tags: ['Luxo', 'Aventura', 'Compras'],
-    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=900&q=80&auto=format&fit=crop',
+    image: '/images/dest-dubai.jpg',
     gradient: 'linear-gradient(135deg, #7c4f00 0%, #c4861a 100%)',
     accent: '#fbbf24',
   },
