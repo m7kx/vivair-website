@@ -128,6 +128,8 @@ function SlideItem({
           aria-hidden="true"
           draggable={false}
           loading={isFirst ? "eager" : "lazy"}
+          // eslint-disable-next-line react/no-unknown-property
+          fetchPriority={isFirst ? "high" : "low"}
           style={{
             width: "100%",
             height: "100%",
@@ -163,12 +165,10 @@ export default function HeroBackground({
     return () => window.removeEventListener("resize", check)
   }, [])
 
+  // Slides 1-6 use loading=lazy + fetchPriority=low.
+  // No blanket preload: only slide 0 (Rio) downloads at page load.
   useEffect(() => {
     setMounted(true)
-    SLIDES.forEach((s) => {
-      const img = new window.Image()
-      img.src = s.url
-    })
   }, [])
 
   useEffect(() => {
